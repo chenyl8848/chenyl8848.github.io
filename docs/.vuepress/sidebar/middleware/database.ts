@@ -5,6 +5,6 @@ export const database: HopeThemeSidebarArrayConfig = [
     {
         text: "MyBatis",
         collapsable: true,
-        children: ["MyBatis"]
+        children: ["MyBatis", "MyBatis_Plus"]
     },
 ];

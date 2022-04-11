@@ -1,6 +1,6 @@
 import { defineThemeConfig } from "vuepress-theme-hope";
 import navbar from "./navbar";
-import {sidebar} from "./sidebar";
+import { sidebar } from "./sidebar";
 
 export default defineThemeConfig({
   hostname: "https://vuepress-theme-hope-v2-demo.mrhope.site",
@@ -14,9 +14,12 @@ export default defineThemeConfig({
 
   logo: "/logo.svg",
 
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
-
-  docsDir: "demo/src",
+  // 文档仓库地址
+  repo: "chenyl8848/chenyl8848.github.io",
+  // 文档在仓库中的目录
+  docsDir: "docs",
+  // 文档存放的分支
+  docsBranch: "master",
 
   // navbar
   navbar: navbar,
@@ -85,10 +88,15 @@ export default defineThemeConfig({
        * Using giscus
        */
       type: "giscus",
-      repo: "vuepress-theme-hope/giscus-discussions",
-      repoId: "R_kgDOG_Pt2A",
+      repo: "chenyl8848/chenyl8848.github.io",
+      repoId: "R_kgDOHJ-qSQ",
       category: "Announcements",
-      categoryId: "DIC_kwDOG_Pt2M4COD69",
+      categoryId: "DIC_kwDOHJ-qSc4COg8Z",
+      // type: "giscus",
+      // repo: "vuepress-theme-hope/giscus-discussions",
+      // repoId: "R_kgDOG_Pt2A",
+      // category: "Announcements",
+      // categoryId: "DIC_kwDOG_Pt2M4COD69",
 
       /**
        * Using twikoo
