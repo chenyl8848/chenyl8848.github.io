@@ -1,7 +1,0 @@
-import { defineSidebarConfig } from "vuepress-theme-hope";
-
-export default defineSidebarConfig([
-  "",
-  "home",
-  "slide"
-]);
