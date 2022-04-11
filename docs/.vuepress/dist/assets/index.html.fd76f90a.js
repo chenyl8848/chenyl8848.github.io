@@ -1,1 +1,0 @@
-import{_ as t,r as a,c as o,a as n,b as s,w as r,o as c,d as l}from"./app.aaa460b9.js";const _={},d=l("MyBatis");function i(m,u){const e=a("RouterLink");return c(),o("ul",null,[n("li",null,[s(e,{to:"/middleware/database/MyBatis.html"},{default:r(()=>[d]),_:1})])])}var x=t(_,[["render",i],["__file","index.html.vue"]]);export{x as default};

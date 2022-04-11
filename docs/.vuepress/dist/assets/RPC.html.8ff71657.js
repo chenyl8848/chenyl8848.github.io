@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a,a as c,d as o}from"./app.aaa460b9.js";const r={},s={id:"\u624B\u5199rpc\u6846\u67B6",tabindex:"-1"},_=c("a",{class:"header-anchor",href:"#\u624B\u5199rpc\u6846\u67B6","aria-hidden":"true"},"#",-1),n=o(" \u624B\u5199RPC\u6846\u67B6"),d=[_,n];function h(i,f){return a(),t("h1",s,d)}var m=e(r,[["render",h],["__file","RPC.html.vue"]]);export{m as default};
