@@ -1,6 +1,6 @@
 import { defineThemeConfig } from "vuepress-theme-hope";
 import navbar from "./navbar";
-import {sidebar} from "./sidebar";
+import sidebar from "./sidebar";
 
 export default defineThemeConfig({
   hostname: "https://vuepress-theme-hope-v2-demo.mrhope.site",
