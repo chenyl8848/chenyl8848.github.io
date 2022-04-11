@@ -31,7 +31,6 @@ JUC是java.util.concurrent工具包的简称，是处理线程的一个工具包
 
 **线程状态枚举类**
 
-::: details
 ```java
 public enum State {
         /**
@@ -105,15 +104,13 @@ public enum State {
     }
 ```
 
-:::
-
 ### 1.2.3wait和sleep
 
-1.wait是<mark>Object</mark>的方法，任何实例对象都能调用；sleep是<mark>Thread的静态方法</mark>。
+1.wait是Object的方法，任何实例对象都能调用；sleep是Thread的静态方法。
 
-2.wait会<mark>释放锁</mark>，但调用它的前提是当前线程占用锁（即代码要在synchronized中）；sleep<mark>不会释放锁，它也不需要占用锁</mark>。
+2.wait会释放锁，但调用它的前提是当前线程占用锁（即代码要在synchronized中）；sleep不会释放锁，它也不需要占用锁。
 
-3.他们都可以被<mark>interrupted方法中断</mark>。
+3.他们都可以被interrupted方法中断。
 
 ### 1.2.4并发和并行
 
