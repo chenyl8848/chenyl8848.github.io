@@ -1,0 +1,1 @@
+import{_ as o,r as t,c as r,a as n,b as l,w as a,o as s,d as c}from"./app.aaa460b9.js";const _={},d=c("HelloWorld");function i(u,m){const e=t("RouterLink");return s(),r("ul",null,[n("li",null,[l(e,{to:"/rearend/springBoot/helloworld.html"},{default:a(()=>[d]),_:1})])])}var h=o(_,[["render",i],["__file","index.html.vue"]]);export{h as default};

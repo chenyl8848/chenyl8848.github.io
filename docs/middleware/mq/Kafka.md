@@ -32,19 +32,19 @@ tag:
 
   **缓存/削峰**：有助于控制和优化数据流经过系统的速度，解决生产消息和消费消息的处理速度不一致的情况。
 
-  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105543314.png" alt="image-20220218105543314" style="zoom: 67%;" />
+  <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105543314.png" alt="image-20220218105543314" style="zoom: 67%;" /> -->
 
 - 消息队列的应用场景——解耦
 
   **解耦**：允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。
 
-  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105810607.png" alt="image-20220218105810607" style="zoom: 67%;" />
+  <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105810607.png" alt="image-20220218105810607" style="zoom: 67%;" /> -->
 
 - 消息队列的应用场景——异步通信
 
   **异步通信**：允许用户把一个消息放入队列，但并不立即处理它，然后在需要的时候再去处理它们。
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105939896.png" alt="image-20220218105939896" style="zoom: 67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218105939896.png" alt="image-20220218105939896" style="zoom: 67%;" /> -->
 
 ### 1.2.2 消息队列两种模式
 
@@ -52,7 +52,7 @@ tag:
 
    - 消费者主动拉取数据，消息收到后清除消息
 
-     <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218110330983.png" alt="image-20220218110330983" style="zoom:67%;" />
+     <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218110330983.png" alt="image-20220218110330983" style="zoom:67%;" /> -->
 
 2. **发布/订阅模式**
 
@@ -62,7 +62,7 @@ tag:
 
    - 每个消费者相互独立，都可以消费到数据
 
-     <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218110554236.png" alt="image-20220218110554236" style="zoom:67%;" />
+     <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218110554236.png" alt="image-20220218110554236" style="zoom:67%;" /> -->
 
 ## 1.3 基本架构
 
@@ -71,7 +71,7 @@ tag:
 3. 为提高可用性，为每个partition增加若干副本，类似NameNode HA
 4.  ZK中记录谁是leader，Kafka 2.8.0以后也可以配置不采用ZK
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218111419404.png" alt="image-20220218111419404" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220218111419404.png" alt="image-20220218111419404" style="zoom:67%;" /> -->
 
 （1）**Producer**：**消息生产者**，就是向 Kafka broker发消息的客户端。 
 
@@ -401,7 +401,7 @@ tag:
 
 ​	在消息发送的过程中，涉及到了两个线程——**main** 线程和 **Sender** 线程。在 main 线程中创建了一个双端队列 **RecordAccumulator**。main 线程将消息发送给 RecordAccumulator，Sender 线程不断从 RecordAccumulator 中拉取消息发送到 Kafka Broker。
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219204024091.png" alt="image-20220219204024091" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219204024091.png" alt="image-20220219204024091" style="zoom:67%;" /> -->
 
 ### 3.1.2 生产者重要参数列表
 
@@ -425,7 +425,7 @@ tag:
 
 1. 需求：创建 Kafka 生产者，采用异步的方式发送到 Kafka Broker
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219205841697.png" alt="image-20220219205841697" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219205841697.png" alt="image-20220219205841697" style="zoom:67%;" /> -->
 
 2. 代码编写
 
@@ -500,7 +500,7 @@ tag:
 
 ​	回调函数会在 producer 收到 ack 时调用，为异步调用，该方法有两个参数，分别是元数据信息（RecordMetadata）和异常信息（Exception），如果 Exception 为 null，说明消息发送成功，如果 Exception 不为 null，说明消息发送失败。
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219211727849.png" alt="image-20220219211727849" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219211727849.png" alt="image-20220219211727849" style="zoom:67%;" /> -->
 
 **注意：消息发送失败会自动重试，不需要我们在回调函数中手动重试**。
 
@@ -546,7 +546,7 @@ for (int i = 0; i < 5; i++) {
 
 ## 3.3 同步发送API
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219211912676.png" alt="image-20220219211912676" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219211912676.png" alt="image-20220219211912676" style="zoom:67%;" /> -->
 
 **只需在异步发送的基础上，再调用一下 get()方法即可。**
 
@@ -578,7 +578,7 @@ kafka-console-consumer.sh --bootstrap-server kafka01:9092 --topic hello
 
    
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219212207010.png" alt="image-20220219212207010" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219212207010.png" alt="image-20220219212207010" style="zoom:67%;" /> -->
 
 ### 3.4.2 分区策略
 
@@ -807,7 +807,7 @@ kafka-console-consumer.sh --bootstrap-server kafka01:9092 --topic hello
 
 ## 3.5 生产者提高吞吐量
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220220134930630.png" alt="image-20220220134930630" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220220134930630.png" alt="image-20220220134930630" style="zoom:67%;" /> -->
 
 ```java
 package com.kafka.producer;
@@ -870,13 +870,13 @@ public class CustomProducerParameters {
 
 1. 回顾发送流程
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213156707.png" alt="image-20220219213156707" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213156707.png" alt="image-20220219213156707" style="zoom:67%;" /> -->
 
 2. ack应答原理
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213244491.png" alt="image-20220219213244491" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213244491.png" alt="image-20220219213244491" style="zoom:67%;" /> -->
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213353995.png" alt="image-20220219213353995" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213353995.png" alt="image-20220219213353995" style="zoom:67%;" /> -->
 
    **数据完全可靠条件 = ACK级别设置为-1 + 分区副本大于等于2 + ISR里应答的最小副本数量大于等于2**
 
@@ -894,7 +894,7 @@ public class CustomProducerParameters {
 
      **acks： -1（all）：生产者发送过来的数据，Leader和ISR队列里面的所有节点收齐数据后应答。**
 
-     <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213634877.png" alt="image-20220219213634877" style="zoom:67%;" />
+     <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219213634877.png" alt="image-20220219213634877" style="zoom:67%;" /> -->
 
 3. 代码
 
@@ -930,7 +930,7 @@ public class CustomProducerParameters {
    **重复数据的判断标准**：具有<**PID**, **Partition**, **SeqNumber**>相同主键的消息提交时，Broker只会持久化一条。其 中PID是Kafka每次重启都会分配一个新的；Partition 表示分区号；Sequence Number是单调自增的。
    所以幂等性只能保证的是在**单分区单会话内**不重复。
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219214449260.png" alt="image-20220219214449260" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219214449260.png" alt="image-20220219214449260" style="zoom:67%;" /> -->
 
 2. **如何使用幂等性**
 
@@ -1029,7 +1029,7 @@ public class CustomProducerParameters {
 
 ## 3.8 数据有序
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219214934834.png" alt="image-20220219214934834" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220219214934834.png" alt="image-20220219214934834" style="zoom:67%;" /> -->
 
 ## 3.9 数据乱序
 
@@ -1067,11 +1067,11 @@ public class CustomProducerParameters {
    ```bash
    ```
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220221091408273.png" alt="image-20220221091408273" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220221091408273.png" alt="image-20220221091408273" style="zoom:67%;" /> -->
 
 ### 4.1.2 Broker总体工作流程
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220223110500365.png" alt="image-20220223110500365" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220223110500365.png" alt="image-20220223110500365" style="zoom:67%;" /> -->
 
 1. 模拟 Kafka 上下线，Zookeeper 中数据变化
 
@@ -1240,7 +1240,7 @@ public class CustomProducerParameters {
 ​	Kafka 集群中有一个 broker 的 Controller 会被选举为 Controller Leader，负责管理集群broker 的上下线，所有 topic 的分区副本分配和 Leader 选举等工作。
 ​	Controller 的信息同步工作是依赖于 Zookeeper 的。
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174329375.png" alt="image-20220225174329375" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174329375.png" alt="image-20220225174329375" style="zoom:67%;" /> -->
 
 1. 创建一个新的 topic，4 个分区，4 个副本
 
@@ -1300,7 +1300,7 @@ public class CustomProducerParameters {
 
    4. 等该Follower的LEO大于等于该Partition的HW，即Follower追上Leader之后，就可以重新加入ISR了。
 
-      <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174758736.png" alt="image-20220225174758736" style="zoom:67%;" />
+      <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174758736.png" alt="image-20220225174758736" style="zoom:67%;" /> -->
 
 2. Leader故障
 
@@ -1310,7 +1310,7 @@ public class CustomProducerParameters {
       数据。
       **注意：这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。**
 
-      <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174906129.png" alt="image-20220225174906129" style="zoom:67%;" />
+      <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225174906129.png" alt="image-20220225174906129" style="zoom:67%;" /> -->
 
 ### 4.3.4 分区副本分配
 
@@ -1418,7 +1418,7 @@ broker重启之后都是follower partition，读写请求很低，造成集群�
    Topic是逻辑上的概念，而partition是物理上的概念，每个partition对应于一个log文件，该log文件中存储的就是Producer生产的数
    据。Producer生产的数据会被不断追加到该log文件末端，为防止log文件过大导致数据定位效率低下，Kafka采取了分片和索引机制， 将每个partition分为多个segment。每个segment包括：“.index”文件、“.log”文件和.timeindex等文件。这些文件位于一个文件夹下，该文件夹的命名规则为：topic名称+分区序号，例如：first-0。
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184033271.png" alt="image-20220225184033271" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184033271.png" alt="image-20220225184033271" style="zoom:67%;" /> -->
 
 2. 思考：Topic 数据到底存储在什么位置？
 
@@ -1446,7 +1446,8 @@ broker重启之后都是follower partition，读写请求很低，造成集群�
       
       ```
 
-3. index 文件和 log 文件详解<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184145340.png" alt="image-20220225184145340" style="zoom:67%;" />
+3. index 文件和 log 文件详解
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184145340.png" alt="image-20220225184145340" style="zoom:67%;" /> -->
 
    说明：日志存储参数配置
 
@@ -1487,7 +1488,7 @@ Kafka 中提供的日志清理策略有 **delete** 和 **compact** 两种
 
    - log.cleanup.policy = compact 所有数据启用压缩策略
 
-     <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184655131.png" alt="image-20220225184655131" style="zoom:67%;" />
+     <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225184655131.png" alt="image-20220225184655131" style="zoom:67%;" /> -->
 
    压缩后的offset可能是不连续的，比如上图中没有6，当从这些offset消费消息时，将会拿到比这个offset大 的offset对应的消息，实际上会拿到offset为7的消息，并从这个位置开始消费。
 
@@ -1510,7 +1511,7 @@ Kafka 中提供的日志清理策略有 **delete** 和 **compact** 两种
    走应用层，传输效率高。
    PageCache页缓存：Kafka重度依赖底层操作系统提供的PageCache功 能。当上层有写操作时，操作系统只是将数据写PageCache。当读操作发生时，先从PageCache中查找，如果找不到，再去磁盘中读取。实际上PageCache是把尽可能多的空闲内存都当做了磁盘缓存来使用。
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225185020176.png" alt="image-20220225185020176" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220225185020176.png" alt="image-20220225185020176" style="zoom:67%;" /> -->
 
    | 参数                        | 描述                                                         |
    | --------------------------- | ------------------------------------------------------------ |
@@ -1531,13 +1532,13 @@ Kafka 中提供的日志清理策略有 **delete** 和 **compact** 两种
 
    Kafka没有采用这种方式，因为由broker决定消息发送速率，很难适应所有消费者的消费速率。如下图所示，例如推送的速度50m/s，Consumer1、Consumer2就来不及处理消息。pull模式不足之处是，如 果Kafka没有数据，消费者可能会陷入循环中，一直返回空数据。
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220309192145605.png" alt="image-20220309192145605" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220309192145605.png" alt="image-20220309192145605" style="zoom:67%;" /> -->
 
 ## 5.2 Kafka消费者工作流程
 
 ### 5.2.1 消费者总体工作流程
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220309192251123.png" alt="image-20220309192251123" style="zoom:67%;" />
+<!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220309192251123.png" alt="image-20220309192251123" style="zoom:67%;" /> -->
 
 ### 5.2.2 消费者组原理
 
@@ -1553,9 +1554,9 @@ Kafka 中提供的日志清理策略有 **delete** 和 **compact** 两种
    例如： groupid的hashcode值 = 1，1% 50 = 1，那么__consumer_offsets 主题的1号分区，在哪个broker上，就选择这个节点的coordinator
    作为这个消费者组的老大。消费者组下的所有的消费者提交offset的时候就往这个分区去提交offset。
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220409211649244.png" alt="image-20220409211649244" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220409211649244.png" alt="image-20220409211649244" style="zoom:67%;" /> -->
 
-   <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220409211800920.png" alt="image-20220409211800920" style="zoom:67%;" />
+   <!-- <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220409211800920.png" alt="image-20220409211800920" style="zoom:67%;" /> -->
 
    ### 5.2.3 消费者重要参数
 

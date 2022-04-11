@@ -1,6 +1,6 @@
 import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope";
 
-import { java } from "./rearend";
+import { algorithm, dataStructure, java, microServices, springBoot } from "./rearend";
 import { database, mq, noSQL, zookeeper } from "./middleware";
 import { docker, linux } from "./server";
 import { kubernetes } from "./server/kubernetes";
@@ -144,6 +144,10 @@ import { kubernetes } from "./server/kubernetes";
 // ]);
 export const sidebar: HopeThemeSidebarConfig = {
     "/rearend/java/": java,
+    "/rearend/springBoot/": springBoot,
+    "/rearend/microServices/": microServices,
+    "/rearend/dataStructure/": dataStructure,
+    "/rearend/algorithm/": algorithm,
     "/middleware/database/": database,
     "/middleware/noSQL/": noSQL,
     "/middleware/mq/": mq,
