@@ -7,4 +7,4 @@ isOriginal: true
 
 * [MyBatis](MyBatis.md)
 
-* [MyBatis_Plus](MyBatis_Plus.md)
+* [MyBatis Plus](MyBatis_Plus.md)

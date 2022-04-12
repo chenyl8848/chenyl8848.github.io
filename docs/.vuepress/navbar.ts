@@ -2,6 +2,7 @@ import { defineNavbarConfig } from "vuepress-theme-hope";
 
 export default defineNavbarConfig([
   "/",
+  // "home",
   {
     text: "后端",
     icon: "rearend",

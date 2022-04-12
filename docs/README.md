@@ -2,8 +2,9 @@
 home: true
 layout: Blog
 icon: home
-title: 主页
+title: 首页
 heroImage: /logo.svg
+# bgImage: /
 heroText: Code Chen
 heroFullScreen: true
 tagline: JE22一站式技术网站，记录日常学习、工作博客，致敬每个爱学习的你。
@@ -41,8 +42,8 @@ projects:
 footer: 不积跬步，无以至千里；不积小流，无以成江海。
 ---
 
-这是一个博客主页。
+<!-- 这是一个博客主页。
 
 要使用此布局，你应该在页面前端设置 `layout: Blog` 和 `home: true`。
 
-相关配置文档请见 [博客主页](https://vuepress-theme-hope.github.io/v2/zh/guide/blog/home/)。
+相关配置文档请见 [博客主页](https://vuepress-theme-hope.github.io/v2/zh/guide/blog/home/)。 -->

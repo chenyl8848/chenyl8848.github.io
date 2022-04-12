@@ -1,23 +1,23 @@
 ---
 home: true
 icon: home
-title: 项目主页
+title: 文档
 heroImage: /logo.svg
-heroText: 项目名称
-tagline: 你可以在这里放置或是整个项目的描述。
+heroText: Chod Chen
+tagline: JE22一站式技术网站，记录日常学习、工作博客，致敬每个爱学习的你。
 actions:
-  - text: 使用指南 💡
-    link: /zh/guide/
+  - text: 快速上手 💡
+    link: /rearend/java
 
   - text: 博客主页 🏠
-    link: /zh/
+    link: /
     type: secondary
 
 features:
-  - title: Markdown 增强
-    icon: markdown
-    details: 新增文字对齐、上下角标、脚注、标记、任务列表、数学公式、流程图、图表与幻灯片支持
-    link: https://vuepress-theme-hope.github.io/v2/zh/guide/markdown/
+  - title: Java
+    icon: java
+    details: Java日常学习，涵盖：Java基础、泛型、反射、注解、IO、异常、网络编程、并发编程等。
+    link: /rearend/java
 
   - title: 幻灯片页面
     icon: slides
@@ -99,7 +99,7 @@ features:
     details: 包括图标支持、全屏按钮、返回顶部按钮等
     link: https://vuepress-theme-hope.github.io/v2/zh/guide/feature/
 copyright: false
-footer: MIT Licensed | Copyright © 2019-present Mr.Hope
+footer: MIT Licensed | Copyright © 2022-present Code Chen
 ---
 
 这是普通主页的案例。你可以在这里放置你的主体内容。
