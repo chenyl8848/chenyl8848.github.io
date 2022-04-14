@@ -36,7 +36,7 @@ tag:
 
 ## 1.4 框架结构
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220414173701561.png" alt="image-20220414173701561" style="zoom:67%;" />
+<!-- <img src="image-20220414173701561.png" alt="image-20220414173701561" style="zoom:67%;" /> -->
 
 ## 1.5 官方地址
 - [官方地址](http://mp.baomidou.com)
@@ -379,7 +379,7 @@ mybatis-plus:
      10bit作为机器的ID（5个bit是数据中心，5个bit的机器ID，可以部署在1024个节点）；
      12bit作为毫秒内的流水号（意味着每个节点在每毫秒可以产生 4096 个 ID）。
 
-     <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220414101522238.png" alt="image-20220414101522238" style="zoom:67%;" />
+     <!-- <img src="image-20220414101522238.png" alt="image-20220414101522238" style="zoom:67%;" /> -->
 
   2. 优点：整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞，并且效率较高。
 
@@ -407,7 +407,7 @@ mybatis-plus:
 
 ## 5.1 `wapper`
 
-<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220414102032696.png" alt="image-20220414102032696" style="zoom:67%;" />
+<!-- <img src="image-20220414102032696.png" alt="image-20220414102032696" style="zoom:67%;" /> -->
 
 - `Wrapper `： 条件构造抽象类，最顶端父类
   - `AbstractWrapper `： 用于查询条件封装，生成 sql 的 where 条件
