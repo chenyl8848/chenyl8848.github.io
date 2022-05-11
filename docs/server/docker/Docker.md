@@ -8,6 +8,7 @@ tag:
 ---
 
 # 初学Docker
+<!-- more -->
 
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1ZT4y1K75K?spm_id_from=333.999.0.0)
 >

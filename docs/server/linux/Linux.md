@@ -8,6 +8,7 @@ tag:
 ---
 
 # 初学Linux
+<!-- more -->
 
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1xV411k7FC?spm_id_from=333.999.0.0)
 

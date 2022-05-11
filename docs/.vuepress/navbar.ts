@@ -9,6 +9,7 @@ export default defineNavbarConfig([
     prefix: "/rearend/",
     children: [
       "java/",
+      "spring/",
       "springBoot/",
       "microServices/",
       "dataStructure/",

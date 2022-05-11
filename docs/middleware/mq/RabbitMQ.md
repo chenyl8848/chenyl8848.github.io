@@ -10,6 +10,8 @@ tag:
 
 # 初学RabbitMQ
 
+<!-- more -->
+
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1dE411K7MG?spm_id_from=333.999.0.0)
 >
 >[官网](https://www.rabbitmq.com/)

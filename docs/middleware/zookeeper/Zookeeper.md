@@ -3,12 +3,12 @@ title: 初学Zookeeper
 date: 2022-04-10
 category:
   - 中间件
-  - MQ
 tag:
   - Zookeeper
 ---
 
 # Zookeeper
+<!-- more -->
 
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1Uy4y1b7ED?spm_id_from=333.999.0.0)
 

@@ -1,7 +1,6 @@
 ---
 title: 初学Netty
 date: 2022-04-10
-sticky: 2
 category:
   - Java
 tag:
@@ -10,6 +9,7 @@ tag:
 
 # 第1章 Netty介绍和应用场景
 
+<!-- more -->
 ## 1.1 Netty介绍
 
 >[学习视频【尚硅谷】](https://www.bilibili.com/video/BV1jD4y1Q7tU?spm_id_from=333.999.0.0)
@@ -19,7 +19,6 @@ tag:
 3. Netty主要针对在TCP协议下，面向Clients端的高并发应用，或者Peer-to-Peer场景下的大量数据持续传输的应用；
 4. Netty本质是一个NIO框架，适用于服务器通讯相关的多种应用场景。
 
-<!-- more -->
 
 ## 1.2 Netty的应用场景
 

@@ -1,8 +1,9 @@
 ---
 title: Spring Boot
-icon: springBoot
+icon: springboot
 star: 2
 isOriginal: true
+article: false
 ---
 
 - [HelloWorld](helloworld.md)

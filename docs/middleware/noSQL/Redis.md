@@ -10,6 +10,7 @@ tag:
 
 
 # 初学Redis
+<!-- more -->
 
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1jD4y1Q7tU?spm_id_from=333.999.0.0)
 

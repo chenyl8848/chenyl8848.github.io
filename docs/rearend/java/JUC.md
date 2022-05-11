@@ -8,6 +8,7 @@ tag:
 ---
 
 # 1.JUC概述
+<!-- more -->
 
 >[学习视频【尚硅谷】](https://www.bilibili.com/video/BV1Kw411Z7dF?spm_id_from=333.999.0.0)
 
@@ -15,7 +16,6 @@ tag:
 
 JUC是java.util.concurrent工具包的简称，是处理线程的一个工具包，是在JDK1.5之后开始出现的。
 
-<!-- more -->
 
 ## 1.2进程和线程
 

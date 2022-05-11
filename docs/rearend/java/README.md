@@ -3,6 +3,7 @@ title: Java
 icon: java
 star: 1
 isOriginal: true
+article: false
 --- 
 
 - [JUC并发编程](JUC.md)
