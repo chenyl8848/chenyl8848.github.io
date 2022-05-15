@@ -1,7 +1,7 @@
 import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope";
 
 import { algorithm, dataStructure, java, microServices, springBoot, spring } from "./rearend";
-import { database, mq, noSQL, zookeeper } from "./middleware";
+import { database, mq, noSQL, zookeeper, elasticsearch } from "./middleware";
 import { docker, linux } from "./server";
 import { kubernetes } from "./server/kubernetes";
 
@@ -153,6 +153,7 @@ export const sidebar: HopeThemeSidebarConfig = {
     "/middleware/noSQL/": noSQL,
     "/middleware/mq/": mq,
     "/middleware/zookeeper/": zookeeper,
+    "/middleware/elasticsearch/": elasticsearch,
     "/server/linux/": linux,
     "/server/docker/": docker,
     "/server/kubernetes/": kubernetes,
