@@ -9,6 +9,8 @@ tag:
 
 # ElasticSearch优化
 
+<!-- more -->
+
 ## 1. 硬件选择
 
 Elasticsearch的基础是`Lucene`，所有的索引和文档数据是存储在本地的磁盘中，具体的路径可在 ES 的配置文件`/config/elasticsearch.yml`中配置，如下：

@@ -9,6 +9,8 @@ tag:
 
 # ElasticSearch进阶
 
+<!-- more -->
+
 ## 1. 核心概念
 
 ### 1.1 索引（Index）

@@ -9,6 +9,8 @@ tag:
 
 # ElasticSearch集成
 
+<!-- more -->
+
 ## 1 Spring Data框架集成
 
 ### 1.1 Spring Data框架介绍

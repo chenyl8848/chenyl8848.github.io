@@ -9,6 +9,8 @@ tag:
 
 # ElasticSearch部署
 
+<!-- more -->
+
 ## 1. 相关概念
 
 ### 1.1 单机 & 集群

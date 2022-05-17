@@ -9,6 +9,8 @@ tag:
 
 # Elasticsearch入门
 
+<!-- more -->
+
 ## 1. Elasticsearch概述
 
 ### 1.1 Elasticsearch是什么

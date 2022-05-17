@@ -6,13 +6,13 @@ export default defineThemeConfig({
   hostname: "https://chenyl8848.github.io",
 
   author: {
-    name: "Code Chen",
+    name: "Java陈序员",
     url: "https://chenyl8848.github.io",
   },
 
   iconPrefix: "iconfont icon-",
 
-  logo: "/logo.svg",
+  logo: "/logo.png",
 
   // 文档仓库地址
   repo: "chenyl8848/chenyl8848.github.io",
@@ -34,7 +34,7 @@ export default defineThemeConfig({
   pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
   blog: {
-    description: "一个后端开发者",
+    description: "一个Java后端程序员",
     intro: "/introduction",
     medias: {
       Baidu: "https://www.baidu.com",

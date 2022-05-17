@@ -3,8 +3,8 @@ import themeConfig from "./themeConfig";
 
 export default defineHopeConfig({
   lang: "zh-CN",
-  title: "Code Chen",
-  description: "Code Chen的个人博客网站",
+  title: "Java陈序员",
+  description: "Java陈序员的个人博客网站",
 
   base: "/",
 

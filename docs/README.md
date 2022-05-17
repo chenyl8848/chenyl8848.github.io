@@ -3,11 +3,11 @@ home: true
 layout: Blog
 icon: home
 title: 首页
-heroImage: /logo.svg
+heroImage: /logo.png
 # bgImage: /
-heroText: Code Chen
+heroText: Java陈序员
 heroFullScreen: true
-tagline: JE22一站式技术网站，记录日常学习、工作博客，致敬每个爱学习的你。
+tagline: Java后端程序员，记录日常学习、工作博客，致敬每个爱学习的你。
 projects:
   - icon: project
     name: 项目名称
