@@ -9,11 +9,9 @@ tag:
 isOriginal: true
 ---
 
-# Docker部署中间件
+# Docker 部署中间件
 
-<!-- more -->
-
-## Docker安装
+## Docker 安装
 
 ### 1. 卸载旧版本
 
@@ -34,7 +32,7 @@ sudo yum remove docker \
 yum install -y yum-utils device-mapper-persistent-data lvm2
 ```
 
-### 3. 配置docker yum源
+### 3. 配置 docker yum 源
 
 ```sh
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
@@ -57,7 +55,7 @@ systemctl start docker
 docker --version
 ```
 
-### 6. 配置docker加速
+### 6. 配置 docker 加速
 
 ```sh
 sudo mkdir -p /etc/docker
@@ -68,7 +66,7 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 EOF
 ```
 
-### 7. 设计开机自启动
+### 7. 设置开机自启动
 
 ```sh
 sudo systemctl daemon-reload
@@ -77,7 +75,7 @@ sudo systemctl restart docker
 
 
 
-## Docker-Compose安装
+## Docker-Compose 安装
 
 ### 1. 安装
 
@@ -97,7 +95,99 @@ docker-compose --version
 
 
 
-## Docker部署MySQL
+## Docker 部署 Nginx
+
+### 1. 拉取镜像
+
+```sh
+docker pull nginx:1.20
+```
+
+### 2. 运行容器
+
+```sh
+docker run --name nginx -d -p 80:80 nginx:1.20
+```
+
+### 3. 进入容器内部
+
+```sh
+docker exec -it nginx bash
+```
+
+### 4. 拷贝配置文件
+
+```sh
+docker cp nginx:/etc/nginx /data/software/docker/nginx/
+```
+
+### 5. 配置文件
+
+`nginx.conf`
+
+```sh
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+```
+
+### 6. 数据卷挂载
+
+```sh
+docker run --name nginx -v /data/software/docker/nginx/conf:/etc/nginx -v /data/software/docker/nginx/data:/usr/share/nginx -v /data/software/docker/nginx/log:/var/log/nginx -p 80:80 -d nginx:1.20
+```
+
+**命令说明：**
+
+- 挂载配置文件
+
+  ```sh
+  -v /data/software/docker/nginx/conf:/etc/nginx
+  ```
+
+- 挂载数据
+
+  ```sh
+  -v /data/software/docker/nginx/data:/usr/share/nginx
+  ```
+
+- 挂载日志文件
+
+  ```sh
+  -v /data/software/docker/nginx/log:/var/log/nginx
+  ```
+
+
+
+## Docker 部署 MySQL
 
 ### 1. 拉取镜像
 
@@ -108,7 +198,7 @@ docker pull mysql:5.7
 ### 2. 运行容器
 
 ```sh
-docker run --name mysql -d -e - MYSQL_ROOT_PASSWORD 123456 mysql:5.7
+docker run --name mysql -d -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
 ```
 
 ### 3. 进入容器内部
@@ -124,6 +214,8 @@ docker cp mysql:/etc/mysql/mysql.conf.d /data/software/docker/mysql/conf/
 ```
 
 ### 5. 配置文件
+
+`mysqld.cnf`
 
 ```sh
 [mysqld]
@@ -179,7 +271,7 @@ docker run --name mysql -d -v /data/software/docker/mysql/conf:/etc/mysql/conf.d
 
   
 
-## Docker部署Redis
+## Docker 部署 Redis
 
 ### 1. 拉取镜像
 
@@ -201,6 +293,8 @@ docker exec -it redis bash
 
 ### 4. 配置文件
 
+`redis.conf`
+
 ```sh
 port 6379     
 bind 0.0.0.0
@@ -221,7 +315,7 @@ appendfsync everysec
 ### 5. 数据卷挂载
 
 ```sh
-docker run --name redis -d -p 6379:6379 -v /data/software/docker/redis/conf:/usr/local/etc/redis -v /data/software/docker/redis/data:/data -v /data/software/docker/redis/log:/var/log/redis.log redis:6.2.6
+docker run --name redis -d -p 6379:6379 -v /data/software/docker/redis/conf:/usr/local/etc/redis -v /data/software/docker/redis/data:/data -v /data/software/docker/redis/log:/var/log redis:6.2.6 redis-server /usr/local/etc/redis/redis.conf
 ```
 
 **命令说明：**
@@ -252,8 +346,14 @@ docker run --name redis -d -p 6379:6379 -v /data/software/docker/redis/conf:/usr
   chmod 777 /data/software/docker/redis/log/
   ```
 
+- 指定配置文件
 
-### 6. Redis客户端
+  ```sh
+  redis-server /usr/local/etc/redis/redis.conf
+  ```
+
+
+### 6. Redis 客户端
 
 1. 进入客户端
 
@@ -269,7 +369,7 @@ docker run --name redis -d -p 6379:6379 -v /data/software/docker/redis/conf:/usr
 
 
 
-## Docker部署MongoDB
+## Docker 部署 MongoDB
 
 ### 1. 拉取镜像
 
@@ -390,7 +490,7 @@ docker run --name mongo -d -v /data/software/docker/mongo/conf:/data/configdb -v
   --auth
   ```
 
-### 7. MongoDB操作
+### 7. MongoDB 操作
 
 1. 进入mongo客户端
 
@@ -424,7 +524,7 @@ docker run --name mongo -d -v /data/software/docker/mongo/conf:/data/configdb -v
 
    
 
-## Docker部署Zookeeper
+## Docker 部署 Zookeeper
 
 ### 1. 拉取镜像
 
@@ -473,6 +573,7 @@ server.1=localhost:2888:3888;2181
 ```sh
 docker run --name zookeeper -d -v /data/software/docker/zookeeper/conf:/conf -v /data/software/docker/zookeeper/data:/data -v /data/software/docker/zookeeper/log:/datalog -p 2181:2181 -p 2888:2888 -p 3888:3888 zookeeper:3.6.3
 ```
+
 **命令说明：**
 
 - 挂载配置文件
@@ -505,7 +606,7 @@ docker run --name zookeeper -d -v /data/software/docker/zookeeper/conf:/conf -v 
 
 
 
-## Docker部署Kafka
+## Docker 部署 Kafka
 
 ### 1. 拉取镜像
 
@@ -654,7 +755,7 @@ docker run --name kafka -d -v /data/software/docker/kafka/conf:/bitnami/kafka/co
 
 
 
-## Docker部署RabbitMQ
+## Docker 部署 RabbitMQ
 
 ### 1. 拉取镜像
 
@@ -662,7 +763,7 @@ docker run --name kafka -d -v /data/software/docker/kafka/conf:/bitnami/kafka/co
 docker pull rabbitmq:3.8-management
 ```
 
-**说明：**镜像带management表示已经安装RabbitMQ后台管理插件。
+**说明**：镜像带management表示已经安装RabbitMQ后台管理插件。
 
 ### 2. 运行容器
 
@@ -726,7 +827,7 @@ docker run --name rabbitmq -p 5672:5672 -p 15672:15672 -v /data/software/docker/
 
 
 
-## Docker部署Elastic Search
+## Docker 部署 Elastic Search
 
 ### 安装Elastic Search
 
@@ -742,6 +843,32 @@ docker pull elasticsearch:6.8.22
 docker run --name elasticsearch -d elasticsearch:6.8.22
 ```
 
+启动报错：
+
+```sh
+[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+
+解决方法：
+
+1. 在centos虚拟机中，修改配置sysctl.conf
+
+   ```sh
+   vim /etc/sysctl.conf
+   ```
+
+2. 加入如下配置
+
+   ```sh
+   vm.max_map_count=262144
+   ```
+
+3. 启用配置
+
+   ```sh
+   sysctl -p
+   ```
+
 #### 3. 进入容器内部
 
 ```sh
@@ -751,7 +878,7 @@ docker exec -it elasticsearch bash
 #### 4. 拷贝配置文件
 
 ```sh
-docker cp elasticsearch:/usr/share/elasticsearch/config/ /data/software/elasticsearch/conf/
+docker cp elasticsearch:/usr/share/elasticsearch/config/ /data/software/docker/elasticsearch/conf/
 ```
 
 #### 5. 配置文件
@@ -770,7 +897,7 @@ network.host: 0.0.0.0
 #### 6. 数据卷挂载
 
 ```sh
-docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 -v /data/software/docker/elasticsearch/conf:/usr/share/elasticsearch/config -v /data/software/docker/elasticsearch/data:/usr/share/elasticsearch/data -v /data/software/docker/elasticsearch/logs:/usr/share/elasticsearch/logs  elasticsearch:6.8.22
+docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 -v /data/software/docker/elasticsearch/conf:/usr/share/elasticsearch/config -v /data/software/docker/elasticsearch/data:/usr/share/elasticsearch/data -v /data/software/docker/elasticsearch/log:/usr/share/elasticsearch/logs  elasticsearch:6.8.22
 ```
 
 **命令说明：**
@@ -784,20 +911,32 @@ docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 -v /data/software/d
 - 挂载数据
 
   ```sh
-  -v /data/software/docker/elasticsearch/data:/usr/share/elasticsearch/data -v
+  -v /data/software/docker/elasticsearch/data:/usr/share/elasticsearch/data
   ```
 
 - 挂载日志文件
 
   ```sh
-  -v /data/software/docker/elasticsearch/logs:/usr/share/elasticsearch/logs
+  -v /data/software/docker/elasticsearch/log:/usr/share/elasticsearch/logs
+  ```
+
+  注意：
+
+  `/data/software/docker/elasticsearch/data`需要有777权限
+
+  ```sh
+  chmod 777 /data/software/docker/elasticsearch/data/
+  ```
+
+    `/data/software/docker/elasticsearch/log`需要有777权限
+
+  ```sh
+  chmod 777 /data/software/docker/elasticsearch/log/
   ```
 
   
 
-
-
-### 安装Kibana
+### 安装 Kibana
 
 #### 1. 拉取镜像
 
@@ -854,8 +993,10 @@ docker run -d --name kibana -v /data/software/docker/kibana/conf:/usr/share/kiba
    /data/software/docker/kibana/data:/usr/share/kibana/data
   ```
 
-- 挂载日志文件
+  注意：
+
+  `/data/software/docker/kibana/data`需要有777权限
 
   ```sh
-  -v /data/software/docker/mysql/log:/var/log/mysql
+  chmod 777 /data/software/docker/kibana/data/
   ```
