@@ -25,7 +25,8 @@ export default defineNavbarConfig([
       "noSQL/",
       "mq/",
       "zookeeper/",
-      "elasticsearch/"
+      "elasticsearch/",
+      "prometheus/",
     ]
   },
   {
