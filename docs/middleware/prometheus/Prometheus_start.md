@@ -1,6 +1,7 @@
 ---
 title: Prometheus + Grafana 搭建监控系统
 date: 2022-05-29
+isOriginal: true
 category:
   - 中间件
 tag:
@@ -9,6 +10,8 @@ tag:
 ---
 
 # Prometheus + Grafana 搭建监控系统
+
+<!-- more -->
 
 ## 前言
 
@@ -39,7 +42,7 @@ Prometheus 与其他指标和监控系统的区别在于：
 
 **架构图**
 
-![architecture-image](https://camo.githubusercontent.com/f14ac82eda765733a5f2b5200d78b4ca84b62559d17c9835068423b223588939/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f70726f6d6574686575732f70726f6d65746865757340633334323537643036396336333036383564613335626365663038343633326666643564363230392f646f63756d656e746174696f6e2f696d616765732f6172636869746563747572652e737667)
+![image-20220530083721686](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/prometheus/prometheus_start/image-20220530083721686.png?versionId=CAEQKRiBgIC4xs3JiBgiIDdiNTgwYjhhMDNmNTQzODI4MTc4MmE3OGEwNzFlNDI2)
 
 
 
@@ -373,7 +376,7 @@ Grafana 展示 Promethus 监控需要配置对应的数据源，如下步骤进�
 
 #### 展示
 
-在 Grafana 中展示上述配置的 MySQLd exporter， 一些漂亮的 DashBoard 模板可以在 [插件中心](https://grafana.com/grafana/dashboards/1860) 中下载
+在 Grafana 中展示上述配置的 Redis exporter， 一些漂亮的 DashBoard 模板可以在 [插件中心](https://grafana.com/grafana/dashboards/1860) 中下载
 
    1. 下载对应 dashboard 的 JSON 文件 
 
