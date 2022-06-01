@@ -1,6 +1,6 @@
 ---
 title: Java Script
-icon: react
+icon: java_script
 article: false
 isOriginal: true
 ---

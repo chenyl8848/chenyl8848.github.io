@@ -1,6 +1,6 @@
 ---
 title: Wiki.js
-icon: folder-vuepress
+icon: wiki
 article: false
 isOriginal: true
 ---
