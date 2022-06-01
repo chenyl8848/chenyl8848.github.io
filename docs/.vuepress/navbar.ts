@@ -54,6 +54,7 @@ export default defineNavbarConfig([
           "react/",
           "docsify/",
           "vuepress/",
+          "wiki/",
         ],
       },
       {

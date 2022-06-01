@@ -2,8 +2,9 @@ import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope
 
 import { algorithm, dataStructure, java, microServices, springBoot, spring } from "./rearend";
 import { database, mq, noSQL, zookeeper, elasticsearch, prometheus } from "./middleware";
-import { docker, linux } from "./server";
-import { kubernetes } from "./server/kubernetes";
+import { docker, linux, kubernetes } from "./server";
+import { wiki } from "./web"
+
 
 // export default defineSidebarConfig([
 //     "",
@@ -158,4 +159,5 @@ export const sidebar: HopeThemeSidebarConfig = {
     "/server/linux/": linux,
     "/server/docker/": docker,
     "/server/kubernetes/": kubernetes,
+    "/web/framework/wiki": wiki,
 };
