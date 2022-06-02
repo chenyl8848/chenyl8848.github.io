@@ -1,6 +1,6 @@
 import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope";
 
-import { algorithm, dataStructure, java, microServices, springBoot, spring } from "./rearend";
+import { algorithm, dataStructure, java, microServices, springBoot, spring, designPattern } from "./rearend";
 import { database, mq, noSQL, zookeeper, elasticsearch, prometheus } from "./middleware";
 import { docker, linux, kubernetes } from "./server";
 import { wiki } from "./web"
@@ -150,6 +150,7 @@ export const sidebar: HopeThemeSidebarConfig = {
     "/rearend/microServices/": microServices,
     "/rearend/dataStructure/": dataStructure,
     "/rearend/algorithm/": algorithm,
+    "/rearend/designPattern/": designPattern,
     "/middleware/database/": database,
     "/middleware/noSQL/": noSQL,
     "/middleware/mq/": mq,

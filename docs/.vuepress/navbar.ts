@@ -14,6 +14,7 @@ export default defineNavbarConfig([
       "microServices/",
       "dataStructure/",
       "algorithm/",
+      "designPattern/"
     ]
   },
   {

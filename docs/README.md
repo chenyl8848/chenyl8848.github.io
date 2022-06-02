@@ -10,34 +10,34 @@ heroFullScreen: true
 tagline: Java后端程序员，记录日常开发、工作、学习，致敬每个爱学习的你。
 projects:
   - icon: project
-    name: 项目名称
-    desc: 项目详细描述
-    link: https://你的项目链接
+    name: bugstack 虫洞栈
+    desc: 手写源码
+    link: https://bugstack.cn/
 
   - icon: link
-    name: 链接名称
-    desc: 链接详细描述
-    link: https://链接地址
+    name: mall学习教程
+    desc: 电商系统
+    link: https://www.macrozheng.com/
 
-  - icon: book
-    name: 书籍名称
-    desc: 书籍详细描述
-    link: https://你的书籍链接
+  # - icon: book
+  #   name: 书籍名称
+  #   desc: 书籍详细描述
+  #   link: https://你的书籍链接
 
-  - icon: article
-    name: 文章名称
-    desc: 文章详细描述
-    link: https://你的文章链接
+  # - icon: article
+  #   name: 文章名称
+  #   desc: 文章详细描述
+  #   link: https://你的文章链接
 
-  - icon: friend
-    name: 伙伴名称
-    desc: 伙伴详细介绍
-    link: https://你的伙伴链接
+  # - icon: friend
+  #   name: 伙伴名称
+  #   desc: 伙伴详细介绍
+  #   link: https://你的伙伴链接
 
-  - icon: /logo.svg
-    name: 自定义项目
-    desc: 自定义详细介绍
-    link: https://你的自定义链接
+  # - icon: /logo.svg
+  #   name: 自定义项目
+  #   desc: 自定义详细介绍
+  #   link: https://你的自定义链接
 
 footer: 不积跬步，无以至千里；不积小流，无以成江海。
 ---

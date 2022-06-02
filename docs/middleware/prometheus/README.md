@@ -1,6 +1,6 @@
 ---
 title: Prometheus
-icon: elasticsearch
+icon: prometheus
 star: 40
 isOriginal: true
 article: false
