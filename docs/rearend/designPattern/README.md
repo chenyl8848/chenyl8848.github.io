@@ -9,4 +9,6 @@ article: false
 - [设计原则](priciple_start.md)
 
 - [UML 类图](uml_start.md)
+ 
+- [单例模式](singleton_start.md)
 
