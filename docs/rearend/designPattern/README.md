@@ -12,3 +12,15 @@ article: false
  
 - [单例模式](singleton_start.md)
 
+- [工厂模式](factory_start.md)
+ 
+- [原型模式](prototype_start.md)
+
+- [建造者模式](builder_start.md)
+
+- [适配器模式](adapter_start.md)
+
+- [桥接模式](bridge_start.md)
+
+
+

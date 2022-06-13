@@ -12,4 +12,5 @@ export const java: HopeThemeSidebarArrayConfig = [
         collapsable: true,
         children: ["Netty"]
     },
+    "SPI",
 ];
