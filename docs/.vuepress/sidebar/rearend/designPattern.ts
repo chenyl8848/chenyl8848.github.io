@@ -10,4 +10,6 @@ export const designPattern: HopeThemeSidebarArrayConfig = [
     "builder_start",
     "adapter_start",
     "bridge_start",
+    "decorator_start",
+    "composite_start",
 ];
