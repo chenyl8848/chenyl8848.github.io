@@ -22,7 +22,7 @@ tag:
 
 类图分析
 
-![image-20220619104856226](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619104856226.png)
+![image-20220619104856226](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/bridge_start/image-20220619104856226.png?versionId=CAEQLBiBgICQ3MH6ixgiIGYzNzBhNzFiNzJjOTQ2MzNhZTdkYzhlZGYzYjBlMWRj)
 
 ### 1.3 问题分析
 
@@ -38,7 +38,7 @@ tag:
 
 ### 1.2.2 原理类图
 
-![image-20220619105038507](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619105038507.png)
+![image-20220619105038507](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/bridge_start/image-20220619105038507.png?versionId=CAEQLBiBgMCA3MH6ixgiIDM3MzIyNDFmMjY1ZDQxYTRiYTRmMjg5YjYwZjMyODQ1)
 
 说明：
 
@@ -55,7 +55,7 @@ tag:
 
 1. 使用桥接模式对应的类图
 
-   ![image-20220619164531954](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619164531954.png)
+   ![image-20220619164531954](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/bridge_start/image-20220619164531954.png?versionId=CAEQLBiBgMDC2sH6ixgiIDI2YTEzY2YwODdhYjRmN2Y4ZDcxNzYzMzc5Nzg1NzQ0)
 
 2. 代码实现
 
@@ -297,7 +297,7 @@ tag:
 
 3. 对 JDBC 源码分析的类图
 
-   ![image-20220619164614141](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619164614141.png)
+   ![image-20220619164614141](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/bridge_start/image-20220619164614141.png?versionId=CAEQLBiBgICs28H6ixgiIGQwMTcwZGMxNTVhYjQ4YzE5NGY4ODAyZTc3ZThkZTI2)
 
 ## 1.4 桥接模式的注意事项和细节
 

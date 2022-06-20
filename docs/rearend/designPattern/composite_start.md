@@ -20,7 +20,7 @@ tag:
 
 ### 1.1.2 类图展示
 
-![image-20220618161042735](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220618161042735.png)
+![image-20220618161042735](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/composite_start/image-20220618161042735.png?versionId=CAEQLBiBgMDsmtX6ixgiIGY1MzQ5MWRiNDEzYzQzYjNiZmJmMmVmZjkxZTgyZTIz)
 
 ### 1.1.3 问题分析
 
@@ -39,7 +39,7 @@ tag:
 
 ### 1.2.2 原理类图
 
-![image-20220618161612355](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220618161612355.png)
+![image-20220618161612355](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/composite_start/image-20220618161612355.png?versionId=CAEQLBiBgMCLm9X6ixgiIDA3OWE0N2U5YzcyZTRiYzZhYmEyOGY3YjU0MWM1NzQ4)
 
 对原理结构图的说明-即(组合模式的角色及职责)
 
@@ -56,7 +56,7 @@ tag:
 
 2. 思路分析和图解(类图)
 
-   ![image-20220618162219050](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220618162219050.png)
+   ![image-20220618162219050](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/composite_start/image-20220618162219050.png?versionId=CAEQLBiBgMDImtX6ixgiIGVlY2YwMDBjMjgwYjQzNzRiNDUyN2FlMzdiNjA0MDU4)
 
 3. 代码实现
 
@@ -245,7 +245,7 @@ tag:
 
 3. 类图
 
-   ![image-20220618172203892](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220618172203892.png)
+   ![image-20220618172203892](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/composite_start/image-20220618172203892.png?versionId=CAEQLBiBgMCfmtX6ixgiIGQ5MjI4YjBmMTJmOTQ3YjJiMDk1NDQyNDU3OGQwMGVl)
 
 ## 1.4 组合模式小结
 

@@ -122,7 +122,7 @@ tag:
 
 ### 1.2.2 UML 类图
 
-![image-20220619210856441](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619210856441.png)
+![image-20220619210856441](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/prototype_start/image-20220619210856441.png?versionId=CAEQLBiBgICVnav6ixgiIDNiZWUzY2ZkNTdjZTQzZmZiNDQ0NDZjNGEzOTU4MDhh)
 
 原理结构图说明
 

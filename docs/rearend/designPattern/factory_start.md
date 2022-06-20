@@ -26,7 +26,7 @@ tag:
 
 1. 思路分析（类图）
 
-   ![image-20220619203000339](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619203000339.png)
+   ![image-20220619203000339](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/factory_start/image-20220619203000339.png?versionId=CAEQLBiBgMCdoqT6ixgiIGY2Y2NjNDVjN2VlODQ5MzM4MmUxMWI2ZjAwMmUyMzdk)
 
 2. 定义 `Pizza` 抽象类
 
@@ -238,7 +238,7 @@ tag:
 
 1. 思路分析（类图）
 
-   ![image-20220619205151254](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619205151254.png)
+   ![image-20220619205151254](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/factory_start/image-20220619205151254.png?versionId=CAEQLBiBgMDmtab6ixgiIGRiYzQ4YWNjYTk5MTQxNGJhMjliYmExNmI4N2NkZjQ1)
 
 2. 代码实现
 
@@ -338,7 +338,7 @@ tag:
 
 5. 类图
 
-   ![image-20220619205458412](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619205458412.png)
+   ![image-20220619205458412](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/factory_start/image-20220619205458412.png?versionId=CAEQLBiBgMCtm6j6ixgiIGYzMmZlYmM0ZjM3ZDQxODBiMmJjNTMzZGI5NWVlMmI4)
 
 ### 1.4.3 代码实现
 

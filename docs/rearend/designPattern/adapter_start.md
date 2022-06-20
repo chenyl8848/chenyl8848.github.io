@@ -30,7 +30,7 @@ tag:
 
 4. 用户收到反馈结果，感觉只是和目标接口交互，如图
 
-   ![image-20220619102834065](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619102834065.png)
+   ![image-20220619102834065](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/adapter_start/image-20220619102834065.png?versionId=CAEQLBiBgIC72rf6ixgiIDIwNmJkMTZiODkxYTRlMDRiZGI5ODg5YmI2OTk0Y2My)
 
 
 ## 1.2 类适配器模式
@@ -46,7 +46,7 @@ tag:
    
 2. 思路分析(类图)
 
-   ![image-20220619103024178](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619103024178.png)
+   ![image-20220619103024178](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/adapter_start/image-20220619103024178.png?versionId=CAEQLBiBgMDh2bf6ixgiIGU5NDA4YmM4MzIwOTRmODlhZWIxZTAxMGI2MDk3YTM2)
 
 3. 代码实现
 
@@ -146,7 +146,7 @@ tag:
 
    只需修改适配器即可
 
-   ![image-20220619103738274](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619103738274.png)
+   ![image-20220619103738274](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/adapter_start/image-20220619103738274.png?versionId=CAEQLBiBgMDn2bf6ixgiIDA1ZDk1YTc4NGVjMzRjNzZiNzdjMzk4MmVmMWJkMjgz)
 
 3. 代码实现
 
@@ -310,7 +310,7 @@ tag:
 
    3. `HandlerAdapter` 的实现子类
 
-      ![image-20220619175252744](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619175252744.png)
+      ![image-20220619175252744](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/adapter_start/image-20220619175252744.png?versionId=CAEQLBiBgMCgobj6ixgiIDk5NGYwMGM5M2U4YjQ1MTJhN2UyNWU5NGU5ODU4MDRj)
 
       `HandlerAdapter` 的实现子类使得每一种 Controller 有一种对应的适配器实现类，每种 Controller 有不同的实现方式。
 

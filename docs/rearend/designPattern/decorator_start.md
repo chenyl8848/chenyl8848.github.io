@@ -25,7 +25,7 @@ tag:
 
 ### 1.1.2 方案一
 
-![image-20220619172259086](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619172259086.png)
+![image-20220619172259086](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/decorator_start/image-20220619172259086.png?versionId=CAEQLBiBgICr3sz6ixgiIDE5ZmJjNmI5MjFkMTQ0NzZhYjdlOWViMTcxOTI1NDg1)
 
 问题分析：
 
@@ -40,9 +40,9 @@ tag:
 
 1. 方案一因为咖啡单品 + 调料组合会造成类的倍增，因此可以做改进，将调料内置到Drink类，这样就不会造成类数量过多，从而提高项目的维护性(如图)。
 
-   ![image-20220619172209587](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619172209587.png)
+   ![image-20220619172209587](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/decorator_start/image-20220619172209587.png?versionId=CAEQLBiBgICo3sz6ixgiIDI2NWVlYWY4NTllMjRiM2RiMTZiYzhlNGQzOTM0NDQy)
 
-   2. 说明：`hasMilk()`、`hasChocolate()` 设计为 boolean，表示是否要添加相应的调料。
+   1. 说明：`hasMilk()`、`hasChocolate()` 设计为 boolean，表示是否要添加相应的调料。
 
 问题分析：
 
@@ -71,13 +71,13 @@ tag:
    
 4. 在如图的Component 与 ConcreteComponent 之间，如果 ConcreteComponent 类很多，还可以设计一个缓冲层，将共有的部分提取出来，抽象层一个类。
 
-   ![image-20220619172319287](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619172319287.png)
+   ![image-20220619172319287](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/decorator_start/image-20220619172319287.png?versionId=CAEQLBiBgIC73sz6ixgiIDFiMDFkYzA3Y2JhMzQ5OTBiM2MzM2Y2ZjU0NWQxZjFm)
 
 ## 1.3 装饰者模式解决咖啡订单问题
 
 ### 1.3.1 类图展示
 
-![image-20220619172829196](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619172829196.png)
+![image-20220619172829196](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/decorator_start/image-20220619172829196.png?versionId=CAEQLBiBgICX3sz6ixgiIGYzMmUzOTRkOGViMDQwNDZhMTFmNzU5NDIzNzRkZTI5)
 
 ### 1.3.2 代码实现
 
@@ -250,7 +250,7 @@ tag:
 
 Java的IO结构，`FilterInputStream` 就是一个装饰者
 
-![image-20220619173710738](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619173710738.png)
+![image-20220619173710738](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/decorator_start/image-20220619173710738.png?versionId=CAEQLBiBgICn38z6ixgiIDYwZTI0NTljOTkzYTQ0OWViNGNmYTkzZGI0MDk3M2Yy)
 
 源码说明
 

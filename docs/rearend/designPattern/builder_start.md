@@ -26,7 +26,7 @@ tag:
 
 1. 思路分析(图解)
 
-   ![image-20220619100846152](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619100846152.png)
+   ![image-20220619100846152](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/builder_start/image-20220619100846152.png?versionId=**CAEQLBiBgIDz7bD6ixgiIGY5MzQ5MmIzNTk0MDQ2NzdiNjYwMjlhZDUyYTdmMmFj)
 
 2. 代码演示
 
@@ -140,7 +140,7 @@ tag:
 
 ### 1.2.3 原理类图
 
-![image-20220619101351763](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619101351763.png)
+![image-20220619101351763](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/builder_start/image-20220619101351763.png?versionId=CAEQLBiBgMCp_bL6ixgiIGZhZjlmNTM2NzFjYTRlODZhNWM1YzEwOWMzZjFmOGUy)
 
 
 ## 1.3 建造者模式解决盖房需求应用实例
@@ -149,7 +149,7 @@ tag:
 
 2. 思路分析图解(类图)
 
-   ![image-20220619101425109](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220619101425109.png)
+   ![image-20220619101425109](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/builder_start/image-20220619101425109.png?versionId=CAEQLBiBgIDvv7T6ixgiIDA3ZTI0YzFmYzRjZjRmN2RhNGE3MDc5NDc4ZjdhZDNi)
 
 3. 代码实现
 
