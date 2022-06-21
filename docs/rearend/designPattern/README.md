@@ -26,5 +26,7 @@ article: false
 
 - [组合模式](composite_start.md)
 
+- [外观模式](facade_start.md)
+
 
 

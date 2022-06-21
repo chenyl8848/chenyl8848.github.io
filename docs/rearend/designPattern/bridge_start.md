@@ -18,13 +18,13 @@ tag:
 
 现在对不同手机类型（折叠手机、直立样式手机）的不同品牌（Vivo、Oppo）实现操作编程(比如:开机、关机、打电话等)。
 
-### 1.2 解决方案
+### 1.1.2 解决方案
 
 类图分析
 
 ![image-20220619104856226](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/bridge_start/image-20220619104856226.png?versionId=CAEQLBiBgICQ3MH6ixgiIGYzNzBhNzFiNzJjOTQ2MzNhZTdkYzhlZGYzYjBlMWRj)
 
-### 1.3 问题分析
+### 1.1.3 问题分析
 
 1. 扩展性问题(类爆炸)，如果我们再增加手机的样式(旋转式)，就需要增加各个品牌手机的类，同样如果我们增加一个手机品牌，也要在各个手机样式类下增加。
 2.  违反了单一职责原则，当我们增加手机样式时，要同时增加所有品牌的手机，这样增加了代码维护成本。
