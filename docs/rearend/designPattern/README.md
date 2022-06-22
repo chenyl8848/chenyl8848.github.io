@@ -28,5 +28,7 @@ article: false
 
 - [外观模式](facade_start.md)
 
+- [享元模式](flyweight_start.md)
+
 
 
