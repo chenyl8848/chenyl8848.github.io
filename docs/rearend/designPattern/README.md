@@ -30,5 +30,9 @@ article: false
 
 - [享元模式](flyweight_start.md)
 
+- [代理模式](proxy_start.md)
+
+- [模板方法模式](template_start.md)
+
 
 
