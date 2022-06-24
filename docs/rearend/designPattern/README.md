@@ -34,5 +34,11 @@ article: false
 
 - [模板方法模式](template_start.md)
 
+- [命令模式](command_start.md)
+
+- [访问者模式](visitor_start.md)
+
+- [迭代器模式](iterator_start.md)
+
 
 
