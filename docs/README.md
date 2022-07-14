@@ -4,7 +4,7 @@ layout: Blog
 icon: home
 title: 首页
 heroImage: /logo.png
-bgImage: /bak1.jpg
+# bgImage: /bak1.jpg
 heroText: Java陈序员
 heroFullScreen: true
 tagline: Java后端程序员，记录日常开发、工作、学习，致敬每个爱学习的你。
