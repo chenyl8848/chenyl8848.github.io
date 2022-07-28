@@ -19,4 +19,10 @@ export const designPattern: HopeThemeSidebarArrayConfig = [
     "command_start",
     "visitor_start",
     "iterator_start",
+    "observer_start",
+    "mediator_start",
+    "memento_start",
+    "interpreter_start",
+    "state_start",
+    "chain_start"
 ];
