@@ -40,5 +40,21 @@ article: false
 
 - [迭代器模式](iterator_start.md)
 
+- [观察者模式](observer_start.md)
+
+- [中介者模式](mediator_start.md)
+
+- [备忘录模式](memento_start.md)
+
+- [解释器模式](interpreter_start.md)
+
+- [状态模式](state_start.md)
+
+- [策略模式](strategy_start.md)
+
+- [责任链模式](chain_start.md)
+
+
+
 
 

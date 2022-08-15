@@ -24,5 +24,6 @@ export const designPattern: HopeThemeSidebarArrayConfig = [
     "memento_start",
     "interpreter_start",
     "state_start",
+    "strategy_start",
     "chain_start"
 ];
