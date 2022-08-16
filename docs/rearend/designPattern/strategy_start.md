@@ -24,7 +24,7 @@ tag:
 
 设计方案(类图)
 
-![image-20220815155603431](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220815155603431.png)
+![image-20220815155603431](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/strategy_start/image-20220815155603431.png?versionId=CAEQMRiBgMClupiSlRgiIGQ3ZDBkYzZiN2M2NjRiM2Y5Njg3YzVjNzAxNDcxOGI3)
 
 ### 1.1.3 代码实现
 
