@@ -182,6 +182,7 @@ tag:
 1. 接口隔离原则(Interface Segregation Principle):客户端不应该依赖它不需要的接口，即一个类对另一个类的依赖应该建立在最小的接口上.
 
 2. 先看一张图:
+    ![image-20220926083927142](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/rearend/designPattern/priciple_start/image-20220926083927142.png)
 
 3. 类A通过接口Interface 1 依赖类B，类C通过接口Interface 1 依赖类D，如果接口Interface 1 对于类A和类C来说不是最小接口，那么类B和类D必须去实现他们不需要的方法。
 
@@ -507,86 +508,86 @@ tag:
 1. 接口传递
    
    ```java
-  public class DependenceInversionDemo03 {
+    public class DependenceInversionDemo03 {
    
        public static void main(String[] args) {
            // 方式1:通过接口传递依赖
            OpenAndClose openAndClose = new OpenAndClose();
            openAndClose.open(new ChangHong());
        }
-   }
+    }
    
-   /**
-    * 方式1：通过接口传递依赖
-    */
-   interface IOpenAndClose {
-   
-       public void open(ITv iTv);
-   }
-   
-   class OpenAndClose implements IOpenAndClose {
-       @Override
-       public void open(ITv iTv) {
-           iTv.play();
-       }
-   }
-   
-   interface ITv {
-       public void play();
-   }
-   
-   class ChangHong implements ITv {
-       @Override
-       public void play() {
-           System.out.println("长虹电视机：打开...");
-       }
-   }
-   ```
-   
-2. 构造方法传递
-   
-   ```java
-  public class DependenceInversionDemo03 {
-   
-       public static void main(String[] args) {
-   
-           // 方式2：通过构造器传递依赖
-           OpenAndClose openAndClose = new OpenAndClose(new ChangHong());
-           openAndClose.open();
-       }
-   }
-   
-   /**
-    * 方式2：通过构造器传递依赖
-    */
-   interface IOpenAndClose {
-       public void open();
-   }
-   
-   class OpenAndClose implements IOpenAndClose {
-       private ITv iTv;
-   
-       public OpenAndClose(ITv iTv) {
-           this.iTv = iTv;
-       }
-   
-       @Override
-       public void open() {
-           this.iTv.play();
-       }
-   }
-   
-   interface ITv {
-       public void play();
-   }
-   
-   class ChangHong implements ITv {
-   
-       @Override
-       public void play() {
-           System.out.println("长虹电视机：打开...");
-       }
-   }
+    /**
+        * 方式1：通过接口传递依赖
+        */
+    interface IOpenAndClose {
+    
+        public void open(ITv iTv);
+    }
+    
+    class OpenAndClose implements IOpenAndClose {
+        @Override
+        public void open(ITv iTv) {
+            iTv.play();
+        }
+    }
+    
+    interface ITv {
+        public void play();
+    }
+    
+    class ChangHong implements ITv {
+        @Override
+        public void play() {
+            System.out.println("长虹电视机：打开...");
+        }
+    }
+    ```
+    
+    2. 构造方法传递
+    
+    ```java
+    public class DependenceInversionDemo03 {
+    
+        public static void main(String[] args) {
+    
+            // 方式2：通过构造器传递依赖
+            OpenAndClose openAndClose = new OpenAndClose(new ChangHong());
+            openAndClose.open();
+        }
+    }
+    
+    /**
+        * 方式2：通过构造器传递依赖
+        */
+    interface IOpenAndClose {
+        public void open();
+    }
+    
+    class OpenAndClose implements IOpenAndClose {
+        private ITv iTv;
+    
+        public OpenAndClose(ITv iTv) {
+            this.iTv = iTv;
+        }
+    
+        @Override
+        public void open() {
+            this.iTv.play();
+        }
+    }
+    
+    interface ITv {
+        public void play();
+    }
+    
+    class ChangHong implements ITv {
+    
+        @Override
+        public void play() {
+            System.out.println("长虹电视机：打开...");
+        }
+    }
    ```
    
 3. setter方式传递
@@ -722,65 +723,65 @@ class B extends A {
 
 3. 改进方案代码实现
    ```java
-  public class LisKovDemo02 {
-   
-       public static void main(String[] args) {
-           ImproveA a = new ImproveA();
-           System.out.println("11 - 3 = " + a.function01(11, 3));
-           System.out.println("1 - 8 = " + a.function01(1, 8));
-   
-           ImproveB b = new ImproveB();
-           // 因为 B 不再继承 A ,因此调用者，不会再认为 function01 是求减法，调用完成的功能就会很明确
-           System.out.println("11 + 3 = " + b.function01(11, 3));
-           System.out.println("1 + 8 = " + b.function01(1, 8));
-           System.out.println("11 + 8 + 9 = " + b.function02(11, 8));
-           // 使用组合的关系仍然可以使用 A 中的方法
-           System.out.println("11 - 3 = " + b.function03(11, 3));
-       }
-   }
-   
-   /**
-    * 创建一个更基础的基类
-    */
-   class Base {
-       // 把更加基础的属性、方法抽取到 Base
-   }
-   
-   class ImproveA extends Base{
-   
-       /**
-        * 返回两个数的差
-        * @param a
-        * @param b
-        * @return
+    public class LisKovDemo02 {
+    
+        public static void main(String[] args) {
+            ImproveA a = new ImproveA();
+            System.out.println("11 - 3 = " + a.function01(11, 3));
+            System.out.println("1 - 8 = " + a.function01(1, 8));
+    
+            ImproveB b = new ImproveB();
+            // 因为 B 不再继承 A ,因此调用者，不会再认为 function01 是求减法，调用完成的功能就会很明确
+            System.out.println("11 + 3 = " + b.function01(11, 3));
+            System.out.println("1 + 8 = " + b.function01(1, 8));
+            System.out.println("11 + 8 + 9 = " + b.function02(11, 8));
+            // 使用组合的关系仍然可以使用 A 中的方法
+            System.out.println("11 - 3 = " + b.function03(11, 3));
+        }
+    }
+    
+    /**
+        * 创建一个更基础的基类
         */
-       public int function01 (int a, int b) {
-           return a - b;
-       }
-   }
-   
-   /**
-    * B 继承 A
-    * 增加了一个新总能：完成两个数相加，然后与 9 求和
-    */
-   class ImproveB extends Base {
-   
-       // 如果 B 需要使用到 A 中的方法，采用组合的关系
-       private ImproveA improveA = new ImproveA();
-   
-       public int function01(int a, int b) {
-           return a + b;
-       }
-   
-       public int function02 (int a, int b) {
-           return function01(a, b) + 9;
-       }
-   
-       // 仍然想使用 A 中的方法
-       public int function03 (int a, int b) {
-           return improveA.function01(a, b);
-       }
-   }
+    class Base {
+        // 把更加基础的属性、方法抽取到 Base
+    }
+    
+    class ImproveA extends Base{
+    
+        /**
+            * 返回两个数的差
+            * @param a
+            * @param b
+            * @return
+            */
+        public int function01 (int a, int b) {
+            return a - b;
+        }
+    }
+    
+    /**
+        * B 继承 A
+        * 增加了一个新总能：完成两个数相加，然后与 9 求和
+        */
+    class ImproveB extends Base {
+    
+        // 如果 B 需要使用到 A 中的方法，采用组合的关系
+        private ImproveA improveA = new ImproveA();
+    
+        public int function01(int a, int b) {
+            return a + b;
+        }
+    
+        public int function02 (int a, int b) {
+            return function01(a, b) + 9;
+        }
+    
+        // 仍然想使用 A 中的方法
+        public int function03 (int a, int b) {
+            return improveA.function01(a, b);
+        }
+    }
    ```
 
 ## 1.7 开闭原则(OCP)
@@ -1181,128 +1182,128 @@ class SchoolManager {
 3. 对代码按照迪米特法则进行改进
 4. 代码演示：
    ```java
-  public class DemeterDemo02 {
-   
-       public static void main(String[] args) {
-           SchoolManager schoolManager = new SchoolManager();
-           schoolManager.print(new CollegeManager());
-       }
-   }
-   
-   /**
-    * 学校总部员工
-    */
-   class Employee {
-   
-       private String id;
-   
-       public String getId() {
-           return id;
-       }
-   
-       public void setId(String id) {
-           this.id = id;
-       }
-   }
-   
-   /**
-    * 学校学院员工
-    */
-   class CollegeEmployee {
-   
-       private String id;
-   
-       public String getId() {
-           return id;
-       }
-   
-       public void setId(String id) {
-           this.id = id;
-       }
-   
-   }
-   
-   /**
-    * 学院管理类
-    */
-   class CollegeManager {
-   
-       /**
-        * 获取学院的所有员工
-        * @return
+    public class DemeterDemo02 {
+    
+        public static void main(String[] args) {
+            SchoolManager schoolManager = new SchoolManager();
+            schoolManager.print(new CollegeManager());
+        }
+    }
+    
+    /**
+        * 学校总部员工
         */
-       public List<CollegeEmployee> getAllCollegeEmployee() {
-           ArrayList<CollegeEmployee> list = new ArrayList<>();
-   
-           for (int i = 0; i < 10; i++) {
-               CollegeEmployee collegeEmployee = new CollegeEmployee();
-               collegeEmployee.setId(i + "");
-               list.add(collegeEmployee);
-           }
-   
-           return list;
-       }
-   
-       /**
-        * 打印学院员工
+    class Employee {
+    
+        private String id;
+    
+        public String getId() {
+            return id;
+        }
+    
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+    
+    /**
+        * 学校学院员工
         */
-       public void printCollegeEmployee() {
-           /**
-            * 问题分析
-            *  1.CollegeEmployee 是以局部变量的形式出现
-            *  1.这里的 CollegeEmployee 不是 SchoolManager 的直接朋友，违背了迪米特法则
+    class CollegeEmployee {
+    
+        private String id;
+    
+        public String getId() {
+            return id;
+        }
+    
+        public void setId(String id) {
+            this.id = id;
+        }
+    
+    }
+    
+    /**
+        * 学院管理类
+        */
+    class CollegeManager {
+    
+        /**
+            * 获取学院的所有员工
+            * @return
             */
-           List<CollegeEmployee> list1 = getAllCollegeEmployee();
-           System.out.println("学院员工......");
-           for (CollegeEmployee collegeEmplyee : list1) {
-               System.out.println("学院员工:" + collegeEmplyee.getId());
-           }
-       }
-   }
-   
-   /**
-    * 学校总部管理
-    * 直接朋友: Employee collegeManager
-    * 陌生朋友: CollegeEmployee 违背了迪米特法则
-    */
-   class SchoolManager {
-   
-       /**
-        * 获取学校总部的所有员工
-        * @return
-        */
-       public List<Employee> getAllEmployee() {
-           ArrayList<Employee> list = new ArrayList<>();
-   
-           for (int i = 0; i < 5; i++) {
-               Employee employee = new Employee();
-               employee.setId(i + "");
-               list.add(employee);
-           }
-   
-           return list;
-   
-       }
-   
-       /**
-        * 打印所有员工
-        */
-       public void print(CollegeManager collegeManager) {
-   
-           /**
-            * 将打印学院员工的方法封装到 CollegeManager
+        public List<CollegeEmployee> getAllCollegeEmployee() {
+            ArrayList<CollegeEmployee> list = new ArrayList<>();
+    
+            for (int i = 0; i < 10; i++) {
+                CollegeEmployee collegeEmployee = new CollegeEmployee();
+                collegeEmployee.setId(i + "");
+                list.add(collegeEmployee);
+            }
+    
+            return list;
+        }
+    
+        /**
+            * 打印学院员工
             */
-           collegeManager.printCollegeEmployee();
-   
-           List<Employee> list2 = getAllEmployee();
-           System.out.println("学校总部员工......");
-           for (Employee emplyee : list2) {
-               System.out.println("学校总部员工:" + emplyee.getId());
-           }
-   
-       }
-   
-   }
+        public void printCollegeEmployee() {
+            /**
+                * 问题分析
+                *  1.CollegeEmployee 是以局部变量的形式出现
+                *  1.这里的 CollegeEmployee 不是 SchoolManager 的直接朋友，违背了迪米特法则
+                */
+            List<CollegeEmployee> list1 = getAllCollegeEmployee();
+            System.out.println("学院员工......");
+            for (CollegeEmployee collegeEmplyee : list1) {
+                System.out.println("学院员工:" + collegeEmplyee.getId());
+            }
+        }
+    }
+    
+    /**
+        * 学校总部管理
+        * 直接朋友: Employee collegeManager
+        * 陌生朋友: CollegeEmployee 违背了迪米特法则
+        */
+    class SchoolManager {
+    
+        /**
+            * 获取学校总部的所有员工
+            * @return
+            */
+        public List<Employee> getAllEmployee() {
+            ArrayList<Employee> list = new ArrayList<>();
+    
+            for (int i = 0; i < 5; i++) {
+                Employee employee = new Employee();
+                employee.setId(i + "");
+                list.add(employee);
+            }
+    
+            return list;
+    
+        }
+    
+        /**
+            * 打印所有员工
+            */
+        public void print(CollegeManager collegeManager) {
+    
+            /**
+                * 将打印学院员工的方法封装到 CollegeManager
+                */
+            collegeManager.printCollegeEmployee();
+    
+            List<Employee> list2 = getAllEmployee();
+            System.out.println("学校总部员工......");
+            for (Employee emplyee : list2) {
+                System.out.println("学校总部员工:" + emplyee.getId());
+            }
+    
+        }
+    
+    }
    ```
    
 
