@@ -264,7 +264,7 @@ tag:
 2. V：视图(View)：模板
 3. VM：视图模型(ViewModel)：`Vue` 实例对象
 
-![image-20220810144417339](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220810144417339.png)
+![image-20220810144417339](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/web/framework/vue/vue_core/image-20220810144417339.png)
 
 ## 1.6 事件处理
 
