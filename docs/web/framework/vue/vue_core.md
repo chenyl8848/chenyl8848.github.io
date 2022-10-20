@@ -45,7 +45,7 @@ tag:
 
 4. `Vue Router`: 路由
 
-5. `Vuex 状态管理
+5. `Vuex`: 状态管理
 
 6. `element-ui`:基于 `Vue` 的 `UI` 组件库(PC端)
 
