@@ -3,7 +3,6 @@ title: Vue 核心技术
 date: 2022-10-19
 category:
   - 前端
-  - 框架
 tag:
   - Vue.js
 ---
