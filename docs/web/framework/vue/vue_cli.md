@@ -1,5 +1,5 @@
 ---
-title: Vue 脚手架
+title: Vue 脚手架编程
 date: 2022-10-24
 category:
   - 前端
@@ -7,7 +7,7 @@ tag:
   - Vue.js
 ---
 
-# 1. `Vue` 脚手架
+# 1. `Vue` 脚手架编程
 <!-- more -->
 
 ## 1.1 初始化脚手架
@@ -79,13 +79,13 @@ tag:
 
 
 1. `vue.js` 与 `vue.runtime.xxx.js` 的区别：
-    1. `vue.js` 是完整版的 `Vue`，包含：核心功能 + 模板解析器。
+    1. `vue.js` 是完整版的 `Vue`，包含：核心功能 + 模板解析器
     2. `vue.runtime.xxx.js` 是运行版的 `Vue`，只包含：核心功能；没有模板解析器
 2. 因为 `vue.runtime.xxx.js` 没有模板解析器，所以不能使用 `template` 这个配置项，需要使用 `render` 函数接收到的 `createElement` 函数去指定具体内容
 
 ### 1.1.5 `vue.config.js` 配置文件
 
-1. 使用 `vue inspect > output.js` 可以查看到Vue脚手架的默认配置。
+1. 使用 `vue inspect > output.js` 可以查看到Vue脚手架的默认配置
 
 2. 使用 `vue.config.js` 可以对脚手架进行个性化定制，[详情](https://cli.vuejs.org/zh)
 
@@ -128,7 +128,7 @@ tag:
         }
         ```
 
-    > 备注：`props` 是只读的，`Vue` 底层会监测你对 `props` 的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制 `props` 的内容到 `data` 中一份，然后去修改 `data` 中的数据。
+    > 备注：`props` 是只读的，`Vue` 底层会监测你对 `props` 的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制 `props` 的内容到 `data` 中一份，然后去修改 `data` 中的数据
     
 ### 1.3.2 代码示例
 
@@ -211,7 +211,7 @@ export default {
 
   methods: {
     addAge() {
-      // props 是只读的，Vue 底层会监测你对 props 的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制 props 的内容到 data 中一份，然后去修改 data 中的数据。
+      // props 是只读的，Vue 底层会监测你对 props 的修改，如果进行了修改，就会发出警告，若业务需求确实需要修改，那么请复制 props 的内容到 data 中一份，然后去修改 data 中的数据
       // 警告 
       // Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders.
       // this.studentAge += 10;
@@ -355,7 +355,7 @@ export default {
 
 1. 功能：用于增强 `Vue`
 
-2. 本质：包含 `install` 方法的一个对象，`install` 的第一个参数是 `Vue`，第二个以后的参数是插件使用者传递的数据。
+2. 本质：包含 `install` 方法的一个对象，`install` 的第一个参数是 `Vue`，第二个以后的参数是插件使用者传递的数据
 
 3. 定义插件：
 
@@ -429,7 +429,7 @@ Vue.use(plugins)
 
 ## 1.6 `scoped` 样式
 
-1. 作用：让样式在局部生效，防止冲突。
+1. 作用：让样式在局部生效，防止冲突
 
 2. 写法：
 
@@ -448,16 +448,16 @@ Vue.use(plugins)
 ## 1.7 组件化编码流程
 
 1. 组件化编码流程：
-   1. 拆分静态组件：组件要按照功能点拆分，命名不要与 `html` 元素冲突。
+   1. 拆分静态组件：组件要按照功能点拆分，命名不要与 `html` 元素冲突
    2. 实现动态组件：考虑好数据的存放位置，数据是一个组件在用，还是一些组件在用：
-        1. 一个组件在用：放在组件自身即可。
-        2. 一些组件在用：放在他们共同的父组件上（<span style="color:red">状态提升</span>）。
-        3. 实现交互：从绑定事件开始。
+        1. 一个组件在用：放在组件自身即可
+        2. 一些组件在用：放在他们共同的父组件上（<span style="color:red">状态提升</span>）
+        3. 实现交互：从绑定事件开始
 2. `props` 适用于：
    1. 父组件 ==> 子组件 通信
    2. 子组件 ==> 父组件 通信（要求父先给子一个函数）
 3. 使用 `v-model` 时要切记：`v-model` 绑定的值不能是 `props` 传过来的值，因为 `props` 是不可以修改的！
-4. `props` 传过来的若是对象类型的值，修改对象中的属性时 `Vue` 不会报错，但不推荐这样做。
+4. `props` 传过来的若是对象类型的值，修改对象中的属性时 `Vue` 不会报错，但不推荐这样做
 
 ## 1.8 `webStorage`
 
@@ -616,7 +616,7 @@ Vue.use(plugins)
 ### 1.9.1 使用说明
 1. 一种组件间通信的方式，适用于：<strong style="color:red">子组件 ===> 父组件</strong>
 
-2. 使用场景：A 是父组件，B 是子组件，B 想给 A 传数据，那么就要在 A 中给 B 绑定自定义事件（<span style="color:red">事件的回调在 A 中</span>）。
+2. 使用场景：A 是父组件，B 是子组件，B 想给 A 传数据，那么就要在 A 中给 B 绑定自定义事件（<span style="color:red">事件的回调在 A 中</span>）
 
 3. 绑定自定义事件：
 
@@ -632,13 +632,13 @@ Vue.use(plugins)
         }
         ```
 
-    3. 若想让自定义事件只能触发一次，可以使用 ```once``` 修饰符，或 ```$once``` 方法。
+    3. 若想让自定义事件只能触发一次，可以使用 ```once``` 修饰符，或 ```$once``` 方法
 
 4. 触发自定义事件：```this.$emit('helloWorld',数据)```		
 
 5. 解绑自定义事件```this.$off('helloWorld')```
 
-6. 组件上也可以绑定原生 `DOM` 事件，需要使用 ```native``` 修饰符。
+6. 组件上也可以绑定原生 `DOM` 事件，需要使用 ```native``` 修饰符
 
 7. 注意：通过 ```this.$refs.xxx.$on('helloWorld',回调)``` 绑定自定义事件时，回调<span style="color:red">要么配置在methods中</span>，<span style="color:red">要么用箭头函数</span>，否则 `this` 指向会出问题！
 
@@ -809,7 +809,7 @@ export default {
     },
     // 销毁当前组件实例
     death() {
-      // 销毁了当前Student组件的实例，销毁后所有Student实例的自定义事件全都不奏效。
+      // 销毁了当前Student组件的实例，销毁后所有Student实例的自定义事件全都不奏效
       this.$destroy()
     }
   },
@@ -828,7 +828,7 @@ export default {
 ## 1.10 全局事件总线
 
 ### 1.10.1 使用说明
-1. 一种组件间通信的方式，适用于<span style="color:red">任意组件间通信</span>。
+1. 一种组件间通信的方式，适用于<span style="color:red">任意组件间通信</span>
 
 2. 安装全局事件总线：
 
@@ -844,7 +844,7 @@ export default {
 
 3. 使用事件总线：
 
-   1. 接收数据：A 组件想接收数据，则在 A 组件中给 `$bus` 绑定自定义事件，事件的<span style="color:red">回调留在 A 组件自身。</span>
+   1. 接收数据：A 组件想接收数据，则在 A 组件中给 `$bus` 绑定自定义事件，事件的<span style="color:red">回调留在 A 组件自身</span>
 
       ```js
       methods(){
@@ -858,7 +858,7 @@ export default {
 
    2. 提供数据：```this.$bus.$emit('xxxx',数据)```
 
-4. 最好在 `beforeDestroy` 钩子中，用 `$off` 去解绑<span style="color:red">当前组件所用到的</span>事件。
+4. 最好在 `beforeDestroy` 钩子中，用 `$off` 去解绑<span style="color:red">当前组件所用到的</span>事件
 
 ### 1.10.2 代码示例
 
@@ -1010,7 +1010,7 @@ export default {
 
    2. 引入: ```import pubsub from 'pubsub-js'```
 
-   3. 接收数据：A组件想接收数据，则在A组件中订阅消息，订阅的<span style="color:red">回调留在A组件自身。</span>
+   3. 接收数据：A组件想接收数据，则在A组件中订阅消息，订阅的<span style="color:red">回调留在A组件自身</span>
 
       ```js
       methods(){
@@ -1024,7 +1024,7 @@ export default {
 
    4. 提供数据：```pubsub.publish('xxx',数据)```
 
-   5. 最好在 `beforeDestroy` 钩子中，用 ```PubSub.unsubscribe(pid)``` 去<span style="color:red">取消订阅。</span>
+   5. 最好在 `beforeDestroy` 钩子中，用 ```PubSub.unsubscribe(pid)``` 去<span style="color:red">取消订阅</span>
 
 ### 1.11.2 代码示例
 
@@ -1320,7 +1320,7 @@ h1 {
 ### 1.14.1 使用说明
 
 
-1. 作用：让父组件可以向子组件指定位置插入 `html` 结构，也是一种组件间通信的方式，适用于 <strong style="color:red">父组件 ===> 子组件</strong> 。
+1. 作用：让父组件可以向子组件指定位置插入 `html` 结构，也是一种组件间通信的方式，适用于 <strong style="color:red">父组件 ===> 子组件</strong> 
 
 2. 分类：默认插槽、具名插槽、作用域插槽
 ### 1.14.2 默认插槽
@@ -1374,7 +1374,7 @@ h1 {
 
 ### 1.14.4 作用域插槽
 
-1. 理解：<span style="color:red">数据在组件的自身，但根据数据生成的结构需要组件的使用者来决定。</span>（`games` 数据在 `Category` 组件中，但使用数据所遍历出来的结构由 `App` 组件决定）
+1. 理解：<span style="color:red">数据在组件的自身，但根据数据生成的结构需要组件的使用者来决定</span>（`games` 数据在 `Category` 组件中，但使用数据所遍历出来的结构由 `App` 组件决定）
 
 2. 具体编码：
 

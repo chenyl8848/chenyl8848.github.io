@@ -9,7 +9,7 @@ isOriginal: true
  
 - [Vue 组件化编程](vue_component.md)
 
-- [Vue 脚手架](vue_cli.md)
+- [Vue 脚手架编程](vue_cli.md)
 
 - [Vue 中的 Ajax](vue_ajax.md)
 
