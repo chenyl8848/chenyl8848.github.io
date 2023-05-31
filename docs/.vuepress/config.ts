@@ -14,7 +14,8 @@ export default defineHopeConfig({
       {
         rel: "stylesheet",
         // href: "//at.alicdn.com/t/font_2410206_mfj6e1vbwo.css",
-        href: "//at.alicdn.com/t/font_3316994_f5l1bb2xgtk.css",
+        // href: "//at.alicdn.com/t/font_3316994_f5l1bb2xgtk.css",
+        href: "//at.alicdn.com/t/c/font_3316994_40gx6jd9aa8.css",
       },
     ],
   ],

@@ -51,6 +51,7 @@ export default defineNavbarConfig([
         prefix: "framework/",
         children: [
           "js/",
+          "nodejs/",
           "vue/",
           "react/",
           "docsify/",
