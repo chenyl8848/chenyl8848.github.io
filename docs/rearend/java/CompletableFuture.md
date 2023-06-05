@@ -1,7 +1,7 @@
 ---
 title: ComptetableFuture异步编排
 date: 2022-04-10
-sticky: 1
+# sticky: 1
 category:
   - Java
 tag:
