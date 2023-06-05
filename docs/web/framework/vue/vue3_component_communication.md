@@ -109,7 +109,7 @@ let props = defineProps({
 
 > 注意：子组件获取到 `props` 数据就可以在模板中使用，但是切记 `props` 是只读的（只能读取，不能修改）。
 
-## 1. 自定义事件
+## 2. 自定义事件
 
 在 `Vue` 框架中事件分为两种：一种是原生的 `DOM` 事件，另外一种自定义事件。
 
@@ -117,7 +117,7 @@ let props = defineProps({
 
 自定义事件可以实现子组件给父组件传递数据。
 
-### 1.1 原生 `DOM` 事件
+### 2.1 原生 `DOM` 事件
 
 代码如下:
 
@@ -144,7 +144,7 @@ let handler2 = (x, y, z, $event) => {
 
 `Vue2` 中却不是这样的,在 `Vue2` 中组件标签需要通过 `native` 修饰符才能变为原生 `DOM` 事件。
 
-### 1.2 自定义事件
+### 2.2 自定义事件
 
 自定义事件可以实现子组件给父组件传递数据。
 
@@ -198,7 +198,7 @@ let handler5 = (params1, params2) => {
 }
 ```
 
-## 1.3 全局事件总线
+## 3. 全局事件总线
 
 全局事件总线可以实现任意组件通信，在 `Vue2` 中可以根据 `VM` 与 `VC` 关系推出全局事件总线。
 
@@ -206,13 +206,13 @@ let handler5 = (params1, params2) => {
 
 `mitt` 官网地址：https://www.npmjs.com/package/mitt
 
-### 1.3.1 `mitt` 安装
+### 3.1 `mitt` 安装
 
 ```Bash
 pnpm i mitt
 ```
 
-### 1.3.2 `mitt` 定义
+### 3.2 `mitt` 定义
 
 ```JavaScript
 // 引入 mitt mitt 是一个方法，方法执行会返回 bus 对象
@@ -223,7 +223,7 @@ const $bus = mitt();
 export default $bus;
 ```
 
-### 1.3.3 `mitt` 使用
+### 3.3 `mitt` 使用
 
 `mitt` 实现全局事件总线，实现兄弟组件之间进行通信：
 
@@ -286,7 +286,7 @@ onMounted(() => {
 ```
 
 
-## 1.4 v-model
+## 4. v-model
 
 `v-model` 指令可是收集表单数据(数据双向绑定)，除此之外它也可以实现父子组件数据同步。
 
@@ -422,7 +422,7 @@ const handler = () => {
 <Children2 v-model:pageNo="pageNo" v-model:pageSize="pageSize"></Children2>
 ```
 
-## 1.5 useAttrs
+## 5. useAttrs
 
 在 `Vue3` 中可以利用 `useAttrs` 方法获取组件的属性与事件(包含:原生 `DOM` 事件或者自定义事件)，该函数功能类似于 `Vue2` 框架中 `attrs` 属性与 `$listeners` 方法。
 
@@ -486,7 +486,7 @@ console.log($attrs)
 </style>
 ```
 
-## 1.6 `ref` 与 `$parent`
+## 6. `ref` 与 `$parent`
 
 `ref` 可以获取元素的 `DOM` 或者获取子组件实例的 `VC`。既然可以在父组件内部通过 `ref` 获取子组件实例 `VC`，那么子组件内部的方法与响应式数据父组件也是可以使用的。
 
@@ -612,7 +612,7 @@ const handler = ($parent) => {
 </style>
 ```
 
-## 1.7 `provide` 与 `inject`
+## 7. `provide` 与 `inject`
 
 `Vue3` 提供两个方法 `provide`[提供] 与 `inject`[注入]，可以实现隔辈组件传递参数。
 
@@ -710,18 +710,18 @@ const handler = () => {
 </style>
 ```
 
-## 1.8 `pinia`
+## 8. `pinia`
 
 `pinia` 官网：https://pinia.web3doc.top/
 
 `pinia` 也是集中式管理状态容器，类似于 `Vuex`.但是核心概念没有 `mutation`、`modules`.
 
-### 1.8.1 `pinia` 安装
+### 8.1 `pinia` 安装
 ```Bash
 pnpm i pinia
 ```
 
-### 1.8.2 `pinia` 注册
+### 8.2 `pinia` 注册
 创建 `store`：
 ```JavaScript
 import { createPinia } from 'pinia';
@@ -748,7 +748,7 @@ app.mount('#app')
 ```
 
 
-### 1.8.3 `pinia` 使用
+### 8.3 `pinia` 使用
 
 选项式API使用：
 ```JavaScript
@@ -890,11 +890,11 @@ const handler = () => {
 </style>
 ```
 
-## 1.9 `slot`
+## 9. `slot`
 
 插槽：默认插槽、具名插槽、作用域插槽可以实现父子组件通信。
 
-### 1.9.1 默认插槽
+### 9.1 默认插槽
 
 在子组件内部的模板中书写 `slot` 全局组件标签
 
@@ -942,7 +942,7 @@ import Children1 from "./Children1.vue";
 
 > 注意开发项目的时候默认插槽一般只有一个。
 
-### 1.9.2 具名插槽
+### 9.2 具名插槽
 
 > 顾名思义，此插槽带有名字，在组件内部可以有多个指定名字的插槽。
 
@@ -1016,7 +1016,7 @@ import Children1 from "./Children1.vue";
 </style>
 ```
 
-### 1.9.3 作用域插槽
+### 9.3 作用域插槽
 
 > 作用域插槽：子组件数据由父组件提供，但是子组件内部决定不了自身结构与外观(样式)
 
