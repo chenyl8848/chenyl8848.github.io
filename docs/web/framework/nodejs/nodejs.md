@@ -28,6 +28,8 @@ console.log("hello NodeJS")
 // 3.输出：hello NodeJS
 ```
 
+示例代码地址：https://github.com/chenyl8848/node.js-study
+
 ## 1. `Buffer`
 
 ### 1.1 概念

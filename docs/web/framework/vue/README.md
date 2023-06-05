@@ -20,3 +20,5 @@ isOriginal: true
 - [Vue3 快速开始](vue3_start.md)
 
 - [Vue3 Composition Api](vue3_composition.md)
+- 
+- [Vue3 组件通信方式](vue3_component_communication.md)
