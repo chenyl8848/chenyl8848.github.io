@@ -652,6 +652,7 @@ provide("CAR", car);
 </style>
 ```
 
+子组件代码：
 ```JavaScript
 <template>
   <div class="children">
@@ -676,7 +677,7 @@ import Grandson from './Grandson.vue';
 ```
 
 
-后代组件可以通过 `inject` 方法获取数据,通过 `key` 获取存储的数值
+孙子组件可以通过 `inject` 方法获取数据,通过 `key` 获取存储的数值
 
 ```JavaScript
 <template>
@@ -946,7 +947,7 @@ import Children1 from "./Children1.vue";
 
 > 顾名思义，此插槽带有名字，在组件内部可以有多个指定名字的插槽。
 
-下面是一个子组件内部，模板中留两个插槽：
+下面是一个子组件内部，模板中有两个插槽：
 
 ```JavaScript
 <template>
