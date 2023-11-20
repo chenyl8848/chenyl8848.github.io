@@ -98,6 +98,11 @@ export default defineNavbarConfig([
     ]
   },
   {
+    text: "开源项目",
+    icon: "note",
+    link: "/openproject/",
+  },
+  {
     text: "主题文档",
     icon: "note",
     link: "https://vuepress-theme-hope.github.io/v2/zh/",

@@ -35,7 +35,7 @@ export default defineThemeConfig({
 
   blog: {
     // name: 'hello world',
-    description: "Java后端程序员",
+    description: "Java后端程序员，分享日常学习、工作、生活，致敬每个爱学习的你。微信公众号：【Java陈序员】",
     intro: "/introduction",
     roundAvatar: true,
     medias: {
