@@ -10,6 +10,21 @@ heroFullScreen: true
 tagline: Java后端程序员，分享日常学习、工作、生活，致敬每个爱学习的你。
 projects:
   - icon: link
+    name: 在线工具集合
+    desc: 一个轻量的工具集合
+    link: https://chencoding.top:8081/#/
+
+  - icon: link
+    name: 在线白板工具
+    desc: 一个简单轻量的白板工具
+    link: https://chencoding.top:8082/#/
+
+  - icon: link
+    name: 在线思维导图
+    desc: 一个简单而强大的思维导图
+    link: https://chencoding.top:8083/#/
+
+  - icon: link
     name: 在线Markdown编辑器
     desc: 
     link: https://chencoding.top:8084/#/
