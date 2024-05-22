@@ -16,12 +16,12 @@ projects:
 
   - icon: link
     name: 在线白板工具
-    desc: 一个简单轻量的白板工具
+    # desc: 一个简单轻量的白板工具
     link: https://chencoding.top:8081/#/
 
   - icon: link
     name: 在线思维导图
-    desc: 一个在线思维导图工具
+    # desc: 一个在线思维导图工具
     link: https://chencoding.top:8082/#/
 
   - icon: link
@@ -56,7 +56,7 @@ projects:
   
   - icon: link
     name: 优秀的开源项目
-    desc: Github、Gitee 优秀的开源项目合集
+    # desc: Github、Gitee 优秀的开源项目合集
     link: https://chencoding.top:8090/#/
 
   - icon: link

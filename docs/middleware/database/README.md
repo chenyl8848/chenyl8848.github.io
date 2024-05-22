@@ -6,7 +6,7 @@ isOriginal: true
 article: false
 ---
 
-* [Linux安装MySQL](Linux_MySQL.md)
+* [Linux安装卸载MySQL](Linux_MySQL.md)
 
 * [MySQL基础](MySQL_Basic.md)
 
