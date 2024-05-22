@@ -5,11 +5,11 @@ export const database: HopeThemeSidebarArrayConfig = [
     {
         text: "MySQL",
         collapsable: true,
-        children: ["Linux_MySQL", "MySQL_Basic", "MySQL_Advanced"]
+        children: ["Linux 安装MySQL", "MySQL 基础"]
     },
     {
         text: "持久化框架",
         collapsable: true,
-        children: ["MyBatis", "MyBatisPlus"]
+        children: ["MyBatis", "MyBatis Plus"]
     },
 ];

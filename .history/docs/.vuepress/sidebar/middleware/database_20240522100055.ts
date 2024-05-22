@@ -5,7 +5,7 @@ export const database: HopeThemeSidebarArrayConfig = [
     {
         text: "MySQL",
         collapsable: true,
-        children: ["Linux_MySQL", "MySQL_Basic", "MySQL_Advanced"]
+        children: ["Linux 安装 MySQL", "MySQL 基础", "MySQL 进阶"]
     },
     {
         text: "持久化框架",

@@ -100,7 +100,7 @@ export default defineNavbarConfig([
   {
     text: "开源项目",
     icon: "note",
-    link: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkzOTM3NjAzOQ==&action=getalbum&album_id=2783119709868212224&scene=126&sessionid=-659761542&uin=&key=&devicetype=Windows+11+x64&version=6309092b&lang=zh_CN&ascene=0&session_us=gh_b840974cfe99",
+    link: "/openproject/",
   },
   // {
   //   text: "主题文档",
