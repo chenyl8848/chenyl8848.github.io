@@ -93,8 +93,8 @@ ALTER  USER  'root'@'localhost'  IDENTIFIED BY '123456';
 
 ```
 ## 设置密码复杂度为低 0-低 1-中 2-高 
-
 set global validate_password.policy = 0;
+
 ## 设置密码长度
 set global validate_password.length = 6;
 ```
