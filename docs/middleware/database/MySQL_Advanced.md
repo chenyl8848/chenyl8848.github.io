@@ -1206,7 +1206,6 @@ create index idx_user_age_phone_aa on tb_user(age,phone);
 explain select id,age,phone from tb_user order by age;
 ```
 
-
 ```sql
 explain select id,age,phone from tb_user order by age , phone;
 ```
@@ -1257,277 +1256,206 @@ explain select id,age,phone from tb_user order by age asc, phone desc;
 
 ### 3.4 group by优化
 
-#### 分组操作，我们主要来看看索引对于分组操作的影响。
+分组操作，我们主要来看看索引对于分组操作的影响。
 
-首先我们先将 tb_user 表的索引全部删除掉 。
-
-#### 接下来，在没有索引的情况下，执行如下SQL，查询执行计划：
-
-然后，我们在针对于 profession ， age， status 创建一个联合索引。
-
-```
+首先我们先将 tb_user 表的索引全部删除掉。
+```sql
 drop index idx_user_pro_age_sta on tb_user;
 drop index idx_email_5 on tb_user;
 drop index idx_user_age_phone_aa on tb_user;
 drop index idx_user_age_phone_ad on tb_user;
 ```
-```
-1
-2
-3
-4
-```
-```
-1 explain select profession , count(*) from tb_user group by profession ;
+接下来，在没有索引的情况下，执行如下SQL，查询执行计划：
+```sql
+explain select profession , count(*) from tb_user group by profession ;
 ```
 
-#### 紧接着，再执行前面相同的SQL查看执行计划。
+然后，我们在针对于 profession、age、status 创建一个联合索引。
+```sql
+create index idx_user_pro_age_sta on tb_user(profession , age , status);
+```
 
-#### 再执行如下的分组查询SQL，查看执行计划：
+紧接着，再执行前面相同的SQL查看执行计划。
 
-我们发现，如果仅仅根据age分组，就会出现 Using temporary ；而如果是 根据
-profession,age两个字段同时分组，则不会出现 Using temporary。原因是因为对于分组操作，
-在联合索引中，也是符合最左前缀法则的。
+再执行如下的分组查询SQL，查看执行计划：
+```sql
+explain select profession , count(*) from tb_user group by profession ;
+```
 
-#### 所以，在分组操作中，我们需要通过以下两点进行优化，以提升性能：
+我们发现，如果仅仅根据 age 分组，就会出现 `Using temporary`;而如果是根据 profession、age 两个字段同时分组，则不会出现 `Using temporary`。
 
-#### A. 在分组操作时，可以通过索引来提高效率。
+原因是因为**对于分组操作，在联合索引中，也是符合最左前缀法则的**。
 
-#### B. 分组操作时，索引的使用也是满足最左前缀法则的。
+所以，在分组操作中，我们需要通过以下两点进行优化，以提升性能：
 
-### 3.5 limit优化
+- 在分组操作时，可以通过索引来提高效率。
+- 分组操作时，索引的使用也是满足最左前缀法则的。
+
+### 3.5 limit 优化
 
 在数据量比较大时，如果进行limit分页查询，在查询时，越往后，分页查询效率越低。
 
 我们一起来看看执行limit分页查询耗时对比：
 
+
+通过测试我们会看到，越往后，分页查询效率越低，这就是分页查询的问题所在。
+
+因为，当在进行分页查询时，如果执行 limit 2000000,10，此时需要MySQL排序前 2000010 记录，仅仅返回 2000000 - 2000010 的记录，其他记录丢弃，查询排序的代价非常大。
+
+优化思路: **一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过覆盖索引加子查询形式进行优化。**
+```sql
+explain select * from tb_sku t , (select id from tb_sku order by id limit 2000000, 10) a where t.id = a.id;
 ```
-1 create index idx_user_pro_age_sta on tb_user(profession , age , status);
-```
-```
-1 explain select profession , count(*) from tb_user group by profession ;
-```
 
-#### 通过测试我们会看到，越往后，分页查询效率越低，这就是分页查询的问题所在。
-
-因为，当在进行分页查询时，如果执行 limit 2000000,10 ，此时需要MySQL排序前 2000010 记
-录，仅仅返回 200000 0 - 2000010 的记录，其他记录丢弃，查询排序的代价非常大 。
-
-#### 优化思路: 一般分页查询时，通过创建 覆盖索引 能够比较好地提高性能，可以通过覆盖索引加子查
-
-#### 询形式进行优化。
-
-### 3.6 count优化
+### 3.6 count 优化
 
 #### 3.6.1 概述
 
 在之前的测试中，我们发现，如果数据量很大，在执行count操作时，是非常耗时的。
 
-```
-MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个
-数，效率很高； 但是如果是带条件的count，MyISAM也慢。
-InnoDB 引擎就麻烦了，它执行 count(*) 的时候，需要把数据一行一行地从引擎里面读出
-来，然后累积计数。
-```
-如果说要大幅度提升InnoDB表的count效率，主要的优化思路：自己计数(可以借助于redis这样的数
-据库进行,但是如果是带条件的count又比较麻烦了)。
+- MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高； 但是如果是带条件 count，MyISAM也慢。
+- InnoDB 引擎就麻烦了，它执行 count(*) 的时候，需要把数据一行一行地从引擎里面读出来，然后累积计数。
 
-#### 3.6.2 count用法
+如果说要大幅度提升InnoDB表的count效率，主要的优化思路：自己计数(可以借助于redis这样的数据库进行，但是如果是带条件的count又比较麻烦了)。
 
-count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是
-NULL，累计值就加 1 ，否则不加，最后返回累计值。
+#### 3.6.2 count 用法
+
+count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是NULL，累计值就加 1 ，否则不加，最后返回累计值。
 
 用法：count（*）、count（主键）、count（字段）、count（数字）
 
-```
-explain select * from tb_sku t , (select id from tb_sku order by id
-limit 2000000 , 10 ) a where t.id = a.id;
-```
-```
-1
-```
-```
-1 select count(*) from tb_user ;
+```sql
+select count(*) from tb_user ;
 ```
 
-```
-count用
-法 含义
-count(主
-键)
-```
-```
-InnoDB 引擎会遍历整张表，把每一行的 主键id 值都取出来，返回给服务层。
-服务层拿到主键后，直接按行进行累加(主键不可能为null)
-```
-```
-count(字
-段)
-```
-```
-没有not null 约束 : InnoDB 引擎会遍历整张表把每一行的字段值都取出
-来，返回给服务层，服务层判断是否为null，不为null，计数累加。
-有not null 约束：InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返
-回给服务层，直接按行进行累加。
-count(数
-字)
-```
-```
-InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字“1”
-进去，直接按行进行累加。
-```
-```
-count(*)
-```
-```
-InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接
-按行进行累加。
-```
-```
-按照效率排序的话，count(字段) < count(主键 id) < count(1) ≈ count(*)，所以尽
-量使用 count(*)。
-```
-### 3.7 update优化
+count用法 含义
+
+- count(主键)
+InnoDB 引擎会遍历整张表，把每一行的 主键id 值都取出来，返回给服务层。服务层拿到主键后，直接按行进行累加(主键不可能为null)
+
+- count(字段)
+没有not null 约束 : InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，服务层判断是否为null，不为null，计数累加。
+有not null 约束：InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加。
+
+- count(数字)
+InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字“1”进去，直接按行进行累加。
+
+- count(*)
+InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加。
+
+**按照效率排序的话，count(字段) < count(主键 id) < count(1) ≈ count(*)，所以尽量使用 count(*)**。
+
+### 3.7 update 优化
 
 我们主要需要注意一下update语句执行时的注意事项。
 
 当我们在执行删除的SQL语句时，会锁定id为 1 这一行的数据，然后事务提交之后，行锁释放。
-
-#### 但是当我们在执行如下SQL时。
-
-当我们开启多个事务，在执行上述的SQL时，我们发现行锁升级为了表锁。 导致该update语句的性能
-大大降低。
-
-```
-1 update course set name = 'javaEE' where id = 1 ;
-```
-```
-1 update course set name = 'SpringBoot' where name = 'PHP' ;
+```sql
+update course set name = 'javaEE' where id = 1 ;
 ```
 
+但是当我们在执行如下SQL时。
+```sql
+update course set name = 'SpringBoot' where name = 'PHP' ;
 ```
-InnoDB的行锁是针对索引加的锁，不是针对记录加的锁 ,并且该索引不能失效，否则会从行锁
-升级为表锁 。
-```
+
+当我们开启多个事务，在执行上述的SQL时，我们发现行锁升级为了表锁。导致该update语句的性能大大降低。
+
+**InnoDB的行锁是针对索引加的锁，不是针对记录加的锁，并且该索引不能失效，否则会从行锁升级为表锁**。
+
 ## 4. 视图/存储过程/触发器
 
 ### 4.1 视图
 
 #### 4.1.1 介绍
 
-视图（View）是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列数据来自定义视
-图的查询中使用的表，并且是在使用视图时动态生成的。
+视图（View）是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。
 
-通俗的讲，视图只保存了查询的SQL逻辑，不保存查询结果。所以我们在创建视图的时候，主要的工作
-就落在创建这条SQL查询语句上。
+通俗的讲，视图只保存了查询的SQL逻辑，不保存查询结果。所以我们在创建视图的时候，主要的工作就落在创建这条SQL查询语句上。
 
 #### 4.1.2 语法
 
-#### 1). 创建
-
-#### 2). 查询
-
-#### 3). 修改
-
-#### 4). 删除
-
-```
-CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [
-CASCADED | LOCAL ] CHECK OPTION ]
-```
-```
-1
-```
-```
-查看创建视图语句：SHOW CREATE VIEW 视图名称;
-查看视图数据：SELECT * FROM 视图名称 ...... ;
-```
-```
-1
-2
-```
-```
-方式一：CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH
-[ CASCADED | LOCAL ] CHECK OPTION ]
-方式二：ALTER VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED |
-LOCAL ] CHECK OPTION ]
-```
-```
-1
-```
-```
-2
-```
-```
-1 DROP VIEW [IF EXISTS] 视图名称 [,视图名称] ...
+1、创建
+```sql
+CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
 ```
 
-#### 演示示例：
+2、查询
+```sql
+--查看创建视图语句：
+SHOW CREATE VIEW 视图名称;
 
-#### 上述我们演示了，视图应该如何创建、查询、修改、删除，那么我们能不能通过视图来插入、更新数据
-
-#### 呢？ 接下来，做一个测试。
-
-执行上述的SQL，我们会发现，id为 6 和 17 的数据都是可以成功插入的。 但是我们执行查询，查询出
-来的数据，却没有id为 17 的记录。
-
+--查看视图数据：
+SELECT * FROM 视图名称 ......;
 ```
+
+3、修改
+```sql
+-- 方式一：
+CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
+
+-- 方式二：
+ALTER VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
+```
+
+4、删除
+```sql
+DROP VIEW [IF EXISTS] 视图名称 [,视图名称] ...
+```
+演示示例：
+
+上述我们演示了，视图应该如何创建、查询、修改、删除，那么我们能不能通过视图来插入、更新数据呢？ 接下来，做一个测试。
+
+执行上述的SQL，我们会发现，id为 6 和 17 的数据都是可以成功插入的。 但是我们执行查询，查询出来的数据，却没有id为 17 的记录。
+
+```sql
 -- 创建视图
 create or replace view stu_v_1 as select id,name from student where id <= 10 ;
 ```
-```
+
+```sql
 -- 查询视图
 show create view stu_v_1;
 ```
-```
+
+```sql
 select * from stu_v_1;
 select * from stu_v_1 where id < 3 ;
 ```
-```
+
+```sql
 -- 修改视图
 create or replace view stu_v_1 as select id,name,no from student where id <= 10 ;
 ```
-```
+
+```sql
 alter view stu_v_1 as select id,name from student where id <= 10 ;
 ```
-```
+
+```sql
 -- 删除视图
 drop view if exists stu_v_1;
 ```
-```
-1 2 3 4 5 6 7 8 9
-```
-```
-10
-11
-12
-13
-14
-15
-16
-17
-```
-```
+
+```sql
 create or replace view stu_v_1 as select id,name from student where id <= 10 ;
 ```
-```
+
+```sql
 select * from stu_v_1;
 ```
-```
+
+```sql
 insert into stu_v_1 values( 6 ,'Tom');
 ```
-```
+
+```sql
 insert into stu_v_1 values( 17 ,'Tom22');
 ```
-```
-1 2 3 4 5 6 7
-```
 
-因为我们在创建视图的时候，指定的条件为 id<=10, id为 17 的数据，是不符合条件的，所以没有查
-询出来，但是这条数据确实是已经成功的插入到了基表中。
+因为我们在创建视图的时候，指定的条件为 id<=10, id为 17 的数据，是不符合条件的，所以没有查询出来，但是这条数据确实是已经成功的插入到了基表中。
 
-如果我们定义视图时，如果指定了条件，然后我们在插入、修改、删除数据时，是否可以做到必须满足
-条件才能操作，否则不能够操作呢？ 答案是可以的，这就需要借助于视图的检查选项了。
+如果我们定义视图时，如果指定了条件，然后我们在插入、修改、删除数据时，是否可以做到必须满足条件才能操作，否则不能够操作呢？ 答案是可以的，这就需要借助于视图的检查选项了。
 
 #### 4.1.3 检查选项
 
