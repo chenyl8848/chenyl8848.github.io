@@ -2285,167 +2285,125 @@ select fun1( 50 );
 
 #### 4.4.2 语法
 
-#### 1). 创建
+1、创建
 
-#### 2). 查看
+```sql
+CREATE TRIGGER trigger_name
+  BEFORE/AFTER INSERT/UPDATE/DELETE
+ON tbl_name FOR EACH ROW -- 行级触发器
+BEGIN
+  trigger_stmt;
+END;
+```
+2、查看
+```sql
+SHOW TRIGGERS;
+```
 
-#### 3). 删除
+3、删除
+```sql
+-- 如果没有指定 schema_name，默认为当前数据库 
+DROP TRIGGER [schema_name.]trigger_name;
+```
 
 #### 4.4.3 案例
 
-通过触发器记录 tb_user 表的数据变更日志，将变更日志插入到日志表user_logs中, 包含增加,
-修改 , 删除 ;
+通过触发器记录 tb_user 表的数据变更日志，将变更日志插入到日志表user_logs中, 包含增加、修改、删除。
 
 表结构准备:
 
-```
-CREATE TRIGGER trigger_name
-BEFORE/AFTER INSERT/UPDATE/DELETE
-ON tbl_name FOR EACH ROW -- 行级触发器
-BEGIN
-trigger_stmt ;
-END;
-```
-```
-1 2 3 4 5 6
-```
-```
-1 SHOW TRIGGERS ;
-```
-```
-DROP TRIGGER [schema_name.]trigger_name ; -- 如果没有指定 schema_name，默认为当前数
-据库 。
-```
-```
-1
-```
-
-#### A. 插入数据触发器
-
-#### 测试:
-
-#### 测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
-
-#### B. 修改数据触发器
-
-```
+```sql
 -- 准备工作 : 日志表 user_logs
 create table user_logs(
-id int( 11 ) not null auto_increment,
-operation varchar( 20 ) not null comment '操作类型, insert/update/delete',
-operate_time datetime not null comment '操作时间',
-operate_id int( 11 ) not null comment '操作的ID',
-operate_params varchar( 500 ) comment '操作参数',
-primary key(`id`)
+  id int( 11 ) not null auto_increment,
+  operation varchar( 20 ) not null comment '操作类型, insert/update/delete',
+  operate_time datetime not null comment '操作时间',
+  operate_id int( 11 ) not null comment '操作的ID',
+  operate_params varchar( 500 ) comment '操作参数',
+  primary key(`id`)
 )engine=innodb default charset=utf8;
 ```
-```
-1 2 3 4 5 6 7 8 9
-```
-```
+
+1、插入数据触发器
+
+```sql
 create trigger tb_user_insert_trigger
-after insert on tb_user for each row
+  after insert on tb_user for each row
 begin
-insert into user_logs(id, operation, operate_time, operate_id, operate_params)
-VALUES
-(null, 'insert', now(), new.id, concat('插入的数据内容为:
-id=',new.id,',name=',new.name, ', phone=', NEW.phone, ', email=', NEW.email, ',
-profession=', NEW.profession));
+  insert into user_logs(id, operation, operate_time, operate_id, operate_params)
+  VALUES (null, 'insert', now(), new.id, concat('插入的数据内容为:id=', new.id, ',name=', new.name, ',phone=', NEW.phone, ',email=', NEW.email, ',profession=', NEW.profession));
 end;
 ```
-```
-1 2 3 4 5 6
-```
-```
+
+测试:
+```sql
 -- 查看
-show triggers ;
-```
-```
+show triggers;
+
 -- 插入数据到tb_user
-insert into tb_user(id, name, phone, email, profession, age, gender, status,
-createtime) VALUES ( 26 ,'三皇子','18809091212','erhuangzi@163.com','软件工
-程', 23 ,'1','1',now());
-```
-```
-1
-2
-3
-4
-5
+insert into tb_user(id, name, phone, email, profession, age, gender, status, createtime) 
+VALUES (26, '三皇子', '18809091212', 'erhuangzi@163.com', '软件工程', 23, '1', '1', now());
 ```
 
-#### 测试:
+测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
 
-#### 测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
-
-#### C. 删除数据触发器
-
-```
+2、修改数据触发器
+```sql
 create trigger tb_user_update_trigger
-after update on tb_user for each row
+  after update on tb_user for each row
 begin
-insert into user_logs(id, operation, operate_time, operate_id, operate_params)
-VALUES
-(null, 'update', now(), new.id,
-concat('更新之前的数据: id=',old.id,',name=',old.name, ', phone=',
-old.phone, ', email=', old.email, ', profession=', old.profession,
-' | 更新之后的数据: id=',new.id,',name=',new.name, ', phone=',
-NEW.phone, ', email=', NEW.email, ', profession=', NEW.profession));
+  insert into user_logs(id, operation, operate_time, operate_id, operate_params)
+  VALUES(null, 'update', now(), new.id, concat('更新之前的数据: id=', old.id, ',name=', old.name, ',phone=', old.phone, ',email=', old.email, ', profession=', old.profession, ' | 更新之后的数据: id=', new.id, ',name=', new.name, ',phone=', NEW.phone, ',email=', NEW.email, ',profession=',  NEW.profession));
 end;
 ```
+
+测试:
+```sql
+-- 查看
+show triggers;
+
+-- 更新
+update tb_user set profession = '会计' where id = 23;
+update tb_user set profession = '会计' where id <= 5;
 ```
-1 2 3 4 5 6 7 8
+
+测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
+
+3、删除数据触发器
+
+```sql
+create trigger tb_user_delete_trigger
+  after delete on tb_user for each row
+begin
+  insert into user_logs(id, operation, operate_time, operate_id, operate_params)
+  VALUES (null, 'delete', now(), old.id, concat('删除之前的数据: id=', old.id,',name=', old.name, ', phone=', old.phone, ', email=', old.email, ', profession=', old.profession));
+end;
 ```
-```
+
+测试:
+
+```sql
 -- 查看
 show triggers ;
-```
-```
--- 更新
-update tb_user set profession = '会计' where id = 23 ;
-update tb_user set profession = '会计' where id <= 5 ;
-```
-```
-1 2 3 4 5 6
-```
-```
-create trigger tb_user_delete_trigger
-after delete on tb_user for each row
-begin
-insert into user_logs(id, operation, operate_time, operate_id, operate_params)
-VALUES
-(null, 'delete', now(), old.id,
-concat('删除之前的数据: id=',old.id,',name=',old.name, ', phone=',
-old.phone, ', email=', old.email, ', profession=', old.profession));
-end;
-```
-```
-1 2 3 4 5 6 7
+
+-- 删除数据
+delete from tb_user where id = 26 ;
 ```
 
-#### 测试:
-
-#### 测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
+测试完毕之后，检查日志表中的数据是否可以正常插入，以及插入数据的正确性。
 
 ## 5. 锁
 
 ### 5.1 概述
 
-#### 锁是计算机协调多个进程或线程并发访问某一资源的机制。在数据库中，除传统的计算资源（CPU、
-
-#### RAM、I/O）的争用以外，数据也是一种供许多用户共享的资源。如何保证数据并发访问的一致性、有
-
-#### 效性是所有数据库必须解决的一个问题，锁冲突也是影响数据库并发访问性能的一个重要因素。从这个
-
-#### 角度来说，锁对数据库而言显得尤其重要，也更加复杂。
+锁是计算机协调多个进程或线程并发访问某一资源的机制。在数据库中，除传统的计算资源（CPU、RAM、I/O）的争用以外，数据也是一种供许多用户共享的资源。如何保证数据并发访问的一致性、有效性是所有数据库必须解决的一个问题，锁冲突也是影响数据库并发访问性能的一个重要因素。从这个角度来说，锁对数据库而言显得尤其重要，也更加复杂。
 
 MySQL中的锁，按照锁的粒度分，分为以下三类：
 
-```
-全局锁：锁定数据库中的所有表。
-表级锁：每次操作锁住整张表。
-行级锁：每次操作锁住对应的行数据。
-```
+- 全局锁：锁定数据库中的所有表。
+- 表级锁：每次操作锁住整张表。
+- 行级锁：每次操作锁住对应的行数据。
+
 ### 5.2 全局锁
 
 #### 5.2.1 介绍
@@ -2460,14 +2418,6 @@ MySQL中的锁，按照锁的粒度分，分为以下三类：
 
 #### 为什么全库逻辑备份，就需要加全就锁呢？
 
-```
--- 查看
-show triggers ;
-```
-```
--- 删除数据
-delete from tb_user where id = 26 ;
-```
 ```
 1
 2
