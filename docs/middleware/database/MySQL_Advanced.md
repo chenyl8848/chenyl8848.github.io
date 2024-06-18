@@ -3026,7 +3026,7 @@ create table employee (id int , name varchar( 10 ));
 ```
 
 此时，我们再通过以下指令来查看表结构及其其中的字段信息：
-```sql
+```bash
 ibd2sdi employee.ibd
 ```
 
@@ -3064,8 +3064,7 @@ ibd2sdi employee.ibd
 
 > 最终我们发现，不同事务或相同事务对同一条记录进行修改，会导致该记录的 `undo log` 生成一条记录版本链表，链表的头部是最新的旧记录，链表尾部是最早的旧记录。
 
-#### 6.4.4 readview
-
+#### 6.4.4 ReadView
 
 `ReadView`（读视图）是快照读 SQL 执行时 MVCC 提取数据的依据，记录并维护系统当前活跃的事务（未提交的）id。
 
@@ -3077,7 +3076,7 @@ ibd2sdi employee.ibd
 |max_trx_id| 预分配事务ID，当前最大事务ID+1（因为事务ID是自增的）|
 |creator_trx_id| ReadView创建者的事务ID|
 
-而在 `readview` 中就规定了版本链数据的访问规则：
+而在 `ReadView` 中就规定了版本链数据的访问规则：
 
 `trx_id` 代表当前 `undo log` 版本链对应事务ID。
 
@@ -3087,7 +3086,6 @@ ibd2sdi employee.ibd
 |trx_id < min_trx_id| 可以访问该版本| 成立，说明数据已经提交了。|
 |trx_id > max_trx_id| 不可以访问该版本| 成立，说明该事务是在ReadView 生成后才开启。|
 |min_trx_id <= trx_id <= max_trx_id| 如果trx_id不在m_ids中，是可以访问该版本的| 成立，说明数据已经提交。|
-
 
 不同的隔离级别，生成 `ReadView` 的时机不同：
 - READ COMMITTED ：在事务中每一次执行快照读时生成ReadView。
@@ -3128,18 +3126,19 @@ ibd2sdi employee.ibd
 - 再匹配第二条 ，这条记录对应的 `trx_id` 为 3 ，也就是将 3 带入右侧的匹配规则中。
 ①不满足 ②满足 。终止匹配，此次快照读，返回的数据就是版本链中记录的这条数据。
 
-#### 6.4.5.3 RR隔离级别
+##### 6.4.5.2 `RR` 隔离级别
 
 `RR` 隔离级别下，仅在事务中第一次执行快照读时生成 `ReadView`，后续复用该 `ReadView`。 
+
 而 `RR` 是可重复读，在一个事务中，执行两次相同的 `select` 语句，查询到的结果是一样的。
 
 那 MySQL 是如何做到可重复读的呢? 我们简单分析一下就知道了。
 
 我们看到，在 `RR` 隔离级别下，只是在事务中第一次快照读时生成 `ReadView`，后续都是复用该 `ReadView`，那么既然 `ReadView` 都一样，`ReadView` 的版本链匹配规则也一样，那么最终快照读返回的结果也是一样的。
 
-所以呢，`MVCC` 的实现原理就是通过 InnoDB表的**隐藏字段、`undo log` 版本链、`ReadView`**来实现的。
+所以呢，MVCC 的实现原理就是通过 InnoDB表的**隐藏字段、`undo log` 版本链、`ReadView`**来实现的。
 
-而 `MVCC` + 锁，则实现了事务的隔离性。而一致性则是由 `redo log` 与 `undo log` 保证。
+而 MVCC + 锁，则实现了事务的隔离性。而一致性则是由 `redo log` 与 `undo log` 保证。
 
 ## 7. MySQL管理
 
