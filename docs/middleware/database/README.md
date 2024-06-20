@@ -12,6 +12,8 @@ article: false
 
 * [MySQL进阶](MySQL_Advanced.md)
 
+* [MySQL运维](MySQL_Operation.md)
+
 * [MyBatis](MyBatis.md)
 
 * [MyBatisPlus](MyBatisPlus.md)
