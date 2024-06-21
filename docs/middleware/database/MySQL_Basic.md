@@ -166,8 +166,6 @@ SQL语句，根据其功能，主要分为四类：DDL、DML、DQL、DCL.
 |DQL| Data Query Language| 数据查询语言，用来查询数据库中表的记录|
 |DCL| Data Control Language|数据控制语言，用来创建数据库用户、控制数据库的访问权限|
 
-
-
 ### 2.3 DDL
 
 Data Definition Language，数据定义语言，用来定义数据库对象(数据库，表，字段) 。
@@ -176,12 +174,12 @@ Data Definition Language，数据定义语言，用来定义数据库对象(数�
 
 1、查询所有数据库
 ```sql
-show databases ;
+show databases;
 ```
 
 2、查询当前数据库
 ```sql
-select database() ;
+select database();
 ```
 
 3、创建数据库
@@ -211,12 +209,12 @@ create database itheima default charset utf8mb4;
 
 如果删除一个不存在的数据库，将会报错。此时，可以加上参数 if exists ，如果数据库存在，再执行删除，否则不执行删除。
 ```sql
-drop database [ if exists ] 数据库名 ;
+drop database [ if exists ] 数据库名;
 ```
 
 5、切换数据库
 ```sql
-use 数据库名 ;
+use 数据库名;
 ```
 
 我们要操作某一个数据库下的表时，就需要通过该指令，切换到对应的数据库下，否则是不能操作的。
@@ -246,14 +244,14 @@ show tables;
 
 通过这条指令，我们可以查看到指定表的字段，字段的类型、是否可以为NULL，是否存在默认值等信息。
 ```sql
-desc 表名 ;
+desc 表名;
 ```
 
 通过这条指令，主要是用来查看建表语句的，而有部分参数我们在创建表的时候，并未指定也会查询到，因为这部分是数据库的默认值，如：存储引擎、字符集等。
 
 3、查询指定表的建表语句
 ```sql
-show create table 表名 ;
+show create table 表名;
 ```
 
 4、创建表结构
@@ -280,66 +278,22 @@ create table tb_user(
 
 ##### 2.3.2.2 表操作-数据类型
 
-在上述的建表语句中，我们在指定字段的数据类型时，用到了int ，varchar，那么在MySQL中除了
+在上述的建表语句中，我们在指定字段的数据类型时，用到了 `int`、`varchar`,那么在MySQL中除了以上的数据类型，还有哪些常见的数据类型呢？ 
 
-以上的数据类型，还有哪些常见的数据类型呢？ 接下来,我们就来详细介绍一下MySQL的数据类型。
+接下来,我们就来详细介绍一下MySQL的数据类型。
 
-MySQL中的数据类型有很多，主要分为三类：数值类型、字符串类型、日期时间类型。
+MySQL中的数据类型有很多，主要分为三类：**数值类型、字符串类型、日期时间类型**。
 
 1、数值类型
 
-##1 2 3 4 5 6
-
-
-#类型 大小 有符号(SIGNED)范围 无符号(UNSIGNED)范围 描述
-
-#TINYINT 1byte (-128，127) (0，255) 小整
-
-#数值
-
-#SMALLINT 2bytes (-32768，32767) (0，65535) 大整
-
-#数值
-
-#MEDIUMINT 3bytes (-8388608，8388607) (0，16777215)
-
-#大整
-
-#数值
-
-#INT/INTEGER 4bytes
-
-#(-2147483648，
-
-#2147483647) (0，4294967295)
-
-#大整
-
-#数值
-
-#BIGINT 8bytes (-2^63，2^63-1) (0，2^64-1)
-
-#极大
-
-#整数
-
-#值
-
-#FLOAT 4bytes (-3.402823466 E+38，
-
-#3.402823466351 E+38)
-
-#0 和 (1.175494351 E-
-
-#38 ，3.402823466 E+38)
-
-#单精
-
-#度浮
-
-#点数
-
-#值
+|类型| 大小| 有符号(SIGNED)范围| 无符号(UNSIGNED)范围| 描述|
+| -- | -- | -- | -- | -- |
+|TINYINT| 1byte| (-128，127)| (0，255)| 小整数值|
+|SMALLINT| 2bytes| (-32768，32767)| (0，65535)| 大整数值|
+|MEDIUMINT| 3bytes| (-8388608，8388607)| (0，16777215)| 大整数值|
+|INT/INTEGER| 4bytes| (-2147483648，#2147483647)| (0，4294967295)| 大整数值|
+|BIGINT| 8bytes| (-2^63，2^63-1)| (0，2^64-1)| 极大整数值|
+|FLOAT| 4bytes| (-3.402823466 E+38，3.402823466351 E+38)| 0 和 (1.175494351 E-38 ，3.402823466 E+38)| 单精度浮点数值|
 
 #DOUBLE 8bytes
 
@@ -3383,197 +3337,142 @@ student_course.courseid
 
 件的记录即可。
 
-## 6. 事务
-
-### 6.1 事务简介
-
-事务 是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系
-
-统提交或撤销操作请求，即这些操作要么同时成功，要么同时失败。
-
-就比如: 张三给李四转账 1000 块钱，张三银行账户的钱减少 1000 ，而李四银行账户的钱要增加
-
-1000 。 这一组操作就必须在一个事务的范围内，要么都成功，要么都失败。
-
-正常情况: 转账这个操作, 需要分为以下这么三步来完成 , 三步完成之后, 张三减少1000, 而李四
-
-增加1000, 转账成功 :
-
 ```
 select d.id, d.name , ( select count(*) from emp e where e.dept_id = d.id ) '人数'
 from dept d;
 ```
-##1
 
 ```
 select s.name , s.no , c.name from student s , student_course sc , course c where
 s.id = sc.studentid and sc.courseid = c.id ;
 ```
-##1
 
 
-异常情况: 转账这个操作, 也是分为以下这么三步来完成 , 在执行第三步是报错了, 这样就导致张
+## 6. 事务
 
-三减少 1000 块钱, 而李四的金额没变, 这样就造成了数据的不一致, 就出现问题了。
+### 6.1 事务简介
 
-为了解决上述的问题，就需要通过数据的事务来完成，我们只需要在业务逻辑执行之前开启事务，执行
+**事务**是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系统提交或撤销操作请求，即这些操作要么同时成功，要么同时失败。
 
-完毕后提交事务。如果执行过程中报错，则回滚事务，把数据恢复到事务开始之前的状态。
+就比如: 张三给李四转账 1000 块钱，张三银行账户的钱减少 1000 ，而李四银行账户的钱要增加1000。这一组操作就必须在一个事务的范围内，要么都成功，要么都失败。
 
-注意： 默认MySQL的事务是自动提交的，也就是说，当执行完一条DML语句时，MySQL会立即隐
+正常情况: 转账这个操作, 需要分为以下这么三步来完成 , 三步完成之后, 张三减少1000, 而李四增加1000, 转账成功：
 
-式的提交事务。
+异常情况: 转账这个操作, 也是分为以下这么三步来完成, 在执行第三步是报错了, 这样就导致张三减少 1000 块钱, 而李四的金额没变, 这样就造成了数据的不一致, 就出现问题了。
+
+为了解决上述的问题，就需要通过数据的事务来完成，我们只需要在业务逻辑执行之前开启事务，执行完毕后提交事务。如果执行过程中报错，则回滚事务，把数据恢复到事务开始之前的状态。
+
+> 注意：默认MySQL的事务是自动提交的，也就是说，当执行完一条DML语句时，MySQL会立即隐式的提交事务。
 
 ### 6.2 事务操作
 
 数据准备：
+```sql
+drop table if exists account;
 
+create table account(
+  id int primary key AUTO_INCREMENT comment 'ID',
+  name varchar( 10 ) comment '姓名',
+  money double( 10 , 2 ) comment '余额'
+) comment '账户表';
+
+insert into account(name, money) VALUES ('张三', 2000 ), ('李四', 2000 );
+```
 
 #### 6.2.1 未控制事务
 
 1、测试正常情况
+```sql
+-- 1. 查询张三余额
+select * from account where name = '张三';
+-- 2. 张三的余额减少 1000
+update account set money = money - 1000 where name = '张三';
+-- 3. 李四的余额增加 1000
+update account set money = money + 1000 where name = '李四';
+```
 
 测试完毕之后检查数据的状态, 可以看到数据操作前后是一致的。
 
 2、测试异常情况
-
-```
-drop table if exists account;
-```
-```
-create table account(
-id int primary key AUTO_INCREMENT comment 'ID',
-name varchar( 10 ) comment '姓名',
-money double( 10 , 2 ) comment '余额'
-) comment '账户表';
-```
-```
-insert into account(name, money) VALUES ('张三', 2000 ), ('李四', 2000 );
-```
-##1 2 3 4 5 6 7 8 9
-
-##-- 1. 查询张三余额
-
-```
+```sql
+-- 1. 查询张三余额
 select * from account where name = '张三';
 -- 2. 张三的余额减少 1000
 update account set money = money - 1000 where name = '张三';
+-- 出错了....
 -- 3. 李四的余额增加 1000
 update account set money = money + 1000 where name = '李四';
 ```
-##1 2 3 4 5 6
 
-##-- 1. 查询张三余额
-
-```
-select * from account where name = '张三';
--- 2. 张三的余额减少 1000
-update account set money = money - 1000 where name = '张三';
-出错了....
--- 3. 李四的余额增加 1000
-update account set money = money + 1000 where name = '李四';
-```
-##1 2 3 4 5 6 7
-
-
-我们把数据都恢复到 2000 ， 然后再次一次性执行上述的SQL语句(出错了.... 这句话不符合SQL语
-
-法,执行就会报错)，检查最终的数据情况, 发现数据在操作前后不一致了。
+我们把数据都恢复到 2000 ， 然后再次一次性执行上述的SQL语句(出错了.... 这句话不符合SQL语法，执行就会报错)，检查最终的数据情况, 发现数据在操作前后不一致了。
 
 #### 6.2.2 控制事务一
 
 1、查看/设置事务提交方式
+```sql
+SELECT @@autocommit ;
+SET @@autocommit = 0 ;
+```
 
 2、提交事务
+```sql
+COMMIT;
+```
 
 3、回滚事务
+```sql
+ROLLBACK;
+```
 
-注意：上述的这种方式，我们是修改了事务的自动提交行为, 把默认的自动提交修改为了手动提
-
-交, 此时我们执行的DML语句都不会提交, 需要手动的执行commit进行提交。
+> 注意：上述的这种方式，我们是修改了事务的自动提交行为, 把默认的自动提交修改为了手动提交, 此时我们执行的DML语句都不会提交, 需要手动的执行 `commit` 进行提交。
 
 #### 6.2.3 控制事务二
 
 1、开启事务
+```sql
+START TRANSACTION 或 BEGIN ;
+```
 
 2、提交事务
+```sql
+COMMIT;
+```
 
 3、回滚事务
-
-```
-SELECT @@autocommit ;
-SET @@autocommit = 0 ;
-```
-##1
-
-##2
-
-##1 COMMIT;
-
+```sql
 ##1 ROLLBACK;
-
-##1 START TRANSACTION 或 BEGIN ;
-
-##1 COMMIT;
-
+```
 
 转账案例：
+```sql
+-- 开启事务
+start transaction
+
+-- 1. 查询张三余额
+select * from account where name = '张三';
+
+-- 2. 张三的余额减少 1000
+update account set money = money - 1000 where name = '张三';
+
+-- 3. 李四的余额增加 1000
+update account set money = money + 1000 where name = '李四';
+
+-- 如果正常执行完毕, 则提交事务
+commit;
+
+-- 如果执行过程中报错, 则回滚事务
+-- rollback;
+
+```
 
 ### 6.3 事务四大特性
 
-原子性（Atomicity）：事务是不可分割的最小操作单元，要么全部成功，要么全部失败。
+- 原子性（Atomicity）：事务是不可分割的最小操作单元，要么全部成功，要么全部失败。
+- 一致性（Consistency）：事务完成时，必须使所有的数据都保持一致状态。
+- 隔离性（Isolation）：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立环境下运行。
+- 持久性（Durability）：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的。
 
-一致性（Consistency）：事务完成时，必须使所有的数据都保持一致状态。
-
-隔离性（Isolation）：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立
-
-环境下运行。
-
-持久性（Durability）：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的。
-
-上述就是事务的四大特性，简称ACID。
-
-##1 ROLLBACK;
-
-##-- 开启事务
-
-```
-start transaction
-```
-```
--- 1. 查询张三余额
-select * from account where name = '张三';
-```
-```
--- 2. 张三的余额减少 1000
-update account set money = money - 1000 where name = '张三';
-```
-```
--- 3. 李四的余额增加 1000
-update account set money = money + 1000 where name = '李四';
-```
-```
--- 如果正常执行完毕, 则提交事务
-commit;
--- 如果执行过程中报错, 则回滚事务
--- rollback;
-```
-##1 2 3 4 5 6 7 8 9
-
-##10
-
-##11
-
-##12
-
-##13
-
-##14
-
-##15
-
-##16
-
+上述就是事务的四大特性，简称 `ACID`.
 
 ### 6.4 并发事务问题
 
@@ -3585,38 +3484,32 @@ commit;
 
 事务A两次读取同一条记录，但是读取到的数据却是不一样的。
 
-
-隔离级别 脏读 不可重复读 幻读
-
-Read uncommitted √ √ √
-
-Read committed × √ √
-
-Repeatable Read(默认) × × √
-
-Serializable × × ×
-
-3、幻读：一个事务按照条件查询数据时，没有对应的数据行，但是在插入数据时，又发现这行数据
-
-已经存在，好像出现了 "幻影"。
+3、幻读：一个事务按照条件查询数据时，没有对应的数据行，但是在插入数据时，又发现这行数据已经存在，好像出现了 "幻影"。
 
 ### 6.5 事务隔离级别
 
 为了解决并发事务所引发的问题，在数据库中引入了事务隔离级别。主要有以下几种：
 
+|隔离级别| 脏读| 不可重复读| 幻读|
+| -- | -- | -- | -- |
+|Read uncommitted| √| √| √|
+|Read committed| ×| √| √|
+|Repeatable Read(默认)| ×| ×| √|
+|Serializable| ×| ×| ×|
+
 1、查看事务隔离级别
+```sql
+SELECT @@TRANSACTION_ISOLATION;
+```
 
 2、设置事务隔离级别
+```sql
+SET [ SESSION | GLOBAL ] TRANSACTION ISOLATION LEVEL { READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE }
+```
 
-注意：事务隔离级别越高，数据越安全，但是性能越低。
+> 注意：事务隔离级别越高，数据越安全，但是性能越低。
 
-##1 SELECT @@TRANSACTION_ISOLATION;
 
-##SET [ SESSION | GLOBAL ] TRANSACTION ISOLATION LEVEL { READ UNCOMMITTED |
-
-##READ COMMITTED | REPEATABLE READ | SERIALIZABLE }
-
-##1
 
 
 
