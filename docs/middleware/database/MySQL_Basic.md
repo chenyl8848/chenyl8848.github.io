@@ -354,131 +354,116 @@ phone char(11)
 |DATETIME| 8| 1000-01-01 00:00:00 至 9999-12-31 23:59:59| YYYY-MM-DD HH:MM:SS| 混合日期和时间值|
 |TIMESTAMP| 4| 1970-01-01 00:00:01 至 2038-01-19 03:14:07| YYYY-MM-DD HH:MM:SS| 混合日期和时间值，时间戳|
 
+```sql
+-- 1、生日字段 birthday
+birthday date
+2、创建时间 createtime
+createtime datetime
+```
+
 ##### 2.3.2.3 表操作-案例
 
 设计一张员工信息表，要求如下：
 
 1. 编号（纯数字）
-
 2. 员工工号 (字符串类型，长度不超过 10 位)
-
 3. 员工姓名（字符串类型，长度不超过 10 位）
-
 4. 性别（男/女，存储一个汉字）
-
 5. 年龄（正常人年龄，不可能存储负数）
-
 6. 身份证号（二代身份证号均为 18 位，身份证中有X这样的字符）
-
 7. 入职时间（取值年月日即可）
 
 对应的建表语句如下:
-
-##如:
-
+```sql
+create table emp(
+  id int comment '编号',
+  workno varchar( 10 ) comment '工号',
+  name varchar( 10 ) comment '姓名',
+  gender char( 1 ) comment '性别',
+  age tinyint unsigned comment '年龄',
+  idcard char( 18 ) comment '身份证号',
+  entrydate date comment '入职时间'
+) comment '员工表';
 ```
-1、生日字段 birthday
-birthday date
-```
-```
-2、创建时间 createtime
-createtime datetime
-```
-##1 2 3 4 5 6
 
+SQL语句编写完毕之后，就可以在MySQL的命令行中执行SQL，然后也可以通过 desc 指令查询表结构信息：
 
-SQL语句编写完毕之后，就可以在MySQL的命令行中执行SQL，然后也可以通过 desc 指令查询表结构
-
-信息：
-
-表结构创建好了，里面的name字段是varchar类型，最大长度为 10 ，也就意味着如果超过 10 将会报
-
-错，如果我们想修改这个字段的类型 或 修改字段的长度该如何操作呢？接下来再来讲解DDL语句中，
-
-如何操作表字段。
+表结构创建好了，里面的 name 字段是 `varchar` 类型，最大长度为 10,也就意味着如果超过 10 将会报错，如果我们想修改这个字段的类型或修改字段的长度该如何操作呢？接下来再来讲解DDL语句中，如何操作表字段。
 
 ##### 2.3.2.4 表操作-修改
 
 1、添加字段
+```sql
+ALTER TABLE 表名 ADD 字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
+```
 
 案例:
 
-为emp表增加一个新的字段”昵称”为nickname，类型为varchar(20)
+为 emp 表增加一个新的字段“昵称”为 `nickname`,类型为 `varchar(20)`.
+```sql
+ALTER TABLE emp ADD nickname varchar(20) COMMENT '昵称';
+```
 
 2、修改数据类型
-
+```sql
+ALTER TABLE 表名 MODIFY 字段名 新数据类型 (长度);
 ```
-create table emp(
-id int comment '编号',
-workno varchar( 10 ) comment '工号',
-name varchar( 10 ) comment '姓名',
-gender char( 1 ) comment '性别',
-age tinyint unsigned comment '年龄',
-idcard char( 18 ) comment '身份证号',
-entrydate date comment '入职时间'
-) comment '员工表';
-```
-##1 2 3 4 5 6 7 8 9
-
-##1 ALTER TABLE 表名 ADD 字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
-
-```
-1 ALTER TABLE emp ADD nickname varchar( 20 ) COMMENT '昵称';
-```
-##1 ALTER TABLE 表名 MODIFY 字段名 新数据类型 (长度);
-
 
 3、修改字段名和字段类型
+```sql
+ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
+```
 
 案例:
-
-将emp表的nickname字段修改为username，类型为varchar(30)
+将 emp 表的 `nickname` 字段修改为 `username`,类型为 `varchar(30)`.
+```sql
+ALTER TABLE emp CHANGE nickname username varchar( 30 ) COMMENT '昵称';
+```
 
 4、删除字段
+```sql
+ALTER TABLE 表名 DROP 字段名;
+```
 
 案例:
-
-将emp表的字段username删除
+将 emp 表的字段 `username` 删除。
+```sql
+ALTER TABLE emp DROP username;
+```
 
 5、修改表名
+```sql
+ALTER TABLE 表名 RENAME TO 新表名;
+```
 
-案例:
-
-将emp表的表名修改为 employee
+案例：
+将 emp 表的表名修改为 employee.
+```sql
+ALTER TABLE emp RENAME TO employee;
+```
 
 ##### 2.3.2.5 表操作-删除
 
 1、删除表
+```sql
+DROP TABLE [ IF EXISTS ] 表名;
+```
 
-可选项 IF EXISTS 代表，只有表名存在时才会删除该表，表名不存在，则不执行删除操作(如果不
-
-加该参数项，删除一张不存在的表，执行将会报错)。
+可选项 `IF EXISTS` 代表，只有表名存在时才会删除该表，表名不存在，则不执行删除操作(如果不加该参数项，删除一张不存在的表，执行将会报错)。
 
 案例:
 
-如果tb_user表存在，则删除tb_user表
-
-##1 ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
-
+如果 tb_user 表存在，则删除 tb_user 表。
+```sql
+DROP TABLE IF EXISTS tb_user;
 ```
-1 ALTER TABLE emp CHANGE nickname username varchar( 30 ) COMMENT '昵称';
-```
-##1 ALTER TABLE 表名 DROP 字段名;
-
-```
-1 ALTER TABLE emp DROP username;
-```
-##1 ALTER TABLE 表名 RENAME TO 新表名;
-
-```
-1 ALTER TABLE emp RENAME TO employee;
-```
-##1 DROP TABLE [ IF EXISTS ] 表名;
-
 
 2、删除指定表, 并重新创建表
+```sql
+TRUNCATE TABLE 表名;
+```
 
-注意: 在删除表的时候，表中的全部数据也都会被删除。
+> 注意: 在删除表的时候，表中的全部数据也都会被删除。
 
 ### 2.4 图形化界面工具
 
@@ -502,10 +487,6 @@ mysql主流的图形化界面工具，有以下几种：
 
 1、找到资料中准备好的安装包，双击开始安装
 
-```
-1 DROP TABLE IF EXISTS tb_user;
-```
-##1 TRUNCATE TABLE 表名;
 
 
 2、点击next，一步一步的完成安装
