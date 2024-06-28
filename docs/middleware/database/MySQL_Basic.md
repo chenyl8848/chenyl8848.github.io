@@ -661,146 +661,79 @@ delete from employee;
 
 ### 2.6 DQL
 
-DQL英文全称是Data Query Language(数据查询语言)，数据查询语言，用来查询数据库中表的记
+`DQL` 英文全称是 `Data Query Language`(数据查询语言)，数据查询语言，用来查询数据库中表的记录。
 
-录。
+查询关键字: `SELECT`
 
-查询关键字: SELECT
-
-在一个正常的业务系统中，查询操作的频次是要远高于增删改的，当我们去访问企业官网、电商网站，
-
-在这些网站中我们所看到的数据，实际都是需要从数据库中查询并展示的。而且在查询的过程中，可能
-
-还会涉及到条件、排序、分页等操作。
+在一个正常的业务系统中，查询操作的频次是要远高于增删改的，当我们去访问企业官网、电商网站，在这些网站中我们所看到的数据，实际都是需要从数据库中查询并展示的。而且在查询的过程中，可能还会涉及到条件、排序、分页等操作。
 
 
-那么，本小节我们主要学习的就是如何进行数据的查询操作。 我们先来完成如下数据准备工作:
+那么，本小节我们主要学习的就是如何进行数据的查询操作。
 
-```
+我们先来完成如下数据准备工作：
+
+```sql
 drop table if exists employee;
-```
-```
+
 create table emp(
-id int comment '编号',
-workno varchar( 10 ) comment '工号',
-name varchar( 10 ) comment '姓名',
-gender char( 1 ) comment '性别',
-age tinyint unsigned comment '年龄',
-idcard char( 18 ) comment '身份证号',
-workaddress varchar( 50 ) comment '工作地址',
-entrydate date comment '入职时间'
+  id int comment '编号',
+  workno varchar( 10 ) comment '工号',
+  name varchar( 10 ) comment '姓名',
+  gender char( 1 ) comment '性别',
+  age tinyint unsigned comment '年龄',
+  idcard char( 18 ) comment '身份证号',
+  workaddress varchar( 50 ) comment '工作地址',
+  entrydate date comment '入职时间'
 )comment '员工表';
+
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (1, '00001', '柳岩666', '女', 20, '123456789012345678', '北京', '2000-01-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (2, '00002', '张无忌', '男', 18, '123456789012345670', '北京', '2005-09-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (3, '00003', '韦一笑', '男', 38, '123456789712345670', '上海', '2005-08-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (4, '00004', '赵敏', '女', 18, '123456757123845670', '北京', '2009-12-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (5, '00005', '小昭', '女', 16, '123456769012345678', '上海', '2007-07-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES ( 6 , '00006', '杨逍', '男', 28 , '12345678931234567X', '北京', '2006-01-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES ( 7 , '00007', '范瑶', '男', 40 , '123456789212345670', '北京', '2005-05-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES ( 8 , '00008', '黛绮丝', '女', 38 , '123456157123645670', '天津', '2015-05-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (9, '00009', '范凉凉', '女', 45 , '123156789012345678', '北京', '2010-04-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (10, '00010', '陈友谅', '男', 53, '123456789012345670', '上海', '2011-01-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (11, '00011', '张士诚', '男', 55, '123567897123465670', '江苏', '2015-05-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (12, '00012', '常遇春', '男', 32, '123446757152345670', '北京', '2004-02-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (13, '00013', '张三丰', '男', 88, '123656789012345678', '江苏', '2020-11-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (14, '00014', '灭绝', '女', 65, '123456719012345670', '西安', '2019-05-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (15, '00015', '胡青牛', '男', 70, '12345674971234567X', '西安', '2018-04-01');
+INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) VALUES (16, '00016', '周芷若', '女', 18, null, '北京', '2012-06-01');
 ```
-```
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 1 , '00001', '柳岩666', '女', 20 , '123456789012345678', '北京', '2000-01-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 2 , '00002', '张无忌', '男', 18 , '123456789012345670', '北京', '2005-09-
-01');
-```
-##1 2 3 4 5 6 7 8 9
 
-##10
-
-##11
-
-##12
-
-##13
-
-##14
-
-##15
-
-
-```
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 3 , '00003', '韦一笑', '男', 38 , '123456789712345670', '上海', '2005-08-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 4 , '00004', '赵敏', '女', 18 , '123456757123845670', '北京', '2009-12-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 5 , '00005', '小昭', '女', 16 , '123456769012345678', '上海', '2007-07-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 6 , '00006', '杨逍', '男', 28 , '12345678931234567X', '北京', '2006-01-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 7 , '00007', '范瑶', '男', 40 , '123456789212345670', '北京', '2005-05-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 8 , '00008', '黛绮丝', '女', 38 , '123456157123645670', '天津', '2015-05-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 9 , '00009', '范凉凉', '女', 45 , '123156789012345678', '北京', '2010-04-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 10 , '00010', '陈友谅', '男', 53 , '123456789012345670', '上海', '2011-01-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 11 , '00011', '张士诚', '男', 55 , '123567897123465670', '江苏', '2015-05-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 12 , '00012', '常遇春', '男', 32 , '123446757152345670', '北京', '2004-02-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 13 , '00013', '张三丰', '男', 88 , '123656789012345678', '江苏', '2020-11-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 14 , '00014', '灭绝', '女', 65 , '123456719012345670', '西安', '2019-05-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 15 , '00015', '胡青牛', '男', 70 , '12345674971234567X', '西安', '2018-04-
-01');
-INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate)
-VALUES ( 16 , '00016', '周芷若', '女', 18 , null, '北京', '2012-06-01');
-```
-##16
-
-##17
-
-##18
-
-##19
-
-##20
-
-##21
-
-##22
-
-##23
-
-##24
-
-##25
-
-##26
-
-##27
-
-##28
-
-##29
-
-
-准备完毕后，我们就可以看到emp表中准备的 16 条数据。接下来，我们再来完成DQL语法的学习。
+准备完毕后，我们就可以看到 emp 表中准备的 16 条数据。接下来，我们再来完成 DQL 语法的学习。
 
 #### 2.6.1 基本语法
 
 DQL 查询语句，语法结构如下：
+```sql
+SELECT
+  字段列表
+FROM
+  表名列表
+WHERE
+  条件列表
+GROUP BY
+  分组字段列表
+HAVING
+  分组后条件列表
+ORDER BY
+  排序字段列表
+LIMIT
+  分页参数
+```
 
 我们在讲解这部分内容的时候，会将上面的完整语法进行拆分，分为以下几个部分：
 
-基本查询（不带任何条件）
-
-条件查询（WHERE）
-
-聚合函数（count、max、min、avg、sum）
-
-分组查询（group by）
-
-排序查询（order by）
-
-分页查询（limit）
+- 基本查询（不带任何条件）
+- 条件查询（WHERE）
+- 聚合函数（count、max、min、avg、sum）
+- 分组查询（group by）
+- 排序查询（order by）
+- 分页查询（limit）
 
 #### 2.6.2 基础查询
 
@@ -808,232 +741,144 @@ DQL 查询语句，语法结构如下：
 
 1、查询多个字段
 
-##SELECT
+```sql
+SELECT 字段1, 字段2, 字段3 ... FROM 表名;
+SELECT * FROM 表名;
+```
 
-##字段列表
-
-##FROM
-
-##表名列表
-
-##WHERE
-
-##条件列表
-
-##GROUP BY
-
-##分组字段列表
-
-##HAVING
-
-##分组后条件列表
-
-##ORDER BY
-
-##排序字段列表
-
-##LIMIT
-
-##分页参数
-
-##1 2 3 4 5 6 7 8 9
-
-##10
-
-##11
-
-##12
-
-##13
-
-##14
-
-##1 SELECT 字段1, 字段2, 字段3 ... FROM 表名 ;
-
-##1 SELECT * FROM 表名 ;
-
-
-注意 : * 号代表查询所有字段，在实际开发中尽量少用（不直观、影响效率）。
+> **注意**：`*` 号代表查询所有字段，在实际开发中尽量少用（不直观、影响效率）。
 
 2、字段设置别名
-
+```sql
+SELECT 字段1 [ AS 别名1 ] , 字段2 [ AS 别名2 ] ... FROM 表名;
+SELECT 字段1 [ 别名1 ] , 字段2 [ 别名2 ] ... FROM 表名;
+```
 3、去除重复记录
+```sql
+SELECT DISTINCT 字段列表 FROM 表名;
+```
 
 案例：
 
 A. 查询指定字段 name, workno, age并返回
+```sql
+select name, workno, age from emp;
+```
 
 B. 查询返回所有字段
+```sql
+select id, workno, name, gender, age, idcard, workaddress, entrydate from emp;
+
+select * from emp;
+```
 
 C. 查询所有员工的工作地址,起别名
+```sql
+select workaddress as '工作地址' from emp;
+
+-- as可以省略
+select workaddress '工作地址' from emp;
+```
 
 D. 查询公司员工的上班地址有哪些(不要重复)
+```sql
+select distinct workaddress '工作地址' from emp;
+```
 
 #### 2.6.3 条件查询
 
 1、语法
-
-##1 SELECT 字段1 [ AS 别名1 ] , 字段2 [ AS 别名2 ] ... FROM 表名;
-
-##1 SELECT 字段1 [ 别名1 ] , 字段2 [ 别名2 ] ... FROM 表名;
-
-##1 SELECT DISTINCT 字段列表 FROM 表名;
-
+```sql
+SELECT 字段列表 FROM 表名 WHERE 条件列表 ;
 ```
-1 select name,workno,age from emp;
-```
-```
-1 select id ,workno,name,gender,age,idcard,workaddress,entrydate from emp;
-```
-```
-1 select * from emp;
-```
-```
-1 select workaddress as '工作地址' from emp;
-```
-```
--- as可以省略
-select workaddress '工作地址' from emp;
-```
-##1
-
-##2
-
-```
-1 select distinct workaddress '工作地址' from emp;
-```
-
-比较运算符 功能
-
-> 大于
-
->= 大于等于
-
-< 小于
-
-<= 小于等于
-
-= 等于
-
-<> 或 != 不等于
-
-BETWEEN ... AND ... 在某个范围之内(含最小、最大值)
-
-IN(...) 在in之后的列表中的值，多选一
-
-LIKE 占位符 模糊匹配(_匹配单个字符, %匹配任意个字符)
-
-IS NULL 是NULL
-
-逻辑运算符 功能
-
-AND 或 && 并且 (多个条件同时成立)
-
-OR 或 || 或者 (多个条件任意一个成立)
-
-NOT 或! 非 , 不是
 
 2、条件
 
-常用的比较运算符如下:
+常用的比较运算符如下：
 
-常用的逻辑运算符如下:
+|比较运算符| 功能|
+| -- | -- |
+|>| 大于|
+|>=| 大于等于|
+|<| 小于|
+|<=| 小于等于|
+|=| 等于|
+|<> 或 !=| 不等于|
+|BETWEEN ... AND ...| 在某个范围之内(含最小、最大值) |
+|IN(...)| 在in之后的列表中的值，多选一 |
+|LIKE| 占位符 模糊匹配(_匹配单个字符, %匹配任意个字符)|
+|IS NULL| 是NULL|
+
+常用的逻辑运算符如下：
+
+|逻辑运算符| 功能|
+| -- | -- |
+|AND 或 &&| 并且 (多个条件同时成立)|
+|OR 或 ||| 或者 (多个条件任意一个成立)|
+|NOT 或!| 非 , 不是|
+
 
 案例:
 
 A. 查询年龄等于 88 的员工
+```sql
+select * from emp where age = 88 ;
+```
 
 B. 查询年龄小于 20 的员工信息
-
-##1 SELECT 字段列表 FROM 表名 WHERE 条件列表 ;
-
-```
-1 select * from emp where age = 88 ;
+```sql
+select * from emp where age < 20 ;
 ```
 
 C. 查询年龄小于等于 20 的员工信息
+```sql
+select * from emp where age <= 20 ;
+```
 
 D. 查询没有身份证号的员工信息
+```sql
+select * from emp where idcard is null;
+```
 
 E. 查询有身份证号的员工信息
+```sql
+select * from emp where idcard is not null;
+```
 
 F. 查询年龄不等于 88 的员工信息
-
-G. 查询年龄在 15 岁(包含) 到 20 岁(包含)之间的员工信息
-
-H. 查询性别为 女 且年龄小于 25 岁的员工信息
-
-I. 查询年龄等于 18 或 20 或 40 的员工信息
-
-J. 查询姓名为两个字的员工信息 _ %
-
-K. 查询身份证号最后一位是X的员工信息
-
-```
-1 select * from emp where age < 20 ;
-```
-```
-1 select * from emp where age <= 20 ;
-```
-```
-1 select * from emp where idcard is null;
-```
-```
-1 select * from emp where idcard is not null;
-```
-```
+```sql
 select * from emp where age != 88 ;
 select * from emp where age <> 88 ;
 ```
-##1
 
-##2
-
-```
+G. 查询年龄在 15 岁(包含) 到 20 岁(包含)之间的员工信息
+```sql
 select * from emp where age >= 15 && age <= 20 ;
 select * from emp where age >= 15 and age <= 20 ;
 select * from emp where age between 15 and 20 ;
 ```
-##1
 
-##2
+H. 查询性别为 女 且年龄小于 25 岁的员工信息
+```sql
+select * from emp where gender = '女' and age < 25 ;
+```
 
-##3
-
-```
-1 select * from emp where gender = '女' and age < 25 ;
-```
-```
+I. 查询年龄等于 18 或 20 或 40 的员工信息
+```sql
 select * from emp where age = 18 or age = 20 or age = 40 ;
 select * from emp where age in( 18 , 20 , 40 );
 ```
-##1
 
-##2
+J. 查询姓名为两个字的员工信息 _ %
+```sql
+select * from emp where name like '__';
+```
 
-```
-1 select * from emp where name like '__';
-```
-```
+K. 查询身份证号最后一位是X的员工信息
+```sql
 select * from emp where idcard like '%X';
 select * from emp where idcard like '_________________X';
 ```
-##1
-
-##2
-
-
-函数 功能
-
-count 统计数量
-
-max 最大值
-
-min 最小值
-
-avg 平均值
-
-sum 求和
 
 #### 2.6.4 聚合函数
 
@@ -1042,255 +887,223 @@ sum 求和
 将一列数据作为一个整体，进行纵向计算 。
 
 2、常见的聚合函数
+|函数 功能|
+| -- | -- |
+|count| 统计数量|
+|max| 最大值|
+|min| 最小值|
+|avg| 平均值|
+|sum| 求和|
 
 3、语法
-
-注意 : NULL值是不参与所有聚合函数运算的。
+```sql
+SELECT 聚合函数(字段列表) FROM 表名 ;
+```
+> 注意：`NULL` 值是不参与所有聚合函数运算的。
 
 案例：
 
 A. 统计该企业员工数量
-
-对于count聚合函数，统计符合条件的总记录数，还可以通过 count(数字/字符串)的形式进行统计
-
-查询，比如：
-
-对于count(*) 、count(字段)、 count(1) 的具体原理，我们在进阶篇中SQL优化部分会详
-
-细讲解，此处大家只需要知道如何使用即可。
-
-B. 统计该企业员工的平均年龄
-
-##1 SELECT 聚合函数(字段列表) FROM 表名 ;
-
-```
+```sql
 select count(*) from emp; -- 统计的是总记录数
 select count(idcard) from emp; -- 统计的是idcard字段不为null的记录数
 ```
-##1
 
-##2
+对于 `count` 聚合函数，统计符合条件的总记录数，还可以通过 `count` (数字/字符串)的形式进行统计查询，比如：
+```sql
+select count( 1 ) from emp;
+```
 
-```
-1 select count( 1 ) from emp;
-```
-```
-1 select avg(age) from emp;
+对于 `count(*)`、`count(字段)`、`count(1)` 的具体原理，我们在进阶篇中 SQL 优化部分会详细讲解，此处大家只需要知道如何使用即可。
+
+B. 统计该企业员工的平均年龄
+```sql
+select avg(age) from emp;
 ```
 
 C. 统计该企业员工的最大年龄
+```sql
+select max(age) from emp;
+```
 
 D. 统计该企业员工的最小年龄
+```sql
+select min(age) from emp;
+```
 
 E. 统计西安地区员工的年龄之和
+```sql
+select sum(age) from emp where workaddress = '西安';
+```
 
 #### 2.6.5 分组查询
 
 1、语法
+```sql
+SELECT 字段列表 FROM 表名 [ WHERE 条件 ] GROUP BY 分组字段名 [ HAVING 分组
+```
 
-2、where与having区别
+2、where 与 having 区别
 
-执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组
-
-之后对结果进行过滤。
-
-判断条件不同：where不能对聚合函数进行判断，而having可以。
+- 执行时机不同：`where` 是分组之前进行过滤，不满足 `where` 条件，不参与分组；而 `having` 是分组之后对结果进行过滤。
+- 判断条件不同：`where` 不能对聚合函数进行判断，而 `having` 可以。
 
 注意事项:
 
 - 分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义。
-- 执行顺序: where > 聚合函数 > having 。
-- 支持多字段分组, 具体语法为 : group by columnA,columnB
+- 执行顺序: `where` > 聚合函数 > `having`.
+- 支持多字段分组, 具体语法为：`group by columnA, columnB`
 
 案例:
 
-A. 根据性别分组 , 统计男性员工 和 女性员工的数量
-
-B. 根据性别分组 , 统计男性员工 和 女性员工的平均年龄
-
-```
-1 select max(age) from emp;
-```
-```
-1 select min(age) from emp;
-```
-```
-1 select sum(age) from emp where workaddress = '西安';
-```
-##SELECT 字段列表 FROM 表名 [ WHERE 条件 ] GROUP BY 分组字段名 [ HAVING 分组
-
-##后过滤条件 ];
-
-##1
-
-```
-1 select gender, count(*) from emp group by gender ;
-```
-```
-1 select gender, avg(age) from emp group by gender ;
+A. 根据性别分组, 统计男性员工和女性员工的数量
+```sql
+select gender, count(*) from emp group by gender ;
 ```
 
-C. 查询年龄小于 45 的员工 , 并根据工作地址分组 , 获取员工数量大于等于 3 的工作地址
+B. 根据性别分组, 统计男性员工和女性员工的平均年龄
+```sql
+select gender, avg(age) from emp group by gender ;
+```
+
+C. 查询年龄小于 45 的员工，并根据工作地址分组，获取员工数量大于等于 3 的工作地址
+```sql
+select workaddress, count(*) address_count from emp where age < 45 group by workaddress having address_count >= 3 ;
+```
 
 D. 统计各个工作地址上班的男性及女性员工的数量
+```sql
+select workaddress, gender, count(*) '数量' from emp group by gender, workaddress;
+```
 
 #### 2.6.6 排序查询
 
 排序在日常开发中是非常常见的一个操作，有升序排序，也有降序排序。
 
 1、语法
+```sql
+SELECT 字段列表 FROM 表名 ORDER BY 字段 1 排序方式1 , 字段 2 排序方式2 ;
+```
 
 2、排序方式
 
-ASC : 升序(默认值)
-
-DESC: 降序
+- ASC : 升序(默认值)
+- DESC: 降序
 
 注意事项：
 
-- 如果是升序, 可以不指定排序方式ASC ;
-- 如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序 ;
+- 如果是升序, 可以不指定排序方式 `ASC`
+- 如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序
 
 案例:
 
 A. 根据年龄对公司的员工进行升序排序
-
-B. 根据入职时间, 对员工进行降序排序
-
-```
-select workaddress, count(*) address_count from emp where age < 45 group by
-workaddress having address_count >= 3 ;
-```
-##1
-
-```
-select workaddress, gender, count(*) '数量' from emp group by gender , workaddress
-;
-```
-##1
-
-##1 SELECT 字段列表 FROM 表名 ORDER BY 字段 1 排序方式1 , 字段 2 排序方式2 ;
-
-```
+```sql
 select * from emp order by age asc;
 select * from emp order by age;
 ```
-##1
 
-##2
-
-```
-1 select * from emp order by entrydate desc;
+B. 根据入职时间, 对员工进行降序排序
+```sql
+select * from emp order by entrydate desc;
 ```
 
-C. 根据年龄对公司的员工进行升序排序 , 年龄相同 , 再按照入职时间进行降序排序
+C. 根据年龄对公司的员工进行升序排序，年龄相同，再按照入职时间进行降序排序
+```sql
+select * from emp order by age asc, entrydate desc;
+```
 
 #### 2.6.7 分页查询
 
-分页操作在业务系统开发时，也是非常常见的一个功能，我们在网站中看到的各种各样的分页条，后台
-
-都需要借助于数据库的分页操作。
+分页操作在业务系统开发时，也是非常常见的一个功能，我们在网站中看到的各种各样的分页条，后台都需要借助于数据库的分页操作。
 
 1、语法
+```sql
+SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数 ;
+```
 
 注意事项:
 
-- 起始索引从 0 开始，起始索引 = （查询页码 - 1）* 每页显示记录数。
-- 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT。
-- 如果查询的是第一页数据，起始索引可以省略，直接简写为 limit 10 。
+- 起始索引从 0 开始，起始索引 = （查询页码 - 1）* 每页显示记录数
+- 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL 中是 `LIMIT`
+- 如果查询的是第一页数据，起始索引可以省略，直接简写为 limit 10` 
 
 案例:
 
 A. 查询第 1 页员工数据, 每页展示 10 条记录
+```sql
+select * from emp limit 0, 10;
+select * from emp limit 10;
+```
 
-B. 查询第 2 页员工数据, 每页展示 10 条记录 --------> (页码-1)*页展示记录数
+B. 查询第 2 页员工数据, 每页展示 10 条记录 --------> (页码 - 1) * 页展示记录数
+```
+select * from emp limit 10, 10;
+```
 
 #### 2.6.8 案例
 
 1、查询年龄为20,21,22,23岁的员工信息。
-
-```
-1 select * from emp order by age asc , entrydate desc;
-```
-##1 SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数 ;
-
-```
-select * from emp limit 0 , 10 ;
-select * from emp limit 10 ;
-```
-##1
-
-##2
-
-```
-1 select * from emp limit 10 , 10 ;
-```
-```
-1 select * from emp where gender = '女' and age in( 20 , 21 , 22 , 23 );
+```sql
+select * from emp where gender = '女' and age in(20, 21, 22, 23);
 ```
 
-2、查询性别为 男 ，并且年龄在 20-40 岁(含)以内的姓名为三个字的员工。
+2、查询性别为男，并且年龄在 20-40 岁（含）以内的姓名为三个字的员工。
+```sql
+select * from emp where gender = '男' and ( age between 20 and 40 ) and name like '___';
+```
 
-3、统计员工表中, 年龄小于 60 岁的 , 男性员工和女性员工的人数。
+3、统计员工表中，年龄小于 60 岁的，男性员工和女性员工的人数。
+```sql
+select gender, count(*) from emp where age < 60 group by gender;
+```
 
-4、查询所有年龄小于等于 35 岁员工的姓名和年龄，并对查询结果按年龄升序排序，如果年龄相同按
+4、查询所有年龄小于等于 35 岁员工的姓名和年龄，并对查询结果按年龄升序排序，如果年龄相同按入职时间降序排序。
+```sql
+select name , age from emp where age <= 35 order by age asc , entrydate desc;
+```
 
-入职时间降序排序。
-
-5、查询性别为男，且年龄在20-40 岁(含)以内的前 5 个员工信息，对查询的结果按年龄升序排序，
-
-年龄相同按入职时间升序排序。
+5、查询性别为男，且年龄在20-40 岁(含)以内的前 5 个员工信息，对查询的结果按年龄升序排序，年龄相同按入职时间升序排序。
+```sql
+select * from emp where gender = '男' and age between 20 and 40 order by age asc, entrydate asc limit 5;
+```
 
 #### 2.6.9 执行顺序
 
-在讲解DQL语句的具体语法之前，我们已经讲解了DQL语句的完整语法，及编写顺序，接下来，我们要
-
-来说明的是DQL语句在执行时的执行顺序，也就是先执行那一部分，后执行那一部分。
+在讲解 DQL 语句的具体语法之前，我们已经讲解了 DQL 语句的完整语法，及编写顺序，接下来，我们要来说明的是 DQL 语句在执行时的执行顺序，也就是先执行那一部分，后执行那一部分。
 
 验证：
 
 查询年龄大于 15 的员工姓名、年龄，并根据年龄进行升序排序。
-
+```sql
+select name, age from emp where age > 15 order by age asc;
 ```
-select * from emp where gender = '男' and ( age between 20 and 40 ) and name like
-'___';
+
+在查询时，我们给 emp 表起一个别名 e，然后在 `select` 及 `where` 中使用该别名。
+```sql
+select e.name, e.age from emp e where e.age > 15 order by age asc;
 ```
-##1
 
+执行上述 SQL 语句后，我们看到依然可以正常的查询到结果，此时就说明：`from` 先执行，然后 `where` 和 `select` 执行。那 `where` 和 `select` 到底哪个先执行呢?
+
+此时，此时我们可以给 `select` 后面的字段起别名，然后在 `where` 中使用这个别名，然后看看是否可以执行成功。
+
+```sql
+select e.name ename, e.age eage from emp e where eage > 15 order by age asc;
 ```
-1 select gender, count(*) from emp where age < 60 group by gender;
-```
-```
-1 select name , age from emp where age <= 35 order by age asc , entrydate desc;
-```
-```
-select * from emp where gender = '男' and age between 20 and 40 order by age asc ,
-entrydate asc limit 5 ;
-```
-##1
 
+执行上述SQL报错了：
 
-在查询时，我们给emp表起一个别名 e，然后在select 及 where中使用该别名。
-
-执行上述SQL语句后，我们看到依然可以正常的查询到结果，此时就说明： from 先执行, 然后
-
-where 和 select 执行。那 where 和 select 到底哪个先执行呢?
-
-此时，此时我们可以给select后面的字段起别名，然后在 where 中使用这个别名，然后看看是否可
-
-以执行成功。
-
-执行上述SQL报错了:
-
-由此我们可以得出结论: from 先执行，然后执行 where ， 再执行select 。
+由此我们可以得出结论：`from` 先执行，然后执行 `where`,再执行 `select`.
 
 接下来，我们再执行如下SQL语句，查看执行效果：
+```sql
+select e.name ename, e.age eage from emp e where e.age > 15 order by eage asc;
+```
 
-结果执行成功。 那么也就验证了: order by 是在select 语句之后执行的。
+结果执行成功，那么也就验证了：`order by` 是在 `select` 语句之后执行的。
 
-综上所述，我们可以看到DQL语句的执行顺序为： from ... where ... group by ...
-
-having ... select ... order by ... limit ...
+综上所述，我们可以看到DQL语句的执行顺序为：`from ... where ... group by ... having ... select ... order by ... limit ...`
 
 ### 2.7 DCL
 
@@ -1298,18 +1111,6 @@ DCL英文全称是 Data Control Language (数据控制语言)，用来管理数�
 
 问权限。
 
-```
-1 select name , age from emp where age > 15 order by age asc;
-```
-```
-1 select e.name , e.age from emp e where e.age > 15 order by age asc;
-```
-```
-1 select e.name ename , e.age eage from emp e where eage > 15 order by age asc;
-```
-```
-1 select e.name ename , e.age eage from emp e where e.age > 15 order by eage asc;
-```
 
 #### 2.7.1 管理用户
 
@@ -1334,14 +1135,14 @@ DCL英文全称是 Data Control Language (数据控制语言)，用来管理数�
 - 在MySQL中需要通过用户名@主机名的方式，来唯一标识一个用户。
 
 ```
-1 select * from mysql.user;
+select * from mysql.user;
 ```
-##1 CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+ CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
 
 ```
 1 ALTER USER '用户名'@'主机名' IDENTIFIED WITH mysql_native_password BY '新密码' ;
 ```
-##1 DROP USER '用户名'@'主机名' ;
+ DROP USER '用户名'@'主机名' ;
 
 
 权限 说明
@@ -1417,11 +1218,11 @@ C. 撤销 'heima'@'%' 用户的itcast数据库的所有权限
 
 ## 3. 函数
 
-##1 SHOW GRANTS FOR '用户名'@'主机名' ;
+ SHOW GRANTS FOR '用户名'@'主机名' ;
 
-##1 GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
+ GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
 
-##1 REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
+ REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
 
 ```
 1 show grants for 'heima'@'%';
@@ -1499,22 +1300,22 @@ F. trim : 去除空格
 G. substring : 截取子字符串
 
 ```
-1 select concat('Hello' , ' MySQL');
+select concat('Hello' , ' MySQL');
 ```
 ```
-1 select lower('Hello');
+select lower('Hello');
 ```
 ```
-1 select upper('Hello');
+select upper('Hello');
 ```
 ```
-1 select lpad('01', 5 , '-');
+select lpad('01', 5 , '-');
 ```
 ```
-1 select rpad('01', 5 , '-');
+select rpad('01', 5 , '-');
 ```
 ```
-1 select trim(' Hello MySQL ');
+select trim(' Hello MySQL ');
 ```
 
 案例:
@@ -1530,7 +1331,7 @@ G. substring : 截取子字符串
 常见的数值函数如下：
 
 ```
-1 select substring('Hello MySQL', 1 , 5 );
+select substring('Hello MySQL', 1 , 5 );
 ```
 ```
 1 update emp set workno = lpad(workno, 5 , '0');
@@ -1569,22 +1370,22 @@ E. round：四舍五入
 上乘以 1000000 ，然后舍弃小数部分，如果长度不足 6 位，补 0
 
 ```
-1 select ceil(1.1);
+select ceil(1.1);
 ```
 ```
-1 select floor(1.9);
+select floor(1.9);
 ```
 ```
-1 select mod( 7 , 4 );
+select mod( 7 , 4 );
 ```
 ```
-1 select rand();
+select rand();
 ```
 ```
-1 select round(2.344, 2 );
+select round(2.344, 2 );
 ```
 ```
-1 select lpad(round(rand()* 1000000 , 0 ), 6 , '0');
+select lpad(round(rand()* 1000000 , 0 ), 6 , '0');
 ```
 
 函数 功能
@@ -1632,24 +1433,24 @@ D. YEAR , MONTH , DAY：当前年、月、日
 E. date_add：增加指定的时间间隔
 
 ```
-1 select curdate();
+select curdate();
 ```
 ```
-1 select curtime();
+select curtime();
 ```
 ```
-1 select now();
+select now();
 ```
 ```
 select YEAR(now());
 select MONTH(now());
 select DAY(now());
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 
 函数 功能
@@ -1699,19 +1500,19 @@ F. datediff：获取两个日期相差的天数
 A. if
 
 ```
-1 select date_add(now(), INTERVAL 70 YEAR );
+select date_add(now(), INTERVAL 70 YEAR );
 ```
 ```
-1 select datediff('2021-10-01', '2021-12-01');
+select datediff('2021-10-01', '2021-12-01');
 ```
 ```
 select name, datediff(curdate(), entrydate) as 'entrydays' from emp order by
 entrydays desc;
 ```
-##1
+
 
 ```
-1 select if(false, 'Ok', 'Error');
+select if(false, 'Ok', 'Error');
 ```
 
 B. ifnull
@@ -1733,11 +1534,11 @@ select ifnull('','Default');
 ```
 select ifnull(null,'Default');
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -1750,11 +1551,11 @@ name,
 '二线城市' end ) as '工作地址'
 from emp;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -1769,7 +1570,7 @@ chinese int comment '语文'
 insert into score(id, name, math, english, chinese) VALUES ( 1 , 'Tom', 67 , 88 , 95
 ), ( 2 , 'Rose' , 23 , 66 , 90 ),( 3 , 'Jack', 56 , 98 , 76 );
 ```
-##1 2 3 4 5 6 7 8
+ 2 3 4 5 6 7 8
 
 
 MySQL的常见函数我们学习完了，那接下来，我们就来分析一下，在前面讲到的两个函数的案例场景，
@@ -1806,7 +1607,7 @@ end ) '英语',
 end ) '语文'
 from score;
 ```
-##1 2 3 4 5 6 7
+ 2 3 4 5 6 7
 
 
 约束 描述 关键字
@@ -1901,7 +1702,7 @@ status char( 1 ) default '1' COMMENT '状态',
 gender char( 1 ) COMMENT '性别'
 );
 ```
-##1 2 3 4 5 6 7
+ 2 3 4 5 6 7
 
 ```
 insert into tb_user(name,age,status,gender) values ('Tom1', 19 ,'1','男'),
@@ -1920,7 +1721,7 @@ insert into tb_user(name,age,status,gender) values ('Tom5', 121 ,'1','男');
 ```
 insert into tb_user(name,age,gender) values ('Tom5', 120 ,'男');
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -1982,7 +1783,7 @@ VALUES
 ( 5 , '常遇春', 43 , '开发', 10500 , '2004-09-07', 3 , 1 ),( 6 , '小昭', 19 , '程
 序员鼓励师', 6600 , '2004-10-12', 2 , 1 );
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -2037,11 +1838,11 @@ VALUES
 
 ##);
 
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -2051,13 +1852,13 @@ VALUES
 
 ##REFERENCES 主表 (主表列名) ;
 
-##1
+
 
 ```
 alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
 dept(id);
 ```
-##1
+
 
 
 行为 说明
@@ -2104,7 +1905,7 @@ DEFAULT 父表有变更时，子表将外键列设置成一个默认的值 (Inno
 
 演示如下：
 
-##1 ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
+ ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
 
 ```
 1 alter table emp drop foreign key fk_emp_dept_id;
@@ -2113,7 +1914,7 @@ DEFAULT 父表有变更时，子表将外键列设置成一个默认的值 (Inno
 
 ##主表名 (主表字段名) ON UPDATE CASCADE ON DELETE CASCADE;
 
-##1
+
 
 
 由于NO ACTION 是默认行为，我们前面语法演示的时候，已经测试过了，就不再演示了，这里我们再
@@ -2144,13 +1945,13 @@ emp、dept表的数据恢复了。
 alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
 dept(id) on update cascade on delete cascade ;
 ```
-##1
+
 
 ```
 alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
 dept(id) on update set null on delete set null ;
 ```
-##1
+
 
 
 我们发现父表的记录是可以正常的删除的，父表的数据删除之后，再打开子表 emp，我们发现子表emp
@@ -2216,7 +2017,7 @@ insert into course values (null, 'Java'), (null, 'PHP'), (null , 'MySQL') ,
 ```
 create table student_course(
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -2290,7 +2091,7 @@ major varchar( 50 ) comment '专业',
 primaryschool varchar( 50 ) comment '小学',
 middleschool varchar( 50 ) comment '中学',
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -2380,7 +2181,7 @@ INSERT INTO dept (id, name) VALUES ( 1 , '研发部'), ( 2 , '市场部'),( 3 , 
 create table emp(
 id int auto_increment comment 'ID' primary key,
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -2562,9 +2363,9 @@ ON ...
 
 注意事项:
 
-##1 SELECT 字段列表 FROM 表1 , 表 2 WHERE 条件 ... ;
+ SELECT 字段列表 FROM 表1 , 表 2 WHERE 条件 ... ;
 
-##1 SELECT 字段列表 FROM 表1 [ INNER ] JOIN 表 2 ON 连接条件 ... ;
+ SELECT 字段列表 FROM 表1 [ INNER ] JOIN 表 2 ON 连接条件 ... ;
 
 ```
 select emp.name , dept.name from emp , dept where emp.dept_id = dept.id ;
@@ -2573,11 +2374,11 @@ select emp.name , dept.name from emp , dept where emp.dept_id = dept.id ;
 -- 为每一张表起别名,简化SQL编写
 select e.name,d.name from emp e , dept d where e.dept_id = d.id;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -2588,11 +2389,11 @@ select e.name, d.name from emp e inner join dept d on e.dept_id = d.id;
 -- 为每一张表起别名,简化SQL编写
 select e.name, d.name from emp e join dept d on e.dept_id = d.id;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -2625,9 +2426,9 @@ A. 查询emp表的所有数据, 和对应的部门信息
 
 B. 查询dept表的所有数据, 和对应的员工信息(右外连接)
 
-##1 SELECT 字段列表 FROM 表1 LEFT [ OUTER ] JOIN 表 2 ON 条件 ... ;
+ SELECT 字段列表 FROM 表1 LEFT [ OUTER ] JOIN 表 2 ON 条件 ... ;
 
-##1 SELECT 字段列表 FROM 表1 RIGHT [ OUTER ] JOIN 表 2 ON 条件 ... ;
+ SELECT 字段列表 FROM 表1 RIGHT [ OUTER ] JOIN 表 2 ON 条件 ... ;
 
 ```
 select e.*, d.name from emp e left outer join dept d on e.dept_id = d.id;
@@ -2635,11 +2436,11 @@ select e.*, d.name from emp e left outer join dept d on e.dept_id = d.id;
 ```
 select e.*, d.name from emp e left join dept d on e.dept_id = d.id;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 
 由于需求中提到，要查询dept表的所有数据，所以是不能内连接查询的，需要考虑使用外连接查
@@ -2682,16 +2483,16 @@ select d.*, e.* from emp e right outer join dept d on e.dept_id = d.id;
 ```
 select d.*, e.* from dept d left outer join emp e on e.dept_id = d.id;
 ```
-##1
 
-##2
 
-##3
 
-##1 SELECT 字段列表 FROM 表A 别名A JOIN 表A 别名B ON 条件 ... ;
+
+
+
+ SELECT 字段列表 FROM 表A 别名A JOIN 表A 别名B ON 条件 ... ;
 
 ```
-1 select a.name , b.name from emp a , emp b where a.managerid = b.id;
+select a.name , b.name from emp a , emp b where a.managerid = b.id;
 ```
 
 注意事项:
@@ -2720,30 +2521,30 @@ A. 将薪资低于 5000 的员工 , 和 年龄大于 50 岁的员工全部查询
 select a.name '员工', b.name '领导' from emp a left join emp b on a.managerid =
 b.id;
 ```
-##1
 
-##SELECT 字段列表 FROM 表A ...
+
+SELECT 字段列表 FROM 表A ...
 
 ##UNION [ ALL ]
 
-##SELECT 字段列表 FROM 表B ....;
+SELECT 字段列表 FROM 表B ....;
 
-##1
 
-##2
 
-##3
+
+
+
 
 ```
 select * from emp where salary < 5000
 union all
 select * from emp where age > 50 ;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 
 union all查询出来的结果，仅仅进行简单的合并，并未去重。
@@ -2773,11 +2574,11 @@ select * from emp where salary < 5000
 union
 select * from emp where age > 50 ;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ```
 1 SELECT * FROM t1 WHERE column1 = ( SELECT column1 FROM t2 );
@@ -2824,10 +2625,10 @@ B. 查询在 "方东白" 入职之后的员工信息
 ①. 查询 方东白 的入职日期
 
 ```
-1 select id from dept where name = '销售部';
+select id from dept where name = '销售部';
 ```
 ```
-1 select * from emp where dept_id = (select id from dept where name = '销售部');
+select * from emp where dept_id = (select id from dept where name = '销售部');
 ```
 
 操作符 描述
@@ -2863,22 +2664,22 @@ A. 查询 "销售部" 和 "市场部" 的所有员工信息
 B. 查询比 财务部 所有人工资都高的员工信息
 
 ```
-1 select entrydate from emp where name = '方东白';
+select entrydate from emp where name = '方东白';
 ```
 ```
 select * from emp where entrydate > (select entrydate from emp where name = '方东
 白');
 ```
-##1
+
 
 ```
-1 select id from dept where name = '销售部' or name = '市场部';
+select id from dept where name = '销售部' or name = '市场部';
 ```
 ```
 select * from emp where dept_id in (select id from dept where name = '销售部' or
 name = '市场部');
 ```
-##1
+
 
 
 分解为以下两步:
@@ -2915,29 +2716,29 @@ select id from dept where name = '财务部';
 ```
 select salary from emp where dept_id = (select id from dept where name = '财务部');
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ```
 select * from emp where salary > all ( select salary from emp where dept_id =
 (select id from dept where name = '财务部') );
 ```
-##1
+
 
 ```
-1 select salary from emp where dept_id = (select id from dept where name = '研发部');
+select salary from emp where dept_id = (select id from dept where name = '研发部');
 ```
 ```
 select * from emp where salary > any ( select salary from emp where dept_id =
 (select id from dept where name = '研发部') );
 ```
-##1
+
 
 ```
-1 select salary, managerid from emp where name = '张无忌';
+select salary, managerid from emp where name = '张无忌';
 ```
 
 ②. 查询与 "张无忌" 的薪资及直属领导相同的员工信息 ;
@@ -2970,25 +2771,25 @@ B. 查询入职日期是 "2006-01-01" 之后的员工信息 , 及其部门信息
 select * from emp where (salary,managerid) = (select salary, managerid from emp
 where name = '张无忌');
 ```
-##1
+
 
 ```
-1 select job, salary from emp where name = '鹿杖客' or name = '宋远桥';
+select job, salary from emp where name = '鹿杖客' or name = '宋远桥';
 ```
 ```
 select * from emp where (job,salary) in ( select job, salary from emp where name =
 '鹿杖客' or name = '宋远桥' );
 ```
-##1
+
 
 ```
-1 select * from emp where entrydate > '2006-01-01';
+select * from emp where entrydate > '2006-01-01';
 ```
 ```
 select e.*, d.* from (select * from emp where entrydate > '2006-01-01') e left
 join dept d on e.dept_id = d.id ;
 ```
-##1
+
 
 
 ### 5.7 多表查询案例
@@ -3028,7 +2829,7 @@ insert into salgrade values ( 6 , 15001 , 20000 );
 insert into salgrade values ( 7 , 20001 , 25000 );
 insert into salgrade values ( 8 , 25001 , 30000 );
 ```
-##1 2 3 4 5 6 7 8 9
+ 2 3 4 5 6 7 8 9
 
 ##10
 
@@ -3041,13 +2842,13 @@ insert into salgrade values ( 8 , 25001 , 30000 );
 ##14
 
 ```
-1 select e.name , e.age , e.job , d.name from emp e , dept d where e.dept_id = d.id;
+select e.name , e.age , e.job , d.name from emp e , dept d where e.dept_id = d.id;
 ```
 ```
 select e.name , e.age , e.job , d.name from emp e inner join dept d on e.dept_id =
 d.id where e.age < 30 ;
 ```
-##1
+
 
 
 3、查询拥有员工的部门ID、部门名称
@@ -3081,13 +2882,13 @@ emp.dept_id = dept.id
 查询条件 : dept.name = '研发部'
 
 ```
-1 select distinct d.id , d.name from emp e , dept d where e.dept_id = d.id;
+select distinct d.id , d.name from emp e , dept d where e.dept_id = d.id;
 ```
 ```
 select e.*, d.name from emp e left join dept d on e.dept_id = d.id where e.age >
 40 ;
 ```
-##1
+
 
 ##-- 方式一
 
@@ -3098,11 +2899,11 @@ s.losal and e.salary <= s.hisal;
 select e.* , s.grade , s.losal, s.hisal from emp e , salgrade s where e.salary
 between s.losal and s.hisal;
 ```
-##1
 
-##2
 
-##3
+
+
+
 
 ##4
 
@@ -3110,7 +2911,7 @@ between s.losal and s.hisal;
 select e.* , s.grade from emp e , dept d , salgrade s where e.dept_id = d.id and (
 e.salary between s.losal and s.hisal ) and d.name = '研发部';
 ```
-##1
+
 
 
 7、查询 "研发部" 员工的平均工资
@@ -3141,33 +2942,33 @@ e.salary between s.losal and s.hisal ) and d.name = '研发部';
 select avg(e.salary) from emp e, dept d where e.dept_id = d.id and d.name = '研发
 部';
 ```
-##1
+
 
 ```
-1 select salary from emp where name = '灭绝';
+select salary from emp where name = '灭绝';
 ```
 ```
-1 select * from emp where salary > ( select salary from emp where name = '灭绝' );
+select * from emp where salary > ( select salary from emp where name = '灭绝' );
 ```
 ```
-1 select avg(salary) from emp;
+select avg(salary) from emp;
 ```
 ```
-1 select * from emp where salary > ( select avg(salary) from emp );
+select * from emp where salary > ( select avg(salary) from emp );
 ```
 ```
 select avg(e1.salary) from emp e1 where e1.dept_id = 1 ;
 select avg(e1.salary) from emp e1 where e1.dept_id = 2 ;
 ```
-##1
 
-##2
+
+
 
 ```
 select * from emp e2 where e2.salary < ( select avg(e1.salary) from emp e1 where
 e1.dept_id = e2.dept_id );
 ```
-##1
+
 
 
 11). 查询所有的部门信息, 并统计部门的员工人数
@@ -3287,7 +3088,7 @@ COMMIT;
 
 3、回滚事务
 ```sql
-##1 ROLLBACK;
+ ROLLBACK;
 ```
 
 转账案例：
