@@ -16,7 +16,7 @@ tag:
 
 在这一章节，我们主要介绍两个部分，数据库相关概念及MySQL数据库的介绍、下载、安装、启动及连接。
 
-### 1.数据库相关概念
+### 1.1 数据库相关概念
 
 在这一部分，我们先来讲解三个概念：数据库、数据库管理系统、SQL。
 
@@ -40,7 +40,7 @@ tag:
 
 ### 1.2 MySQL数据库
 
-#### 1.2.版本
+#### 1.2.1 版本
 
 官方： https://www.mysql.com/
 
@@ -141,7 +141,7 @@ MySQL是关系型数据库，是基于二维表进行数据存储的，具体的
 
 全称 Structured Query Language，结构化查询语言。操作关系型数据库的编程语言，定义了一套操作关系型数据库统一标准。
 
-### 2.SQL通用语法
+### 2.1 SQL通用语法
 
 在学习具体的SQL语句之前，先来了解一下SQL语言的同于语法。
 
@@ -170,7 +170,7 @@ SQL语句，根据其功能，主要分为四类：DDL、DML、DQL、DCL.
 
 Data Definition Language，数据定义语言，用来定义数据库对象(数据库，表，字段) 。
 
-#### 2.3.数据库操作
+#### 2.3.1 数据库操作
 
 1、查询所有数据库
 ```sql
@@ -227,7 +227,7 @@ use itcast;
 
 #### 2.3.2 表操作
 
-##### 2.3.2.表操作-查询创建
+##### 2.3.2.1 表操作-查询创建
 
 1、查询当前数据库所有表
 ```sql
@@ -482,7 +482,7 @@ TRUNCATE TABLE 表名;
 
 接下来，我们来介绍一下 DataGrip 该如何安装、使用。
 
-#### 2.4.安装
+#### 2.4.1 安装
 
 1、找到资料中准备好的安装包，双击开始安装
 
@@ -545,7 +545,7 @@ DML 英文全称是 `Data Manipulation Language` (数据操作语言)，用来�
 - 修改数据（UPDATE）
 - 删除数据（DELETE）
 
-#### 2.5.添加数据
+#### 2.5.1 添加数据
 
 1、给指定字段添加数据
 ```sql
@@ -706,7 +706,7 @@ INSERT INTO emp (id, workno, name, gender, age, idcard, workaddress, entrydate) 
 
 准备完毕后，我们就可以看到 emp 表中准备的 16 条数据。接下来，我们再来完成 DQL 语法的学习。
 
-#### 2.6.基本语法
+#### 2.6.1 基本语法
 
 DQL 查询语句，语法结构如下：
 ```sql
@@ -1109,7 +1109,7 @@ select e.name ename, e.age eage from emp e where e.age > 15 order by eage asc;
 
 DCL 英文全称是 `Data Control Language` (数据控制语言)，用来管理数据库用户、控制数据库的访问权限。
 
-#### 2.7.管理用户
+#### 2.7.1 管理用户
 
 1、查询用户
 ```sql
@@ -1467,366 +1467,197 @@ MySQL 的常见函数我们学习完了，那接下来，我们就来分析一�
 
 ## 4. 约束
 
-### 4.概述
+### 4.1 概述
 
 概念：约束是作用于表中字段上的规则，用于限制存储在表中的数据。
-
 目的：保证数据库中数据的正确、有效性和完整性。
-
 分类:
 
- 2 3 4 5 6 7
+|约束| 描述| 关键字|
+| -- | -- | -- |
+|非空约束| 限制该字段的数据不能为null| NOT NULL|
+|唯一约束| 保证该字段的所有数据都是唯一、不重复的| UNIQUE|
+|主键约束| 主键是一行数据的唯一标识，要求非空且唯一| PRIMARY KEY|
+|默认约束| 保存数据时，如果未指定该字段的值，则采用默认值| DEFAULT|
+|检查约束(8.0.16版本之后)| 保证字段值满足某一个条件| CHECK|
+|外键约束| 用来让两张表的数据之间建立连接，保证数据的一致性和完整性| FOREIGN KEY|
 
-
-约束 描述 关键字
-
-非空约束 限制该字段的数据不能为null NOT NULL
-
-唯一约束 保证该字段的所有数据都是唯一、不重复的 UNIQUE
-
-主键约束 主键是一行数据的唯一标识，要求非空且唯一
-
-PRIMARY
-
-KEY
-
-默认约束 保存数据时，如果未指定该字段的值，则采用默认值 DEFAULT
-
-检查约束(8.0.16版本
-
-之后)
-
-保证字段值满足某一个条件 CHECK
-
-外键约束 用来让两张表的数据之间建立连接，保证数据的一致
-
-性和完整性
-
-FOREIGN
-
-KEY
-
-字段名
-
-字段含
-
-义 字段类型 约束条件 约束关键字
-
-id
-
-ID唯一
-
-标识 int 主键，并且自动增长
-
-PRIMARY KEY,
-
-AUTO_INCREMENT
-
-name 姓名 varchar(10) 不为空，并且唯一 NOT NULL , UNIQUE
-
-age 年龄 int 大于^0 ，并且小于等
-
-于 120
-
-CHECK
-
-status 状态 char(1)
-
-如果没有指定该值，
-
-默认为 DEFAULT
-
-gender 性别 char(1) 无
-
-注意：约束是作用于表中字段上的，可以在创建表/修改表的时候添加约束。
+> 注意：约束是作用于表中字段上的，可以在创建表/修改表的时候添加约束。
 
 ### 4.2 约束演示
 
-上面我们介绍了数据库中常见的约束，以及约束涉及到的关键字，那这些约束我们到底如何在创建表、
+上面我们介绍了数据库中常见的约束，以及约束涉及到的关键字，那这些约束我们到底如何在创建表、修改表的时候来指定呢，接下来我们就通过一个案例，来演示一下。
 
-修改表的时候来指定呢，接下来我们就通过一个案例，来演示一下。
+案例需求：
 
-案例需求： 根据需求，完成表结构的创建。需求如下：
+根据需求，完成表结构的创建，需求如下：
+
+|字段名| 字段含义| 字段类型| 约束条件| 约束关键字|
+| -- | -- | -- | -- | -- |
+|id| ID唯一标识| int| 主键，并且自动增长| PRIMARY KEY, AUTO_INCREMENT|
+|name| 姓名| varchar(10)| 不为空，并且唯一| NOT NULL, UNIQUE|
+|age| 年龄| int| 大于^0 ，并且小于等于 120| CHECK|
+|status| 状态| char(1)| 如果没有指定该值，默认为1| DEFAULT|
+|gender| 性别| char(1)| 无| |
 
 对应的建表语句为：
-
-
-在为字段添加约束时，我们只需要在字段之后加上约束的关键字即可，需要关注其语法。我们执行上面
-
-的SQL把表结构创建完成，然后接下来，就可以通过一组数据进行测试，从而验证一下，约束是否可以
-
-生效。
-
-上面，我们是通过编写SQL语句的形式来完成约束的指定，那加入我们是通过图形化界面来创建表结构
-
-时，又该如何来指定约束呢？ 只需要在创建表的时候，根据我们的需要选择对应的约束即可。
-
-```
+```sql
 CREATE TABLE tb_user(
-id int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID唯一标识',
-name varchar( 10 ) NOT NULL UNIQUE COMMENT '姓名' ,
-age int check (age > 0 && age <= 120 ) COMMENT '年龄' ,
-status char( ) default '1' COMMENT '状态',
-gender char( ) COMMENT '性别'
+  id int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID唯一标识',
+  name varchar(10) NOT NULL UNIQUE COMMENT '姓名',
+  age int check (age > 0 && age <= 120 ) COMMENT '年龄',
+  status char(1) default '1' COMMENT '状态',
+  gender char(1) COMMENT '性别'
 );
 ```
- 2 3 4 5 6 7
 
-```
-insert into tb_user(name,age,status,gender) values ('Tom1', 19 ,'1','男'),
-('Tom2', 25 ,'0','男');
-insert into tb_user(name,age,status,gender) values ('Tom3', 19 ,'1','男');
-```
-```
-insert into tb_user(name,age,status,gender) values (null, 19 ,'1','男');
-insert into tb_user(name,age,status,gender) values ('Tom3', 19 ,'1','男');
-```
-```
-insert into tb_user(name,age,status,gender) values ('Tom4', 80 ,'1','男');
-insert into tb_user(name,age,status,gender) values ('Tom5',- ,'1','男');
-insert into tb_user(name,age,status,gender) values ('Tom5', 12,'1','男');
-```
-```
-insert into tb_user(name,age,gender) values ('Tom5', 120 ,'男');
-```
- 2 3 4 5 6 7 8 9
+在为字段添加约束时，我们只需要在字段之后加上约束的关键字即可，需要关注其语法。我们执行上面的 SQL 把表结构创建完成，然后接下来，就可以通过一组数据进行测试，从而验证一下，约束是否可以生效。
+```sql
+insert into tb_user(name, age, status, gender) values ('Tom1', 19, '1', '男'),  ('Tom2', 25 ,'0', '男');
+insert into tb_user(name, age, status, gender) values ('Tom3', 19, '1', '男');
 
-##10
+insert into tb_user(name, age, status, gender) values (null, 19, '1', '男');
+insert into tb_user(name, age, status, gender) values ('Tom3', 19, '1', '男');
 
-##11
+insert into tb_user(name, age, status, gender) values ('Tom4', 80, '1', '男');
+insert into tb_user(name, age, status, gender) values ('Tom5', -1, '1', '男');
+insert into tb_user(name, age, status, gender) values ('Tom5', 12, '1', '男');
 
+insert into tb_user(name, age, gender) values ('Tom5', 120, '男');
+```
+
+上面，我们是通过编写SQL语句的形式来完成约束的指定，那加入我们是通过图形化界面来创建表结构时，又该如何来指定约束呢？ 只需要在创建表的时候，根据我们的需要选择对应的约束即可。
 
 ### 4.3 外键约束
 
-#### 4.3.介绍
+#### 4.3.1 介绍
 
 外键：用来让两张表的数据之间建立连接，从而保证数据的一致性和完整性。
 
 我们来看一个例子：
 
-左侧的emp表是员工表，里面存储员工的基本信息，包含员工的ID、姓名、年龄、职位、薪资、入职日
+左侧的 emp 表是员工表，里面存储员工的基本信息，包含员工的ID、姓名、年龄、职位、薪资、入职日期、上级主管ID、部门ID，在员工的信息中存储的是部门 的ID `dept_id`，而这个部门的 ID 是关联的部门表 dept 的主键id，那 emp 表的 `dept_id` 就是外键，关联的是另一张表的主键。
 
-期、上级主管ID、部门ID，在员工的信息中存储的是部门的ID dept_id，而这个部门的ID是关联的
-
-部门表dept的主键id，那emp表的dept_id就是外键,关联的是另一张表的主键。
-
-注意：目前上述两张表，只是在逻辑上存在这样一层关系；在数据库层面，并未建立外键关联，
-
-所以是无法保证数据的一致性和完整性的。
+> 注意：目前上述两张表，只是在逻辑上存在这样一层关系；在数据库层面，并未建立外键关联，所以是无法保证数据的一致性和完整性的。
 
 没有数据库外键关联的情况下，能够保证一致性和完整性呢，我们来测试一下。
 
-
-准备数据
-
-接下来，我们可以做一个测试，删除id为 的部门信息。
-
-```
+准备数据：
+```sql
 create table dept(
-id int auto_increment comment 'ID' primary key,
-name varchar( 50 ) not null comment '部门名称'
+  id int auto_increment comment 'ID' primary key,
+  name varchar( 50 ) not null comment '部门名称'
 )comment '部门表';
-INSERT INTO dept (id, name) VALUES ( , '研发部'), ( 2 , '市场部'),( 3 , '财务部'), ( 4 ,
-'销售部'), ( 5 , '总经办');
-```
-```
+INSERT INTO dept(id, name) VALUES (1, '研发部'), (2, '市场部'),(3, '财务部'), (4, '销售部'), (5, '总经办');
+
 create table emp(
-id int auto_increment comment 'ID' primary key,
-name varchar( 50 ) not null comment '姓名',
-age int comment '年龄',
-job varchar( 20 ) comment '职位',
-salary int comment '薪资',
-entrydate date comment '入职时间',
-managerid int comment '直属领导ID',
-dept_id int comment '部门ID'
+  id int auto_increment comment 'ID' primary key,
+  name varchar( 50 ) not null comment '姓名',
+  age int comment '年龄',
+  job varchar( 20 ) comment '职位',
+  salary int comment '薪资',
+  entrydate date comment '入职时间',
+  managerid int comment '直属领导ID',
+  dept_id int comment '部门ID'
 )comment '员工表';
+
+INSERT INTO emp(id, name, age, job,salary, entrydate, managerid, dept_id) 
+  VALUES
+(1, '金庸', 66 , '总裁', 20000 , '2000-01-01', null, 5 ),
+(2, '张无忌', 20, '项目经理', 12500 , '2005-12-05', 1, 1),
+(3, '杨逍', 33, '开发', 8400 ,'2000-11-03', 2, 1),
+(4, '韦一笑', 48, '开发', 11000, '2002-02-05', 2, 1),
+(5, '常遇春', 43 , '开发', 10500, '2004-09-07', 3, 1),
+(6, '小昭', 19, '程序员鼓励师', 6600, '2004-10-12', 2, 1);
 ```
-```
-INSERT INTO emp (id, name, age, job,salary, entrydate, managerid, dept_id)
-VALUES
-( , '金庸', 66 , '总裁', 20000 , '2000-01-01', null, 5 ),( 2 , '张无忌', 20 ,
-'项目经理', 12500 , '2005-12-05', , ),
-( 3 , '杨逍', 33 , '开发', 8400 ,'2000-11-03', 2 , ),( 4 , '韦一笑', 48 , '开
-发', 11000 , '2002-02-05', 2 , ),
-( 5 , '常遇春', 43 , '开发', 10500 , '2004-09-07', 3 , ),( 6 , '小昭', 19 , '程
-序员鼓励师', 6600 , '2004-10-12', 2 , );
-```
- 2 3 4 5 6 7 8 9
 
-##10
+接下来，我们可以做一个测试，删除 id 为 1 的部门信息。
 
-##11
-
-##12
-
-##13
-
-##14
-
-##15
-
-##16
-
-##17
-
-##18
-
-##19
-
-##20
-
-##21
-
-
-结果，我们看到删除成功，而删除成功之后，部门表不存在id为 的部门，而在emp表中还有很多的员
-
-工，关联的为id为 的部门，此时就出现了数据的不完整性。 而要想解决这个问题就得通过数据库的
-
-外键约束。
+结果，我们看到删除成功，而删除成功之后，部门表不存在 id 为 1 的部门，而在emp表中还有很多的员工，关联的为 id 为 1 的部门，此时就出现了数据的不完整性。而要想解决这个问题就得通过数据库的外键约束。
 
 #### 4.3.2 语法
 
 1、添加外键
+```sql
+CREATE TABLE 表名(
+  字段名 数据类型,
+  ...
+  [CONSTRAINT] [外键名称] FOREIGN KEY (外键字段名) REFERENCES 主表 (主表列名)
+);
+```
+
+```sql
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名) REFERENCES 主表 (主表列名);
+```
 
 案例:
 
-为emp表的dept_id字段添加外键约束,关联dept表的主键id。
-
-添加了外键约束之后，我们再到dept表(父表)删除id为 的记录，然后看一下会发生什么现象。 此时
-
-将会报错，不能删除或更新父表记录，因为存在外键约束。
-
-##CREATE TABLE 表名(
-
-##字段名 数据类型,
-
-##...
-
-##[CONSTRAINT] [外键名称] FOREIGN KEY (外键字段名) REFERENCES 主表 (主表列名)
-
-##);
-
-
-
-
-
-
-
-##4
-
-##5
-
-##ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名)
-
-##REFERENCES 主表 (主表列名) ;
-
-
-
-```
-alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
-dept(id);
+为 emp 表的 `dept_id` 字段添加外键约束，关联 dept 表的主键 id .
+```sql
+alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references dept(id);
 ```
 
-
-
-行为 说明
-
-NO
-
-ACTION
-
-当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不
-
-允许删除/更新。 (与 RESTRICT 一致) 默认行为
-
-RESTRICT
-
-当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不
-
-允许删除/更新。 (与 NO ACTION 一致) 默认行为
-
-CASCADE 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有，则
-
-也删除/更新外键在子表中的记录。
-
-SET NULL 当在父表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表
-
-中该外键值为null（这就要求该外键允许取null）。
-
-SET
-
-DEFAULT 父表有变更时，子表将外键列设置成一个默认的值 (Innodb不支持)
+添加了外键约束之后，我们再到 dept 表(父表)删除 id 为 1 的记录，然后看一下会发生什么现象。
+此时将会报错，不能删除或更新父表记录，因为存在外键约束。
 
 2、删除外键
+```sql
+ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
+```
 
 案例：
 
-删除emp表的外键fk_emp_dept_id。
-
+删除 emp 表的外键 `fk_emp_dept_id`.
+```sql
+alter table emp drop foreign key fk_emp_dept_id;
+```
 #### 4.3.3 删除/更新行为
 
-添加了外键之后，再删除父表数据时产生的约束行为，我们就称为删除/更新行为。具体的删除/更新行
+添加了外键之后，再删除父表数据时产生的约束行为，我们就称为删除/更新行为。具体的删除/更新行为有以下几种：
 
-为有以下几种:
+|行为| 说明|
+| -- | -- |
+|NO ACTION| 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除/更新。(与 RESTRICT 一致) 默认行为|
+|RESTRICT| 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除/更新。(与 NO ACTION 一致) 默认行为|
+|CASCADE| 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有，则也删除/更新外键在子表中的记录。|
+|SET NULL| 当在父表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表中该外键值为null（这就要求该外键允许取null）。
+|SET DEFAULT| 父表有变更时，子表将外键列设置成一个默认的值 (Innodb不支持)|
 
-具体语法为:
+具体语法为：
+```sql
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段) REFERENCES 主表名 (主表字段名) ON UPDATE CASCADE ON DELETE CASCADE;
+```
 
 演示如下：
 
- ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
+由于 `NO ACTION` 是默认行为，我们前面语法演示的时候，已经测试过了，就不再演示了，这里我们再演示其他的两种行为：`CASCADE`、`SET NULL`.
 
+1、`CASCADE`
+
+A. 修改父表 id 为 1 的记录，将 id 修改为 6
+```sql
+alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references dept(id) on update cascade on delete cascade;
 ```
-alter table emp drop foreign key fk_emp_dept_id;
-```
-##ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段) REFERENCES
-
-##主表名 (主表字段名) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-
-由于NO ACTION 是默认行为，我们前面语法演示的时候，已经测试过了，就不再演示了，这里我们再
-
-演示其他的两种行为：CASCADE、SET NULL。
-
-1、CASCADE
-
-A. 修改父表id为 的记录，将id修改为 6
 
 我们发现，原来在子表中dept_id值为 的记录，现在也变为 6 了，这就是cascade级联的效果。
 
-在一般的业务系统中，不会修改一张表的主键值。
+> 在一般的业务系统中，不会修改一张表的主键值。
 
-B. 删除父表id为 6 的记录
+B. 删除父表 id 为 6 的记录
 
 我们发现，父表的数据删除成功了，但是子表中关联的记录也被级联删除了。
 
-2、SET NULL
-
-在进行测试之前，我们先需要删除上面建立的外键 fk_emp_dept_id。然后再通过数据脚本，将
-
-emp、dept表的数据恢复了。
-
-接下来，我们删除id为 的数据，看看会发生什么样的现象。
-
-```
-alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
-dept(id) on update cascade on delete cascade ;
+2、`SET NULL`
+在进行测试之前，我们先需要删除上面建立的外键 `fk_emp_dept_id`.然后再通过数据脚本，将 emp、dept 表的数据恢复了。
+```sql
+alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references dept(id) on update set null on delete set null;
 ```
 
+接下来，我们删除 id 为 1 的数据，看看会发生什么样的现象。
 
-```
-alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
-dept(id) on update set null on delete set null ;
-```
+我们发现父表的记录是可以正常的删除的，父表的数据删除之后，再打开子表 emp,我们发现子表 emp 的 `dept_id` 字段，原来 `dept_id` 为 1 的数据，现在都被置为 `NULL` 了。
 
-
-
-我们发现父表的记录是可以正常的删除的，父表的数据删除之后，再打开子表 emp，我们发现子表emp
-
-的dept_id字段，原来dept_id为 的数据，现在都被置为NULL了。
-
-这就是SET NULL这种删除/更新行为的效果。
+这就是 `SET NULL` 这种删除/更新行为的效果。
 
 ## 5. 多表查询
 
@@ -1834,7 +1665,7 @@ dept(id) on update set null on delete set null ;
 
 表查询，而本章节我们要学习的则是多表查询操作，主要从以下几个方面进行讲解。
 
-### 5.多表关系
+### 5.1 多表关系
 
 项目开发中，在进行数据库表结构设计时，会根据业务需求及业务模块之间的关系，分析并设计表结
 
@@ -1846,7 +1677,7 @@ dept(id) on update set null on delete set null ;
 
 一对一
 
-#### 5.1.一对多
+#### 5.1.1 一对多
 
 案例: 部门 与 员工的关系
 
@@ -1974,7 +1805,7 @@ middleschool varchar( 50 ) comment '中学',
 
 ### 5.2 多表查询概述
 
-#### 5.2.数据准备
+#### 5.2.1 数据准备
 
 1、删除之前 emp, dept表的测试数据
 
@@ -2327,7 +2158,7 @@ select e.*, d.name from emp e left join dept d on e.dept_id = d.id;
 
 ### 5.5 自连接
 
-#### 5.5.自连接查询
+#### 5.5.1 自连接查询
 
 自连接查询，顾名思义，就是自己连接自己，也就是把一张表连接查询多次。我们先来学习一下自连接
 
@@ -2427,7 +2258,7 @@ union 联合查询，会对查询出来的结果进行去重处理。
 
 ### 5.6 子查询
 
-#### 5.6.概述
+#### 5.6.1 概述
 
 1、概念
 
@@ -2866,7 +2697,7 @@ s.id = sc.studentid and sc.courseid = c.id ;
 
 ## 6. 事务
 
-### 6.事务简介
+### 6.1 事务简介
 
 **事务**是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系统提交或撤销操作请求，即这些操作要么同时成功，要么同时失败。
 
@@ -2895,7 +2726,7 @@ create table account(
 insert into account(name, money) VALUES ('张三', 2000 ), ('李四', 2000 );
 ```
 
-#### 6.2.未控制事务
+#### 6.2.1 未控制事务
 
 1、测试正常情况
 ```sql
