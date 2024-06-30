@@ -19,187 +19,110 @@ tag:
 错误日志是 MySQL 中最重要的日志之一，它记录了当 mysqld 启动和停止时，以及服务器在运行过程中发生任何严重错误时的相关信息。当数据库出现任何故障导致无法正常使用时，建议首先查看此日志。
 
 该日志是默认开启的，默认存放目录 `/var/log/`，默认的日志文件名为 `mysqld.log`.查看日志位置：
+```sql
+show variables like '%log_error%';
+```
 
 ### 1.2 二进制日志
 
 #### 1.2.1 介绍
 
-二进制日志（BINLOG）记录了所有的 DDL（数据定义语言）语句和 DML（数据操纵语言）语句，但
+二进制日志(BINLOG)记录了所有的 `DDL`（数据定义语言）语句和 `DML`（数据操纵语言）语句，但不包括数据查询（`SELECT`、`SHOW`）语句。
 
-不包括数据查询（SELECT、SHOW）语句。
+作用：
+1. 灾难时的数据恢复
+2. MySQL的主从复制，在 MySQL8 版本中，默认二进制日志是开启着的，涉及到的参数如下：
 
-作用：①. 灾难时的数据恢复；②. MySQL的主从复制。在MySQL8版本中，默认二进制日志是开启着
-
-的，涉及到的参数如下：
-
+```sql
+show variables like '%log_bin%';
 ```
-1 show variables like '%log_error%';
-```
-```
-1 show variables like '%log_bin%';
-```
-
-日志格式 含义
-
-STATEMENT
-
-基于SQL语句的日志记录，记录的是SQL语句，对数据进行修改的SQL都会记录在
-
-日志文件中。
-
-ROW 基于行的日志记录，记录的是每一行的数据变更。（默认）
-
-MIXED 混合了STATEMENT和ROW两种格式，默认采用STATEMENT，在某些特殊情况下会
-
-自动切换为ROW进行记录。
-
 参数说明：
 
-log_bin_basename：当前数据库服务器的binlog日志的基础名称(前缀)，具体的binlog文
-
-件名需要再该basename的基础上加上编号(编号从 000001 开始)。
-
-log_bin_index：binlog的索引文件，里面记录了当前服务器关联的binlog文件有哪些。
+- `log_bin_basename`:当前数据库服务器的 `binlog` 日志的基础名称(前缀)，具体的 `binlog` 文件名需要再该 `basename` 的基础上加上编号(编号从 000001 开始)
+- `log_bin_index`: `binlog` 的索引文件，里面记录了当前服务器关联的 `binlog` 文件有哪些
 
 #### 1.2.2 格式
 
-MySQL服务器中提供了多种格式来记录二进制日志，具体格式及特点如下：
+MySQL 服务器中提供了多种格式来记录二进制日志，具体格式及特点如下：
 
-如果我们需要配置二进制日志的格式，只需要在 /etc/my.cnf 中配置 binlog_format 参数即
+|日志格式| 含义|
+| -- | -- |
+|STATEMENT| 基于 SQL 语句的日志记录，记录的是 SQL 语句，对数据进行修改的 SQL 都会记录在日志文件中。|
+|ROW| 基于行的日志记录，记录的是每一行的数据变更。（默认）|
+|MIXED| 混合了 STATEMENT 和 ROW 两种格式，默认采用 STATEMENT，在某些特殊情况下会自动切换为 ROW 进行记录。|
 
-可。
+```sql
+show variables like '%binlog_format%';
+```
+
+如果我们需要配置二进制日志的格式，只需要在 `/etc/my.cnf` 中配置 `binlog_format` 参数即可。
 
 #### 1.2.3 查看
 
-由于日志是以二进制方式存储的，不能直接读取，需要通过二进制日志查询工具 mysqlbinlog 来查
+由于日志是以二进制方式存储的，不能直接读取，需要通过二进制日志查询工具 `mysqlbinlog` 来查看，具体语法：
+```sql
+mysqlbinlog [ 参数选项 ] logfilename
 
-看，具体语法：
-
+-- 参数选项：
+  -d 指定数据库名称，只列出指定的数据库相关操作。
+  -o 忽略掉日志中的前n行命令。
+  -v 将行事件（数据变更）重构为 SQL 语句
+  -vv 将行事件（数据变更）重构为 SQL 语句，并输出注释信息
 ```
-1 show variables like '%binlog_format%';
-```
-
-指令 含义
-
-reset master 删除全部 binlog 日志，删除之后，日志编号，将
-
-从 binlog.000001重新开始
-
-purge master logs to
-
-'binlog.*'
-
-删除 * 编号之前的所有日志
-
-purge master logs before
-
-'yyyy-mm-dd hh24:mi:ss'
-
-删除日志为 "yyyy-mm-dd hh24:mi:ss" 之前
-
-产生的所有日志
 
 #### 1.2.4 删除
 
-对于比较繁忙的业务系统，每天生成的binlog数据巨大，如果长时间不清除，将会占用大量磁盘空
+对于比较繁忙的业务系统，每天生成的 `binlog` 数据巨大，如果长时间不清除，将会占用大量磁盘空间。可以通过以下几种方式清理日志：
 
-间。可以通过以下几种方式清理日志：
+|指令| 含义|
+| -- | -- |
+|reset master| 删除全部 binlog 日志，删除之后，日志编号，将从 binlog.000001重新开始|
+|purge master| logs to 'binlog.*' 删除 * 编号之前的所有日志|
+|purge master| logs before 'yyyy-mm-dd hh24:mi:ss' 删除日志为 "yyyy-mm-dd hh24:mi:ss" 之前产生的所有日志|
 
-也可以在mysql的配置文件中配置二进制日志的过期时间，设置了之后，二进制日志过期会自动删除。
+也可以在 mysql 的配置文件中配置二进制日志的过期时间，设置了之后，二进制日志过期会自动删除。
+```sql
+show variables like '%binlog_expire_logs_seconds%';
+```
 
 ### 1.3 查询日志
 
-查询日志中记录了客户端的所有操作语句，而二进制日志不包含查询数据的SQL语句。默认情况下，
+查询日志中记录了客户端的所有操作语句，而二进制日志不包含查询数据的 SQL 语句。默认情况下，查询日志是未开启的。
 
-查询日志是未开启的。
 
-```
-mysqlbinlog [ 参数选项 ] logfilename
-```
-```
-参数选项：
--d 指定数据库名称，只列出指定的数据库相关操作。
--o 忽略掉日志中的前n行命令。
--v 将行事件(数据变更)重构为SQL语句
--vv 将行事件(数据变更)重构为SQL语句，并输出注释信息
-```
-##1 2 3 4 5 6 7
-
-```
-1 show variables like '%binlog_expire_logs_seconds%';
+如果需要开启查询日志，可以修改MySQL的配置文件 `/etc/my.cnf` 文件，添加如下内容：
+```sql
+# 该选项用来开启查询日志，可选值：0 或者 1；0 代表关闭，1 代表开启
+general_log = 1
+# 设置日志的文件名，如果没有指定，默认的文件名为 `host_name.log`
+general_log_file = mysql_query.log
 ```
 
-如果需要开启查询日志，可以修改MySQL的配置文件 /etc/my.cnf 文件，添加如下内容：
-
-开启了查询日志之后，在MySQL的数据存放目录，也就是 /var/lib/mysql/ 目录下就会出现
-
-mysql_query.log 文件。之后所有的客户端的增删改查操作都会记录在该日志文件之中，长时间运
-
-行后，该日志文件将会非常大。
+开启了查询日志之后，在MySQL的数据存放目录，也就是 `/var/lib/mysql/` 目录下就会出现 `mysql_query.log` 文件。之后所有的客户端的增删改查操作都会记录在该日志文件之中，长时间运行后，该日志文件将会非常大。
 
 ### 1.4 慢查询日志
 
-慢查询日志记录了所有执行时间超过参数 long_query_time 设置值并且扫描记录数不小于
+慢查询日志记录了所有执行时间超过参数 `long_query_time` 设置值并且扫描记录数不小于 `min_examined_row_limit` 的所有的 `SQL` 语句的日志，默认未开启。`long_query_time` 默认为 10 秒，最小为 0,精度可以到微秒。
 
-min_examined_row_limit 的所有的SQL语句的日志，默认未开启。long_query_time 默认为
+如果需要开启慢查询日志，需要在 MySQL 的配置文件 `/etc/my.cnf` 中配置如下参数：
+```sql
+# 慢查询日志
+slow_query_log = 1
 
-10 秒，最小为 0 ， 精度可以到微秒。
-
-如果需要开启慢查询日志，需要在MySQL的配置文件 /etc/my.cnf 中配置如下参数：
-
-默认情况下，不会记录管理语句，也不会记录不使用索引进行查找的查询。可以使用
-
-log_slow_admin_statements和 更改此行为 log_queries_not_using_indexes，如下所
-
-述。
-
-上述所有的参数配置完成之后，都需要重新启动MySQL服务器才可以生效。
-
-###该选项用来开启查询日志 ， 可选值 ： 0 或者 1 ； 0 代表关闭， 1 代表开启
-
+# 执行时间参数
+long_query_time = 2
 ```
-general_log= 1
-#设置日志的文件名 ， 如果没有指定， 默认的文件名为 host_name.log
-general_log_file=mysql_query.log
-```
-##1
 
-##2
-
-##3
-
-##4
-
-###慢查询日志
-
-```
-slow_query_log= 1
-#执行时间参数
-long_query_time= 2
-```
-##1
-
-##2
-
-##3
-
-##4
-
-###记录执行较慢的管理语句
-
-```
+默认情况下，不会记录管理语句，也不会记录不使用索引进行查找的查询。可以使用 `log_slow_admin_statements` 和更改此行为  `log_queries_not_using_indexes`，如下所述。
+```sql
+# 记录执行较慢的管理语句
 log_slow_admin_statements = 1
-#记录执行较慢的未使用索引的语句
+
+# 记录执行较慢的未使用索引的语句
 log_queries_not_using_indexes = 1
 ```
-##1
 
-##2
-
-##3
-
-##4
-
+> 上述所有的参数配置完成之后，都需要重新启动 MySQL 服务器才可以生效。
 
 ## 2. 主从复制
 
@@ -277,8 +200,8 @@ read-only= 0
 ```
 ##1 2 3 4 5 6 7 8
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 ```
 #创建itcast用户，并设置密码，该用户可在任意主机连接该MySQL服务
@@ -299,8 +222,8 @@ GRANT REPLICATION SLAVE ON *.* TO 'itcast'@'%';
 
 ##5
 
-```
-1 show master status ;
+```sql
+show master status ;
 ```
 
 参数名 含义 8.0.23之前
@@ -341,8 +264,8 @@ read-only= 1
 
 ##4
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 ```
 CHANGE REPLICATION SOURCE TO SOURCE_HOST='192.168.200.200', SOURCE_USER='itcast',
@@ -792,8 +715,8 @@ bin/mycat stop
 
 ##4
 
-```
-1 mysql -h 192.168.200.210 -P 8066 -uroot -p
+```sql
+mysql -h 192.168.200.210 -P 8066 -uroot -p
 ```
 ##CREATE TABLE TB_ORDER (
 
@@ -1631,8 +1554,8 @@ schema.xml数据节点配置：
 
 rule.xml分片规则配置：
 
-```
-1 <table name="TB_ORDER" dataNode="dn1,dn2,dn3" rule="auto-sharding-long" />
+```sql
+<table name="TB_ORDER" dataNode="dn1,dn2,dn3" rule="auto-sharding-long" />
 ```
 ```
 <dataNode name="dn1" dataHost="dhost1" database="db01" />
@@ -1728,8 +1651,8 @@ schema.xml数据节点配置：
 
 rule.xml分片规则配置：
 
-```
-1 <table name="tb_log" dataNode="dn4,dn5,dn6" primaryKey="id" rule="mod-long" />
+```sql
+<table name="tb_log" dataNode="dn4,dn5,dn6" primaryKey="id" rule="mod-long" />
 ```
 ```
 <dataNode name="dn4" dataHost="dhost1" database="itcast" />
@@ -2795,8 +2718,8 @@ Mycat默认开通 2 个端口，可以在server.xml中进行修改。
 
 连接MyCat的管理控制台：
 
-```
-1 mysql -h 192.168.200.210 -p 9066 -uroot -p123456
+```sql
+mysql -h 192.168.200.210 -p 9066 -uroot -p123456
 ```
 
 命令 含义
@@ -2856,8 +2779,8 @@ mycat-eye的管理界面，查看mycat-eye监控到的数据信息。
 
 A. 性能监控
 
-```
-1 <property name="useSqlStat"> 1 </property> <!-- 1为开启实时统计、 0 为关闭 -->
+```sql
+<property name="useSqlStat"> 1 </property> <!-- 1为开启实时统计、 0 为关闭 -->
 ```
 
 B. 物理节点
@@ -3088,8 +3011,8 @@ log-slave-updates
 ```
 ##1 2 3 4 5 6 7 8
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 ```
 #创建itcast用户，并设置密码，该用户可在任意主机连接该MySQL服务
@@ -3106,8 +3029,8 @@ GRANT REPLICATION SLAVE ON *.* TO 'itcast'@'%';
 
 ##4
 
-```
-1 show master status ;
+```sql
+show master status ;
 ```
 
 A. 修改配置文件 /etc/my.cnf
@@ -3128,8 +3051,8 @@ log-slave-updates
 ```
 ##1 2 3 4 5 6 7 8
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 ```
 #创建itcast用户，并设置密码，该用户可在任意主机连接该MySQL服务
@@ -3157,8 +3080,8 @@ A. 修改配置文件 /etc/my.cnf
 
 B. 重新启动MySQL服务器
 
-```
-1 show master status ;
+```sql
+show master status ;
 ```
 ```
 #mysql 服务ID，保证整个集群环境中唯一，取值范围：1 – 232-1，默认为 1
@@ -3168,8 +3091,8 @@ server-id= 2
 
 ##2
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 
 2). Slave2(192.168.200.214)
@@ -3190,8 +3113,8 @@ server-id= 4
 
 ##2
 
-```
-1 systemctl restart mysqld
+```sql
+systemctl restart mysqld
 ```
 
 需要注意slave1对应的是master1，slave2对应的是master2。
@@ -3229,8 +3152,8 @@ show slave status \G;
 
 A. 在 Master1(192.168.200.211)上执行
 
-```
-1 Master2 复制 Master1，Master1 复制 Master2。
+```sql
+Master2 复制 Master1，Master1 复制 Master2。
 ```
 ```
 CHANGE MASTER TO MASTER_HOST='192.168.200.213', MASTER_USER='itcast',
@@ -3331,8 +3254,8 @@ insert into tb_user(id,name,sex) values( 6 ,'Jerry','1');
 
 ##2
 
-```
-1 <dataNode name="dn7" dataHost="dhost7" database="db01" />
+```sql
+<dataNode name="dn7" dataHost="dhost7" database="db01" />
 ```
 
 具体的对应情况如下：
