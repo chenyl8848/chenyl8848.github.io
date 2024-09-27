@@ -4,9 +4,9 @@ layout: Blog
 icon: home
 title: 首页
 heroImage: /logo.png
-# bgImage: /bak1.jpg
+bgImage: /bak1.jpg
 heroText: Java陈序员
-heroFullScreen: true
+heroFullScreen: false
 tagline: Java后端程序员，分享日常学习、工作、生活，致敬每个爱学习的你。
 projects:
   # - icon: link
@@ -14,30 +14,30 @@ projects:
   #   desc: 一个轻量的工具集合
   #   link: https://chencoding.top:8081/#/
 
-  - icon: link
-    name: 在线白板工具
-    # desc: 一个简单轻量的白板工具
-    link: https://chencoding.top:8081/#/
+  # - icon: link
+  #   name: 在线白板工具
+  #   # desc: 一个简单轻量的白板工具
+  #   link: https://chencoding.top:8081/#/
 
-  - icon: link
-    name: 在线思维导图
-    # desc: 一个在线思维导图工具
-    link: https://chencoding.top:8082/#/
+  # - icon: link
+  #   name: 在线思维导图
+  #   # desc: 一个在线思维导图工具
+  #   link: https://chencoding.top:8082/#/
 
-  - icon: link
-    name: 抖音/TikTok视频无水印下载
-    desc: 
-    link: https://chencoding.top:8083/#/
+  # - icon: link
+  #   name: 抖音/TikTok视频无水印下载
+  #   desc: 
+  #   link: https://chencoding.top:8083/#/
 
-  - icon: link
-    name: IT 工具集合
-    desc: 
-    link: https://chencoding.top:8084/#/
+  # - icon: link
+  #   name: IT 工具集合
+  #   desc: 
+  #   link: https://chencoding.top:8084/#/
   
-  - icon: link
-    name: 文件存储中心
-    desc: 
-    link: https://chencoding.top:8085/#/
+  # - icon: link
+  #   name: 文件存储中心
+  #   desc: 
+  #   link: https://chencoding.top:8085/#/
   
   # - icon: link
   #   name: 在线协作编辑Excel

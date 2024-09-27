@@ -27,6 +27,8 @@ export default defineThemeConfig({
   // sidebar
   sidebar: sidebar,
 
+  
+
   footer: "没有最好，只有更好！",
 
   displayFooter: true,
@@ -41,9 +43,9 @@ export default defineThemeConfig({
     medias: {
       Wechat: "https://chen-coding.oss-cn-shenzhen.aliyuncs.com/qrcode_for_gh_b840974cfe99_430.jpg",
       GitHub: "https://github.com/chenyl8848",
-      Gitee: "https://gitee.com/chenylin8848",
+      // Gitee: "https://gitee.com/chenylin8848",
       // BiliBili: "https://space.bilibili.com/402482994/",
-      Baidu: "https://author.baidu.com/home/1687795731434287",
+      // Baidu: "https://author.baidu.com/home/1687795731434287",
       Zhihu: "https://www.zhihu.com/people/you-23-87",
       // Bitbucket: "https://example.com",
       // Dingding: "https://example.com",
