@@ -6,9 +6,9 @@ category:
 tag:
   - Spring Security
   - OAuth2
-isOriginal: true
 ---
 
+# Spring Security + OAuth2 权限管理实战
 <!-- more -->
 
 ## 1. Spring Security 快速入门

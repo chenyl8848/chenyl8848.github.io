@@ -6,4 +6,4 @@ isOriginal: true
 article: false
 ---
 
-* [初学Linux](Linux.md)
+* [Linux 万字入门教程](Linux.md)

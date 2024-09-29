@@ -162,18 +162,18 @@ CentOS（Community Enterprise Operating System，中文意思是社区企业操�
 
 ```markdown
 # 目录结构	
-	bin  (binaries)存放二进制可执行文件																									 [重点]
-	sbin  (super user binaries)存放二进制可执行文件，只有root才能访问
-	etc (etcetera)存放系统配置文件																											[重点]
-	usr  (unix shared resources)用于存放共享的系统资源  																	[重点]
-	home 存放用户文件的根目录																														 [重点]
-	root  超级用户目录																															   [重点]
-	dev (devices)用于存放设备文件
-	lib  (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
-	mnt  (mount)系统管理员安装临时文件系统的安装点
-	boot 存放用于系统引导时使用的各种文件
-	tmp  (temporary)用于存放各种临时文件																							   [重点]
-	var  (variable)用于存放运行时需要改变数据的文件
+bin  (binaries)存放二进制可执行文件																									 [重点]
+sbin  (super user binaries)存放二进制可执行文件，只有root才能访问
+etc (etcetera)存放系统配置文件																											[重点]
+usr  (unix shared resources)用于存放共享的系统资源  																	[重点]
+home 存放用户文件的根目录																														 [重点]
+root  超级用户目录																															   [重点]
+dev (devices)用于存放设备文件
+lib  (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
+mnt  (mount)系统管理员安装临时文件系统的安装点
+boot 存放用于系统引导时使用的各种文件
+tmp  (temporary)用于存放各种临时文件																							   [重点]
+var  (variable)用于存放运行时需要改变数据的文件
 ```
 
 ---
@@ -209,9 +209,9 @@ drwxrwxr-x      2   user1  user1    4096    Aug 17 09:10 abc
 - rw- r-- r--    1   user1  user1    17     Aug 17 09:04 host.conf
 - rw- r-- r--    1   user1  user1    38450  Aug 17 09:04 php.ini
 
-`长格式含义:`
-文件类型 文件权限   链接数  属主    属组    大小   日期   时间    文件名
-d     rwxrwxr-x     2     user1  user1 4096  Aug 17 09:10  abc
+长格式含义：
+文件类型 文件权限   链接数  属组    属组    大小   日期    时间    文件名
+d       rwxrwxr-x     2   user1   user1    4096  Aug 17 09:10    abc
 
 # 2. ls -a (显示所有文件)
 [root@localhost ~]# ls -a
@@ -1034,7 +1034,7 @@ http://10.15.0.8:8888/
 http://10.15.0.8:8889/
 http://10.15.0.8:8890/
 	
-**注意：这步一定要关闭网路防火墙**。
+注意：这步一定要关闭网路防火墙。
 ```
 
 ```markdown
