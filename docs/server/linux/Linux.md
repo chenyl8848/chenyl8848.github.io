@@ -162,18 +162,18 @@ CentOS（Community Enterprise Operating System，中文意思是社区企业操�
 
 ```markdown
 # 目录结构	
-bin  (binaries)存放二进制可执行文件																									 [重点]
-sbin  (super user binaries)存放二进制可执行文件，只有root才能访问
-etc (etcetera)存放系统配置文件																											[重点]
-usr  (unix shared resources)用于存放共享的系统资源  																	[重点]
-home 存放用户文件的根目录																														 [重点]
-root  超级用户目录																															   [重点]
-dev (devices)用于存放设备文件
-lib  (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
-mnt  (mount)系统管理员安装临时文件系统的安装点
-boot 存放用于系统引导时使用的各种文件
-tmp  (temporary)用于存放各种临时文件																							   [重点]
-var  (variable)用于存放运行时需要改变数据的文件
+	bin  (binaries)存放二进制可执行文件																									 [重点]
+	sbin  (super user binaries)存放二进制可执行文件，只有root才能访问
+	etc (etcetera)存放系统配置文件																											[重点]
+	usr  (unix shared resources)用于存放共享的系统资源  																	[重点]
+	home 存放用户文件的根目录																														 [重点]
+	root  超级用户目录																															   [重点]
+	dev (devices)用于存放设备文件
+	lib  (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
+	mnt  (mount)系统管理员安装临时文件系统的安装点
+	boot 存放用于系统引导时使用的各种文件
+	tmp  (temporary)用于存放各种临时文件																							   [重点]
+	var  (variable)用于存放运行时需要改变数据的文件
 ```
 
 ---
@@ -194,7 +194,7 @@ var  (variable)用于存放运行时需要改变数据的文件
 常用参数:  
 	-l (long)	 长格式显示文件和目录信息
 	-a (all)	 显示所有文件和目录(包含隐藏文件和目录)
-	-R         递归显示指定目录下的文件清单，即会显示指定目录分支内各子目录中的文件清单。
+	-R         递归显示指定目录下的文件清单，即会显示指定目录分支内各子目录中的文件清单
 ```
 
 ```shell
@@ -289,9 +289,9 @@ aa  aa.txt
 	-f 使用档名，在 f 之后要立即接档名（file）
 
 # 通常组合使用：
-tar -cvf aaa.tar file1.txt file2.txt 				将 file1 和 file2 打包成 aaa.tar
-tar -zcvf aaa.tar.gz file1.txt file2.txt 			将 file1 和 file2 打包成 aaa.tar 并压缩
-tar -zxvf aaa.tar.gz file1.txt file2.txt 			将 aaa.tar.gz 解压
+	tar -cvf aaa.tar file1.txt file2.txt 				将 file1 和 file2 打包成 aaa.tar
+	tar -zcvf aaa.tar.gz file1.txt file2.txt 			将 file1 和 file2 打包成 aaa.tar 并压缩
+	tar -zxvf aaa.tar.gz file1.txt file2.txt 			将 aaa.tar.gz 解压
 ```
 
 ### 4.5 systemctl 服务命令
@@ -309,17 +309,17 @@ systemctl stop 服务名 			 说明：停止某个服务
 ### 4.6 进程相关命令
 
 ```markdown
-# 1.ps 询在当前控制台上运行的进程
-ps -aux    说明：查询系统中所有运行的进程，包括后台进程，其中参数a是所有进程，参数x包括不占用控制台的进程，参数u显示用户。
-ps -ef	   说明：查询系统中所有运行的进程，包括后台进程，而且可以显示出每个进程的父进程号。
+# 1.ps 查询在当前控制台上运行的进程
+	ps -aux    说明：查询系统中所有运行的进程，包括后台进程，其中参数a是所有进程，参数x包括不占用控制台的进程，参数u显示用户
+	ps -ef	   说明：查询系统中所有运行的进程，包括后台进程，而且可以显示出每个进程的父进程号
 
-ps -aux|grep 进程 服务名  关键字 Tomcat  重点
+	ps -aux|grep 进程 服务名  关键字 Tomcat  重点
 
 # 2.top	命令  动态显示系统进程
 
 # 3.kill 杀死进程
-kill 3029 	  说明：上述命令中 3029 是进程号；一般在执行kill命令之前，先用ps或pstree来查询一下将要被杀掉的进程的进程号。 
-kill -9 3029  说明：强制终止 3029 号进程的运行，其中参数 -9 代表强制的意思，实际上 kill 命令是向该进程发送信号，该进程接到信号后决定是否停止运行，有些守护进程必须要收到参数 9 才终止运行。
+	kill 3029 	  说明：上述命令中 3029 是进程号；一般在执行kill命令之前，先用ps或pstree来查询一下将要被杀掉的进程的进程号 
+	kill -9 3029  说明：强制终止 3029 号进程的运行，其中参数 -9 代表强制的意思，实际上 kill 命令是向该进程发送信号，该进程接到信号后决定是否停止运行，有些守护进程必须要收到参数 9 才终止运行
 ```
 
 ### 4.7 vi 命令
@@ -330,27 +330,27 @@ vi/vim 是 Unix/Linux 上最常用的文本编辑器而且功能非常强大。
 
 ```markdown
 # 常用命令：
-i						在光标前插入
-I						在光标当前行开始插入
-a						在光标后插入
-A						在光标当前行末尾插入
-o						在光标当前行的下一行插入新行
-O						在光标当前行的上一行插入新行
-----------------重点---------------------------
-:set nu			显示行号
-:set nonu		取消行号
-gg					到文本的第一行
-G						到文本的最后一行
-:n					到文本的第n行
-------------------重点-------------------------
-u						undo,取消上一步操作
-Ctrl + r		redo,返回到undo之前
--------------------重点------------------------
-Shift+ zz		保存退出，与“:wq”作用相同
-:q					退出不保存
-:q!					强制退出不保存
-:wq					保存退出
-:wq!				强制保存退出
+	i						在光标前插入
+	I						在光标当前行开始插入
+	a						在光标后插入
+	A						在光标当前行末尾插入
+	o						在光标当前行的下一行插入新行
+	O						在光标当前行的上一行插入新行
+	----------------重点---------------------------
+	:set nu			显示行号
+	:set nonu		取消行号
+	gg					到文本的第一行
+	G						到文本的最后一行
+	:n					到文本的第n行
+	------------------重点-------------------------
+	u						undo,取消上一步操作
+	Ctrl + r		redo,返回到undo之前
+	-------------------重点------------------------
+	Shift+ zz		保存退出，与“:wq”作用相同
+	:q					退出不保存
+	:q!					强制退出不保存
+	:wq					保存退出
+	:wq!				强制保存退出
 ```
 
 ### 4.8 软件相关命令
@@ -369,21 +369,21 @@ RPM 命令：是 RedHat Package Manager（RedHat软件包管理工具）的缩�
 例子：rmp  -ivh  gcc-c++-4.4.7-3.el6.x86_64.rpm
 ----------------------------------------------
 安装命令：
-rpm -ivh  xxxx.rpm
-rpm -evh  xxxx.rpm
-rpm -Uvh  xxx.rpm
-rpm -qa 
+	rpm -ivh  xxxx.rpm
+	rpm -evh  xxxx.rpm
+	rpm -Uvh  xxx.rpm
+	rpm -qa 
 ```
 
 YUM 命令：Yum（全称为 Yellow dog Updater, Modified）是一个在 Fedora 和 RedHat 以及 SUSE、CentOS 中的 Shell 前端软件包管理器。基於 RPM 包管理，能够从指定的服务器自动下载 RPM 包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
 
 ```markdown
-例子：
-yum  install  gcc-c++
-yum  remove   gcc-c++
-yum  update   gcc-c++
-
 yum install|remove|update  依赖名称
+
+例子：
+	yum  install  gcc-c++
+	yum  remove   gcc-c++
+	yum  update   gcc-c++
 ```
 
 > **注意：使用YUM命令必须连接外部网络**。
@@ -394,15 +394,15 @@ yum install|remove|update  依赖名称
 # 1.查看当前用户：whoami
 
 # 2.查看登录用户：who
--m 或 am I	只显示运行who命令的用户名、登录终端和登录时间
--q 或 --count	只显示用户的登录账号和登录用户的数量
+	-m 或 am I	只显示运行who命令的用户名、登录终端和登录时间
+	-q 或 --count	只显示用户的登录账号和登录用户的数量
 
 # 3.退出用户：exit
 
 # 4.添加、删除组账号：groupadd、groupdel
 
 # 5.添加用户账号：useradd
--g 指定组名称  说明：如果创建用户的时候，不指定组名，那么系统会自动创建一个和用户名一样的组名。
+	-g 指定组名称  说明：如果创建用户的时候，不指定组名，那么系统会自动创建一个和用户名一样的组名。
 
 # 6.设置用户密码：passwd　[用户名]
 
@@ -452,8 +452,8 @@ chmod 777 文件名
 	vi /etc/sysconfig/network-scripts/ifcfg-ens33
 
 # 2.修改 ens33 配置文件
-    BOOTPROTO=dhcp
-    ONBOOT=yes
+	BOOTPROTO=dhcp
+	ONBOOT=yes
 
 # 3.重启启动网路服务加载修改配置生效
 	systemctl restart network
@@ -492,11 +492,12 @@ chmod 777 文件名
 
 ```markdown
 # 1.将 JDK 解压缩到指定目录
-tar -zxvf JDK-8u171-linux-x64.tar.gz -C /usr/
+	tar -zxvf JDK-8u171-linux-x64.tar.gz -C /usr/
+
 注意：-C 参数是将 JDK 解压之后文件放入 usr 目录中
 
 # 2.进入 JDK 解压缩目录查看
-cd /usr/jdk1.8.0_171/
+	cd /usr/jdk1.8.0_171/
 
 # 3.查看详细信息
 [root@localhost jdk1.8.0_171]# ls
@@ -504,21 +505,22 @@ bin        db       javafx-src.zip  lib      man          release  THIRDPARTYLIC
 COPYRIGHT  include  jre             LICENSE  README.html  src.zip  THIRDPARTYLICENSEREADME.txt
 
 # 4.配置环境变量
-vi /etc/profile
+	vi /etc/profile
 	 
 # 5.在文件末尾加入如下配置
-export JAVA_HOME=/usr/jdk1.8.0_171
-export PATH=$PATH:$JAVA_HOME/bin
+	export JAVA_HOME=/usr/jdk1.8.0_171
+	export PATH=$PATH:$JAVA_HOME/bin
 
 # 6.加载配置生效
-source /etc/profile    加载配置生效
-reboot                 重启系统
-注意：以上两个选项选择任意一个即可 `source` 可以不用重启立即生效，某些情况下 `source` 无法生效时，可以使用重启试试。
+	source /etc/profile    加载配置生效
+	reboot                 重启系统
+
+注意：以上两个选项选择任意一个即可 source 可以不用重启立即生效，某些情况下 source 无法生效时，可以使用重启试试
 
 # 7.测试环境变量
-java
-javac
-java -version
+	java
+	javac
+	java -version
 ```
 
 ### 6.3 rpm 包安装
@@ -545,21 +547,22 @@ localedata.jar...
 /usr/java/jdk1.8.0_171-amd64/jre/bin/java
 
 # 3.配置环境变量
-vi /etc/profile
+	vi /etc/profile
 
 # 4.在文件末尾加入如下配置
-export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64/
-export PATH=$PATH:$JAVA_HOME/bin
+	export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64/
+	export PATH=$PATH:$JAVA_HOME/bin
 
 # 5.加载配置生效
-source /etc/profile    加载配置生效
-reboot                 重启系统
-注意: 以上两个选项选择任意一个即可source可以不用重启立即生效,某些情况下source无法生效时,可以使用重启试试
+	source /etc/profile    加载配置生效
+	reboot                 重启系统
+
+注意: 以上两个选项选择任意一个即可 source 可以不用重启立即生效，某些情况下 source 无法生效时，可以使用重启试试
 
 # 6.测试环境变量
-java
-javac
-java -version
+	java
+	javac
+	java -version
 ```
 
 ------
@@ -567,8 +570,8 @@ java -version
 ## 7. 安装 Tomcat
 
 ```markdown
-# 0.下载tomcat
-http://mirrors.tuna.tsinghua.edu.cn/apache/Tomcat/Tomcat-8/v8.5.46/bin/apache-Tomcat-8.5.46.tar.gz
+# 0.下载 Tomcat
+	http://mirrors.tuna.tsinghua.edu.cn/apache/Tomcat/Tomcat-8/v8.5.46/bin/apache-Tomcat-8.5.46.tar.gz
 
 # 1.通过工具上传到 Linux 系统中
 
@@ -598,17 +601,17 @@ drwxr-x---. 2 root root     6 9月  17 02:17 work
 [root@localhost apache-Tomcat-8.5.46]# ./bin/startup.sh 
 
 # 5.关闭网络防火墙
-systemctl stop firewalld	   关闭网络防火墙
-systemctl disable firewalld  关闭开机自启动(永久关闭)
+	systemctl stop firewalld	   关闭网络防火墙
+	systemctl disable firewalld  关闭开机自启动(永久关闭)
 
 # 6.在 windows 中访问 Tomcat
-http://10.15.0.8:8080/
+	http://10.15.0.8:8080/
 
 # 7.显示 Tomcat 实时控制台信息
-进入 Tomcat 的 logs 目录中使用 tail -f catalina.out 命令实时查看控制台信息 
+	进入 Tomcat 的 logs 目录中使用 tail -f catalina.out 命令实时查看控制台信息 
 
 # 8.关闭 Tomcat
-在 Tomcat 的 bin 目录下面使用 ./shutdown.sh
+	在 Tomcat 的 bin 目录下面使用 ./shutdown.sh
 ```
 
 ------
@@ -632,22 +635,22 @@ http://10.15.0.8:8080/
 
 ```shell
 # 0.执行本地安装包之前必须先安装 vim
-yum install -y vim
+	yum install -y vim
 
 # 1.安装步骤
-rpm -ivh perl-*
-rpm -ivh net-tools-2.0-0.22.20131004git.el7.x86_64.rpm
-rpm -ivh mysql-community-common-5.6.42-2.el7.x86_64.rpm
-rpm -ivh mysql-community-libs-5.6.42-2.el7.x86_64.rpm
-rpm -ivh mysql-community-client-5.6.42-2.el7.x86_64.rpm
-rpm -ivh mysql-community-server-5.6.42-2.el7.x86_64.rpm
+	rpm -ivh perl-*
+	rpm -ivh net-tools-2.0-0.22.20131004git.el7.x86_64.rpm
+	rpm -ivh mysql-community-common-5.6.42-2.el7.x86_64.rpm
+	rpm -ivh mysql-community-libs-5.6.42-2.el7.x86_64.rpm
+	rpm -ivh mysql-community-client-5.6.42-2.el7.x86_64.rpm
+	rpm -ivh mysql-community-server-5.6.42-2.el7.x86_64.rpm
 ```
 
 ### 8.3 在线安装
 
 ```markdown
 # 1.添加官方的 yum 源创建并编辑 mysql-community.repo 文件
-vi /etc/yum.repos.d/mysql-community.repo
+	vi /etc/yum.repos.d/mysql-community.repo
 
 # 2.粘贴以下内容到源文件中
 [mysql56-community]
@@ -661,7 +664,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
 
 # 3.安装 MySQL
-sudo yum install -y mysql-community-server
+	sudo yum install -y mysql-community-server
 ```
 
 ### 8.4 设置 root 用户密码
@@ -671,7 +674,7 @@ sudo yum install -y mysql-community-server
 [root@localhost mysql]# systemctl start mysqld
 
 # 2.修改 MySQL 数据库密码
-mysqladmin -u root -p password 回车 输入原始密码 在输入新的密码
+	mysqladmin -u root -p password 回车 输入原始密码 在输入新的密码
 	
 注意：5.7 之前版本安装完成之后没有密码，MySQL5.7 之后的版本的初始密码是随机生成的，放在了 /var/log/mysqld.log
 使用命令 grep ‘temporary password’ /var/log/mysqld.log 读出来即可 ROOT!Q2w
@@ -747,43 +750,43 @@ msyql(slave):
 
 ```markdown
 # 3.重启mysql服务
-systemctl restart mysqld
+	systemctl restart mysqld
 
 # 4.登录mysql执行如下命令检测配置是否生效
-SHOW VARIABLES like 'server_id';
+	SHOW VARIABLES like 'server_id';
 ```
 <img src="https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191013201523812.png" alt="image-20191013201523812"  />
 
 ```markdown
 # 5.登录master节点执行如下命令
-show master status;
+	show master status;
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191013203543728.png)
 
 ```markdown
 # 6.登录从节点执行如下命令:
-change master to 
-master_host='10.15.0.9',
-master_user='root',
-master_password='root',
-master_log_file='mysql-bin.000001',
-master_log_pos=120;
+	change master to 
+	master_host='10.15.0.9',
+	master_user='root',
+	master_password='root',
+	master_log_file='mysql-bin.000001',
+	master_log_pos=120;
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191013204344807.png)
 
 ```markdown
 # 7.开启从节点
-start slave; 
-stop  slave;
+	start slave; 
+	stop  slave;
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191013204413766.png)
 
 ```markdown
 # 8.查看从节点状态
-show slave status\G;
+	show slave status\G;
 
 ************************** 1. row ***************************
 Slave_IO_State: Waiting for master to send event
@@ -806,7 +809,7 @@ Relay_Master_Log_File: mysql-bin.000001
 # 9.通过客户端工具进行测试
 	
 # 10.关闭主从复制(在从节点执行)
-stop slave;
+	stop slave;
 ```
 
 - 注意:如果出现 `Slave I/O: Fatal error: The slave I/O thread stops because master and slave have equal MySQL server UUIDs; these UUIDs must be different for replication to work. Error_code: 1593` 错误，请执行如下命令 `rm -rf /var/lib/mysql/auto.cnf` 删除这个文件，之所以出现会出现这样的问题，是因为我的从库主机是克隆的主库所在的主机，所以 `auto.cnf` 文件中保存的 `UUID` 会出现重复。
@@ -827,10 +830,10 @@ MyCat 背后有一支强大的技术团队，其参与者都是5年以上资深�
 
 ```markdown
 # 1.下载 MyCat
-http://dl.mycat.io/1.6-RELEASE/Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
+	http://dl.mycat.io/1.6-RELEASE/Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
 
 # 2.解压 MyCat
-tar -zxvf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
+	tar -zxvf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191014225929256.png)
@@ -851,7 +854,7 @@ drwxrwxrwx. 2 root root    6 10月 28 2016 logs
 
 ```markdown
 # 4.移动到 /usr 目录
-mv mycat/ /usr/
+	mv mycat/ /usr/
 
 # 5.配置 MyCat 中 conf 下的配置 schema.xml
 ```
@@ -892,10 +895,10 @@ mv mycat/ /usr/
 
 ```markdown
 # 7.启动 MyCat
-./mycat console
+	./mycat console
 
 # 8.查看日志
-tail -f ../logs/mycat.log
+	tail -f ../logs/mycat.log
 
 # 9.数据库连接配置，测试
 ```
@@ -912,23 +915,23 @@ tail -f ../logs/mycat.log
 
 ```markdown
 # 0.安装必要依赖
-yum install -y gcc pcre-devel zlib-devel
+	yum install -y gcc pcre-devel zlib-devel
 
 # 1.下载 Nginx
-http://nginx.org/en/download.html
+	http://nginx.org/en/download.html
 
 # 2.将 Nginx 上传到 Linux 中并解压缩
-tar -zxvf nginx-1.11.1.tar.gz
+	tar -zxvf nginx-1.11.1.tar.gz
 
 # 3.查看 Nginx 安装目录
 [root@localhost nginx-1.11.1]# ls
 auto  CHANGES  CHANGES.ru  conf  configure  contrib  html  LICENSE  man  README  src
 
 # 4.在 Nginx 安装目录中执行如下命令：(指定安装位置)
-./configure --prefix=/usr/nginx
+	./configure --prefix=/usr/nginx
 
 # 5.执行上述命令后，执行如下命令：
-make && make install
+	make && make install
 
 # 6.编译完成后进入编译安装目录 /usr/nginx 目录中查看：
 [root@localhost nginx]# ls -l
@@ -939,15 +942,15 @@ drwxr-xr-x. 2 root root    6 10月 14 21:17 logs
 drwxr-xr-x. 2 root root   19 10月 14 21:17 sbin
 
 # 7.启动 Nginx,进入 Nginx 安装目录的 sbin 目录中执行：
-./nginx   
+	./nginx   
 
 # 8.在 windows 中浏览器访问，可以看到 Nginx 欢迎页面：
-http://10.15.0.8:80/
+	http://10.15.0.8:80/
 	
 注意：关闭网络防火墙。
 
 # 9.关闭 Nginx,进入 Nginx 安装目录的 sbin 目录中执行：
-./nginx -s stop
+	./nginx -s stop
 
 # 10.Nginx 配置文件在 Nginx 安装目录的 conf 目录中：
 [root@localhost conf]# ls -l
@@ -966,10 +969,10 @@ http://10.15.0.8:80/
 
 ```markdown
 # 0.准备多个 Tomcat
-tar -zxvf apache-Tomcat-8.5.46.tar.gz #解压缩一个新的tomcat安装包
-mv apache-Tomcat-8.5.46 tomcat1 			 #将名称改为tomcat1
-cp -r tomcat1/ tomcat2								 #复制一份
-cp -r tomcat1/ tomcat3                #复制一份
+	tar -zxvf apache-Tomcat-8.5.46.tar.gz #解压缩一个新的tomcat安装包
+	mv apache-Tomcat-8.5.46 tomcat1 			 #将名称改为tomcat1
+	cp -r tomcat1/ tomcat2								 #复制一份
+	cp -r tomcat1/ tomcat3                #复制一份
 
 # 1.此时当前目录中有三个服务器，如下：
 [root@localhost ~]# ls -l
@@ -982,7 +985,7 @@ drwxr-xr-x. 9 root root       220 10月 14 21:38 tomcat3
 
 ```markdown
 # 2.修改 tomcat1 端口号：(伪分布式)
-vim tomcat1/conf/server.xml
+	vim tomcat1/conf/server.xml
 
 命令修改如下内容：
 a.<Server port="8001" shutdown="SHUTDOWN">   ---关闭端口
@@ -994,7 +997,7 @@ c.<Connector port="10010" protocol="AJP/1.3" redirectPort="8443" /> ---AJP协议
 
 ```markdown
 # 3.修改 tomcat2 端口号：(伪分布式)
-vim tomcat2/conf/server.xml 
+	vim tomcat2/conf/server.xml 
 
 命令修改如下内容：
 a.<Server port="8002" shutdown="SHUTDOWN">
@@ -1006,7 +1009,7 @@ c.<Connector port="10011" protocol="AJP/1.3" redirectPort="8443" />
 
 ```markdown
 # 4.修改 tomcat3 端口号：(伪分布式)
-vim tomcat2/conf/server.xml
+	vim tomcat2/conf/server.xml
 		
 命令修改如下内容：
 a.<Server port="8003" shutdown="SHUTDOWN">
@@ -1018,21 +1021,21 @@ c.<Connector port="10012" protocol="AJP/1.3" redirectPort="8443" />
 
 ```markdown
 # 5.将多个 Tomcat 启动：
-tomcat1/bin/startup.sh 
-tomcat2/bin/startup.sh 
-tomcat3/bin/startup.sh
+	tomcat1/bin/startup.sh 
+	tomcat2/bin/startup.sh 
+	tomcat3/bin/startup.sh
     
 # 6.查看 Tomcat 是否启动成功
-ps -aux|grep Tomcat
+	ps -aux|grep Tomcat
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191014215035543.png)
 
 ```markdown
 # 7.在 Windows 中分别访问 Tomcat,都看到主页代表启动成功：
-http://10.15.0.8:8888/
-http://10.15.0.8:8889/
-http://10.15.0.8:8890/
+	http://10.15.0.8:8888/
+	http://10.15.0.8:8889/
+	http://10.15.0.8:8890/
 	
 注意：这步一定要关闭网路防火墙。
 ```
@@ -1062,12 +1065,12 @@ location / {
 
 ```markdown
 # 9.进入 Nginx 安装目录 sbin 目录启动 Nginx
-./nginx -c /usr/nginx/conf/nginx.conf
+	./nginx -c /usr/nginx/conf/nginx.conf
 ```
 
 ```markdown
 # 10.访问 Nginx,看到其中一个 Tomcat 画面：
-http://10.15.0.8/ 
+	http://10.15.0.8/ 
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/Linux/01/image-20191014220145379.png)
@@ -1115,15 +1118,15 @@ upstream Tomcat-servers{
 # 0.准备一个 MemCache 服务
 
 # 1.安装 memcached
-yum install -y memcached
+	yum install -y memcached
 
 # 2.启动memcached
-memcached -p 11211 -vvv -u root
+	memcached -p 11211 -vvv -u root
 
 # 3.Tomcat 安装的 lib 目录中放入与 MemCache 整合 Jar 包
-cp *.jar tomcat1/lib
-cp *.jar tomcat2/lib
-cp *.jar tomcat3/lib
+	cp *.jar tomcat1/lib
+	cp *.jar tomcat2/lib
+	cp *.jar tomcat3/lib
 
 # 4.配置 Tomcat 目录中 conf 目录中 context.xml(所有 Tomcat 均需要配置)
 <Context>
