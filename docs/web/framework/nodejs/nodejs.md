@@ -1,5 +1,5 @@
 ---
-title: Node.js 教程
+title: Node.js 万字入门教程
 date: 2023-05-31
 category:
   - 前端
@@ -8,7 +8,7 @@ tag:
   - MongoDB
 ---
 
-# `Node.js` 教程
+# `Node.js` 万字入门教程
 
 <!-- more -->
 

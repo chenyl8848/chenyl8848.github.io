@@ -57,6 +57,7 @@ export default defineNavbarConfig([
           "docsify/",
           "vuepress/",
           "wiki/",
+          "mp/",
         ],
       },
       {
