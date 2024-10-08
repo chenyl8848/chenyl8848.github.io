@@ -6,6 +6,6 @@ isOriginal: true
 article: false
 ---
 
-* [初学RabbitMQ](RabbitMQ.md)
+* [RabbitMQ 万字入门教程](RabbitMQ.md)
 
 * [初学Kafka](Kafka.md)

@@ -1,5 +1,5 @@
 ---
-title: MySQL基础
+title: MySQL 基础
 date: 2024-06-12
 category:
   - 中间件
@@ -8,11 +8,11 @@ tag:
   - MySQL
 ---
 
-# MySQL基础
+# MySQL 基础
 
 <!-- more -->
 
-## 1. MySQL概述
+## 1. MySQL 概述
 
 在这一章节，我们主要介绍两个部分，数据库相关概念及MySQL数据库的介绍、下载、安装、启动及连接。
 

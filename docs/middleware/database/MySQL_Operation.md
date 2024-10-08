@@ -1,5 +1,5 @@
 ---
-title: MySQL运维
+title: MySQL 运维
 date: 2024-06-22
 category:
   - 中间件
@@ -8,7 +8,7 @@ tag:
   - MySQL
 ---
 
-# MySQL运维
+# MySQL 运维
 
 <!-- more -->
 

@@ -1,5 +1,5 @@
 ---
-title: MySQL进阶
+title: MySQL 进阶
 date: 2024-05-22
 category:
   - 中间件
@@ -8,7 +8,7 @@ tag:
   - MySQL
 ---
 
-# MySQL进阶
+# MySQL 进阶
 
 <!-- more -->
 

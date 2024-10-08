@@ -1,5 +1,5 @@
 ---
-title: Linux安装卸载MySQL
+title: Linux 安装卸载 MySQL
 date: 2024-05-22
 category:
   - 中间件
@@ -8,7 +8,7 @@ tag:
   - MySQL
 ---
 
-# Linux安装卸载MySQL
+# Linux 安装卸载 MySQL
 
 <!-- more -->
 
