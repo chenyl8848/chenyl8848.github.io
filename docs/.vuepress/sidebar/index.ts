@@ -3,8 +3,7 @@ import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope
 import { algorithm, dataStructure, java, microServices, springBoot, spring, designPattern } from "./rearend";
 import { database, mq, noSQL, zookeeper, elasticsearch, prometheus } from "./middleware";
 import { docker, linux, kubernetes } from "./server";
-import { vue, wiki } from "./web"
-import { mp } from "./web/framework/mp";
+import { vue, wiki, mp } from "./web";
 
 
 // export default defineSidebarConfig([
