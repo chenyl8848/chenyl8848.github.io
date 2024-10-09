@@ -6,4 +6,4 @@ isOriginal: true
 article: false
 ---
 
-* [初学Redis](Redis.md)
+* [Redis 万字入门教程](Redis.md)
