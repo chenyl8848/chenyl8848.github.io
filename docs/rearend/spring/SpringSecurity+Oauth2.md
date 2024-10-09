@@ -87,7 +87,7 @@ public class Application {
 
 3、启动项目，浏览器中访问 `http://localhost:8080/` 会自动跳转到登录页面 `http://localhost:8080/login`
 
-![image-20230410140908841](assets/image-20230410140908841.png)
+<!-- ![image-20230410140908841](assets/image-20230410140908841.png) -->
 
 > - `默认用户名`：user
 > - `默认密码`：在控制台的启动日志中查找初始的默认密码 `Using generated security password: c52a3686-2ae8-4ec3-896b-efcbe5c99c74`
@@ -96,11 +96,11 @@ public class Application {
 
 页面样式 `bootstrap.min.css` 是一个 CDN 地址，需要通过**科学上网**的方式才能访问。
 
-![image-20231130152247055](assets/image-20231130152247055.png)
+<!-- ![image-20231130152247055](assets/image-20231130152247055.png) -->
 
 否则登录页会加载很久，并且看到的页面是这样的（登录按钮没有样式文件渲染，但是不影响登录功能的执行）。
 
-![image-20231130152345471](assets/image-20231130152345471.png)
+<!-- ![image-20231130152345471](assets/image-20231130152345471.png) -->
 
 ### 1.3 Spring Security 默认做了什么
 
@@ -118,7 +118,7 @@ public class Application {
 - 写入Cache Control头来保护经过身份验证的资源。
 - 写入X-Frame-Options以处理点击劫持攻击。
 
-### 1.4 SpringSecurity 底层原理
+### 1.4 Spring Security 底层原理
 
 Spring Security 之所以可以默认做这么多事情，它的底层原理是由很多个 **过滤器（Servlet Filters）** 实现的。
 
@@ -128,7 +128,7 @@ Spring Security 之所以可以默认做这么多事情，它的底层原理是�
 
 下图展示了 Spring Security 处理一个 Http 请求时，过滤器和 Servlet 的工作流程：
 
-![filterchain](assets/filterchain.png)
+<!-- ![filterchain](assets/filterchain.png) -->
 
 客户端向应用程序发送请求，容器根据请求 URI 的路径创建一个 `FilterChain`，其中包含应处理 `HttpServletRequest` 的 `Filter` 实例和 `Servlet`.在 Spring MVC 应用程序中，`Servlet` 是 `DispatcherServlet` 的实例，也就是代码中的 `Controller`.
 
@@ -136,19 +136,19 @@ Spring Security 之所以可以默认做这么多事情，它的底层原理是�
 
 `DelegatingFilterProxy` 是 Spring Security 提供的一个 `Filter` 实现，可以在 `Servlet` 容器和 Spring 容器之间建立桥梁。通过使用 `DelegatingFilterProxy`，这样就可以将 Servlet 容器中的 `Filter` 实例放在 Spring 容器中管理。
 
-![delegatingfilterproxy](assets/delegatingfilterproxy.png)
+<!-- ![delegatingfilterproxy](assets/delegatingfilterproxy.png) -->
 
 #### 1.4.3 FilterChainProxy（过滤器链代理类）
 
 复杂的业务中不可能只有一个过滤器。因此 `FilterChainProxy` 是 Spring Security 提供的一个特殊的 Filter，它通过 `SecurityFilterChain` 将过滤器的工作委托给多个 `Bean Filter` 实例。由于 `FilterChainProxy` 是一个 Bean，因此它通常包装在 `DelegatingFilterProxy` 中。
 
-![filterchainproxy](assets/filterchainproxy.png)
+<!-- ![filterchainproxy](assets/filterchainproxy.png) -->
 
 #### 1.4.4 SecurityFilterChain（过滤器链）
 
 `SecurityFilterChain` 被 `FilterChainProxy` 使用，负责查找当前的请求需要执行的 `Security Filter` 列表。
 
-![securityfilterchain](assets/securityfilterchain.png)
+<!-- ![securityfilterchain](assets/securityfilterchain.png) -->
 
 #### 1.4.5 Multiple SecurityFilterChain
 
@@ -156,7 +156,7 @@ Spring Security 之所以可以默认做这么多事情，它的底层原理是�
 - 如果请求的 URL 是 `/api/messages/`，它首先匹配 `SecurityFilterChain0` 的模式 `/api/\*\*`，因此只调用 `SecurityFilterChain 0`。
 - 假设没有其他 `SecurityFilterChain` 实例匹配，那么将调用 `SecurityFilterChain n`.
 
-![multi securityfilterchain](assets/multi-securityfilterchain-17016804731631.png)
+<!-- ![multi securityfilterchain](assets/multi-securityfilterchain-17016804731631.png) -->
 
 ### 1.5 程序的启动和运行
 
@@ -177,7 +177,7 @@ public DefaultSecurityFilterChain(RequestMatcher requestMatcher, List<Filter> fi
 }
 ```
 
-![image-20231204230216259](assets/image-20231204230216259.png)
+<!-- ![image-20231204230216259](assets/image-20231204230216259.png) -->
 
 ```text
 2024-09-28T20:54:54.048+08:00  INFO 6312 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [
@@ -226,66 +226,64 @@ spring:
       password: 123
 ```
 
-# 第二章 Spring Security自定义配置
+## 2. Spring Security 自定义配置
 
-## 1、基于内存的用户认证
+### 2.1 基于内存的用户认证
 
-### 1.1、创建自定义配置
+#### 2.1.1 创建自定义配置
 
-实际开发的过程中，我们需要应用程序更加灵活，可以在SpringSecurity中创建自定义配置文件
+实际开发的过程中，我们需要应用程序更加灵活，可以在 Spring Security 中创建自定义配置文件。
 
-**官方文档：**[Java自定义配置](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html)
+> **官方文档**：https://docs.spring.io/spring-security/reference/servlet/configuration/java.html
 
-**UserDetailsService**用来管理用户信息，**InMemoryUserDetailsManager**是UserDetailsService的一个实现，用来管理基于内存的用户信息。
+1、创建一个 `WebSecurityConfig` 文件
 
-
-
-创建一个WebSecurityConfig文件：
-
-定义一个@Bean，类型是UserDetailsService，实现是InMemoryUserDetailsManager
+2、定义一个 `@Bean`，类型是 `UserDetailsService`，实现是 `InMemoryUserDetailsManager`
 
 ```java
-package com.atguigu.securitydemo.config;
-
+// 标识这是一个配置类
 @Configuration
-@EnableWebSecurity//Spring项目总需要添加此注解，SpringBoot项目中不需要
+// 开启 Security 配置，在 SpringBoot 环境中，无需引入该注解
+// 在 SpringBootWebSecurityConfiguration 中已经引入
+@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser( //此行设置断点可以查看创建的user对象
-            User
-            .withDefaultPasswordEncoder()
-            .username("huan") //自定义用户名
-            .password("password") //自定义密码
-            .roles("USER") //自定义角色
-            .build()
-        );
-        return manager;
+
+        // 创建基于内存的用户信息管理器
+        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+
+        // 使用 userDetailsManager 管理 UserDetails 对象
+        userDetailsManager.createUser(
+                // 创建 UserDetails 对象，用于管理用户名、用户密码、用户角色、用户权限等内容
+                User
+                .withDefaultPasswordEncoder()
+                .username("CodeChen")
+                .password("123456")
+                .roles("users")
+                .build());
+
+        return userDetailsManager;
     }
 }
 ```
 
+**UserDetailsService** 用来管理用户信息，**InMemoryUserDetailsManager** 是 `UserDetailsService` 的一个实现，用来管理基于内存的用户信息。
 
+> **注意**：此时，通过配置文件配置 `SecurityProperties` 中的用户名、密码会失效！
 
-**测试：**使用用户名huan，密码password登录
-
-
-
-### 1.2、基于内存的用户认证流程
+#### 2.1.2 基于内存的用户认证流程
 
 - 程序启动时：
-  - 创建`InMemoryUserDetailsManager`对象
-  - 创建`User`对象，封装用户名密码
-  - 使用InMemoryUserDetailsManager`将User存入内存`
+  - 创建 `InMemoryUserDetailsManager` 对象
+  - 创建 `User` 对象，封装用户名密码
+  - 使用 `InMemoryUserDetailsManager` 将 `User` 存入内存
 - 校验用户时：
-  - SpringSecurity自动使用`InMemoryUserDetailsManager`的`loadUserByUsername`方法从`内存中`获取User对象
-  - 在`UsernamePasswordAuthenticationFilter`过滤器中的`attemptAuthentication`方法中将用户输入的用户名密码和从内存中获取到的用户信息进行比较，进行用户认证
+  - Spring Security 自动使用 `InMemoryUserDetailsManager` 的 `loadUserByUsername` 方法从**内存中**获取 `User` 对象
+  - 在 `UsernamePasswordAuthenticationFilter` 过滤器中的 `attemptAuthentication` 方法中将用户输入的用户名密码和从内存中获取到的用户信息进行比较，进行用户认证
 
-
-
-## 2、基于数据库的数据源
+### 2.2 基于数据库的数据源
 
 ### 2.1、SQL
 
@@ -661,7 +659,7 @@ pom中添加配置用于测试
 
 **Swagger测试地址：**http://localhost:8080/demo/doc.html
 
-![image-20231206022701725](assets/image-20231206022701725.png)
+<!-- ![image-20231206022701725](assets/image-20231206022701725.png) -->
 
 
 
@@ -669,7 +667,7 @@ pom中添加配置用于测试
 
 默认情况下SpringSecurity开启了csrf攻击防御的功能，这要求请求参数中必须有一个隐藏的**_csrf**字段，如下：
 
-![image-20231206023030864](assets/image-20231206023030864.png)
+<!-- ![image-20231206023030864](assets/image-20231206023030864.png) -->
 
 在filterChain方法中添加如下代码，关闭csrf攻击防御
 
@@ -750,7 +748,7 @@ Spring Security的`PasswordEncoder`接口用于对密码进行`单向转换`，�
 
 使用PBKDF2算法对密码进行哈希处理。为了防止密码破解，PBKDF2是一种故意缓慢的算法。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。当需要FIPS认证时，这种算法是一个很好的选择。
 
-![image-20230421184645177](assets/image-20230421184645177.png)
+<!-- ![image-20230421184645177](assets/image-20230421184645177.png) -->
 
 
 
@@ -788,7 +786,7 @@ void testPassword() {
 - 通过如下源码可以知道：可以通过`{bcrypt}`前缀动态获取和密码的形式类型一致的PasswordEncoder对象
 - 目的：方便随时做密码策略的升级，兼容数据库中的老版本密码策略生成的密码
 
-![image-20231209011827867](assets/image-20231209011827867.png)
+<!-- ![image-20231209011827867](assets/image-20231209011827867.png) -->
 
 
 
@@ -871,7 +869,7 @@ SecurityConfiguration：
 - 登录成功后调用：AuthenticationSuccessHandler
 - 登录失败后调用：AuthenticationFailureHandler
 
-![usernamepasswordauthenticationfilter](assets/usernamepasswordauthenticationfilter-16822329079281.png)
+<!-- ![usernamepasswordauthenticationfilter](assets/usernamepasswordauthenticationfilter-16822329079281.png) -->
 
 ## 2、引入fastjson
 
@@ -1068,7 +1066,7 @@ http.cors(withDefaults());
 
 ### 1.1、基本概念
 
-![securitycontextholder](assets/securitycontextholder.png)
+<!-- ![securitycontextholder](assets/securitycontextholder.png) -->
 
 在Spring Security框架中，SecurityContextHolder、SecurityContext、Authentication、Principal和Credential是一些与身份验证和授权相关的重要概念。它们之间的关系如下：
 
@@ -1431,7 +1429,7 @@ OAuth 2协议包含以下角色：
 3. 资源服务器（Resource Server）：存储受保护资源的服务器或定义了可以访问到资源的API，接收并验证客户端的访问令牌，以决定是否授权访问资源。
 4. 授权服务器（Authorization Server）：负责验证资源所有者的身份并向客户端颁发访问令牌。
 
-![image-20231222124053994](assets/image-20231222124053994.png)
+<!-- ![image-20231222124053994](assets/image-20231222124053994.png) -->
 
 
 
@@ -1443,25 +1441,25 @@ OAuth 2协议包含以下角色：
 
 在传统的身份验证中，用户需要提供用户名和密码，还有很多网站登录时，允许使用第三方网站的身份，这称为"第三方登录"。所谓第三方登录，实质就是 OAuth 授权。用户想要登录 A 网站，A 网站让用户提供第三方网站的数据，证明自己的身份。获取第三方网站的身份数据，就需要 OAuth 授权。
 
-![image-20231222131233025](assets/image-20231222131233025.png)
+<!-- ![image-20231222131233025](assets/image-20231222131233025.png) -->
 
 ##### 开放API
 
 例如云冲印服务的实现
 
-![image-20231222131118611](assets/image-20231222131118611.png)
+<!-- ![image-20231222131118611](assets/image-20231222131118611.png) -->
 
 #### 现代微服务安全
 
 ##### 单块应用安全
 
-![image-20231222152734546](assets/image-20231222152734546.png)
+<!-- ![image-20231222152734546](assets/image-20231222152734546.png) -->
 
 
 
 ##### 微服务安全
 
-![image-20231222152557861](assets/image-20231222152557861.png)
+<!-- ![image-20231222152557861](assets/image-20231222152557861.png) -->
 
 
 
@@ -1500,13 +1498,13 @@ RFC6749：
 
 这种方式是最常用，最复杂，也是最安全的，它适用于那些有后端的 Web 应用。授权码通过前端传送，令牌则是储存在后端，而且所有与资源服务器的通信都在后端完成。这样的前后端分离，可以避免令牌泄漏。
 
-![image-20231220180422742](assets/image-20231220180422742.png)
+<!-- ![image-20231220180422742](assets/image-20231220180422742.png) -->
 
 
 
 - 注册客户应用：客户应用如果想要访问资源服务器需要有凭证，需要在授权服务器上注册客户应用。注册后会**获取到一个ClientID和ClientSecrets**
 
-![image-20231222203153125](assets/image-20231222203153125.png)
+<!-- ![image-20231222203153125](assets/image-20231222203153125.png) -->
 
 #### 第二种方式：隐藏式
 
@@ -1514,11 +1512,11 @@ RFC6749：
 
 RFC 6749 规定了这种方式，允许直接向前端颁发令牌。这种方式没有授权码这个中间步骤，所以称为隐藏式。这种方式把令牌直接传给前端，是很不安全的。因此，只能用于一些安全要求不高的场景，并且令牌的有效期必须非常短，通常就是会话期间（session）有效，浏览器关掉，令牌就失效了。
 
-​								![image-20231220185958063](assets/image-20231220185958063.png)
+<!-- ​								![image-20231220185958063](assets/image-20231220185958063.png) -->
 
 
 
-![image-20231222203218334](assets/image-20231222203218334.png)
+<!-- ![image-20231222203218334](assets/image-20231222203218334.png) -->
 
 ```
 https://a.com/callback#token=ACCESS_TOKEN
@@ -1535,9 +1533,9 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 这种方式需要用户给出自己的用户名/密码，显然风险很大，因此只适用于其他授权方式都无法采用的情况，而且必须是用户高度信任的应用。
 
-![image-20231220190152888](assets/image-20231220190152888.png)
+<!-- ![image-20231220190152888](assets/image-20231220190152888.png) -->
 
-![image-20231222203240921](assets/image-20231222203240921.png)
+<!-- ![image-20231222203240921](assets/image-20231222203240921.png) -->
 
 #### 第四种方式：凭证式
 
@@ -1545,15 +1543,15 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 这种方式给出的令牌，是针对第三方应用的，而不是针对用户的，即有可能多个用户共享同一个令牌。
 
-![image-20231220185958063](assets/image-20231220185958063.png)
+<!-- ![image-20231220185958063](assets/image-20231220185958063.png) -->
 
-![image-20231222203259785](assets/image-20231222203259785.png)
+<!-- ![image-20231222203259785](assets/image-20231222203259785.png) -->
 
 
 
 ### 1.5、授权类型的选择
 
-![image-20231223020052999](assets/image-20231223020052999.png)
+<!-- ![image-20231223020052999](assets/image-20231223020052999.png) -->
 
 
 
@@ -1613,7 +1611,7 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 使用OAuth2 Login
 
-![image-20231223164128030](assets/image-20231223164128030.png)
+<!-- ![image-20231223164128030](assets/image-20231223164128030.png) -->
 
 
 
@@ -1625,17 +1623,17 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 登录GitHub，在开发者设置中找到OAuth Apps，创建一个application，为客户应用创建访问GitHub的凭据：
 
-![image-20230510154255157](assets/image-20230510154255157.png)
+<!-- ![image-20230510154255157](assets/image-20230510154255157.png) -->
 
 
 
 填写应用信息：`默认的重定向URI模板为{baseUrl}/login/oauth2/code/{registrationId}`。registrationId是ClientRegistration的唯一标识符。
 
-![image-20231221000906168](assets/image-20231221000906168.png)
+<!-- ![image-20231221000906168](assets/image-20231221000906168.png) -->
 
 获取应用程序id，生成应用程序密钥：
 
-![image-20230510163101376](assets/image-20230510163101376.png)
+<!-- ![image-20230510163101376](assets/image-20230510163101376.png) -->
 
 
 
@@ -1643,7 +1641,7 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 创建一个springboot项目oauth2-login-demo，创建时引入如下依赖
 
-![image-20230510165314829](assets/image-20230510165314829.png)
+<!-- ![image-20230510165314829](assets/image-20230510165314829.png) -->
 
 
 
@@ -1757,7 +1755,7 @@ resources/templates/index.html
 7. GitHub返回用户数据
 8. **A 网站使用 GitHub用户数据登录**
 
-![image-20231223203225688](assets/image-20231223203225688.png)
+<!-- ![image-20231223203225688](assets/image-20231223203225688.png) -->
 
 ### 4.2、CommonOAuth2Provider
 
