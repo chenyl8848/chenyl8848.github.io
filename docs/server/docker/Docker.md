@@ -13,12 +13,14 @@ article: true
 
 <!-- more -->
 
+
 >[学习视频【编程不良人】](https://www.bilibili.com/video/BV1ZT4y1K75K?spm_id_from=333.999.0.0)
 >
 >[官方文档地址](https://www.docker.com/get-started)
 >
 >[中文参考手册](https://docker_practice.gitee.io/zh-cn/)
 
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/container%20/01/Docker_Mindmap.png)
 -----
 
 ## 1. Docker 简介
@@ -34,9 +36,9 @@ article: true
 
 - 官网首页
 
-![image-20201220213306128](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/container%20/01/image-20201220213306128.png)
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/container%20/01/image-20201220213306128.png)
 
-![image-20201220214210994](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/container%20/01/image-20201220214210994.png)
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/server/container%20/01/image-20201220214210994.png)
 
 ### 1.2 Docker 的起源
 
@@ -44,7 +46,7 @@ Docker 最初是 dotCloud 公司创始人 Solomon Hykes 在法国期间发起的
 
 Docker 自开源后受到广泛的关注和讨论，由于 Docker 项目的火爆，在 2013 年底，dotCloud 公司决定改名为 Docker. Docker 最初是在 Ubuntu 12.04 上开发实现的；Red Hat 则从 RHEL 6.5 开始对 Docker 进行支持；Google 也在其 PaaS 产品中广泛应用 Docker.
 
-Docker 使用 Google 公司推出的 Go 语言进行开发实现，基于 Linux 内核的 cgroup，namespace，以及 OverlayFS 类的 Union FS 等技术，对进程进行封装隔离，属于操作系统层面的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也称其为容器。
+Docker 使用 Google 公司推出的 Go 语言进行开发实现，基于 Linux 内核的 cgroup、namespace, 以及 OverlayFS 类的 Union FS 等技术，对进程进行封装隔离，属于操作系统层面的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也称其为容器。
 
 ### 1.3 Docker 的优势
 
@@ -142,7 +144,7 @@ sudo systemctl stop docker
 
 - 测试 Docker 是否安装
 ```bash
-$ sudo docker --version
+sudo docker --version
 ```
 
 ### 2.2 bash 安装(通用所有平台)
@@ -680,7 +682,7 @@ Dockerfile 可以认为是**Docker 镜像的描述文件，是由一系列命令
 | **WORKDIR**    | **指定在创建容器后，终端默认登录进来的工作目录，一个落脚点** |
 | **ENV**        | **用来在构建镜像过程中设置环境变量**                         |
 | **ADD**        | **将宿主机目录下的文件拷贝进镜像且ADD命令会自动处理URL和解压tar包** |
-| **COPY**       | **类似于ADD，拷贝文件和目录到镜像中<br/>将从构建上下文目录中<原路径>的文件/目录复制到新的一层的镜像内的<目标路径>位置** |
+| **COPY**       | **类似于ADD，拷贝文件和目录到镜像中<br/>将从构建上下文目录中原路径的文件/目录复制到新的一层的镜像内的目标路径位置** |
 | **VOLUME**     | **容器数据卷，用于数据保存和持久化工作**                     |
 | **CMD**        | **指定一个容器启动时要运行的命令<br/>Dockerfile中可以有多个CMD指令，但只有最后一个生效，CMD会被docker run之后的参数替换** |
 | **ENTRYPOINT** | **指定一个容器启动时要运行的命令<br/>ENTRYPOINT的目的和CMD一样，都是在指定容器启动程序及其参数** |
