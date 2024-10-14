@@ -1,9 +1,9 @@
 ---
-title: Zookeeper
-icon: zookeeper
+title: ZooKeeper
+icon: ZooKeeper
 star: 40
 isOriginal: true
 article: false
 ---
 
-* [初学Zookeeper](Zookeeper.md)
+* [ZooKeeper 入门教程](Zookeeper.md)
