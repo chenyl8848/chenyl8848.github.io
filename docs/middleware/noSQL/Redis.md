@@ -13,6 +13,8 @@ tag:
 
 > [学习视频【编程不良人】](https://www.bilibili.com/video/BV1jD4y1Q7tU?spm_id_from=333.999.0.0)
 
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/NoSQL/01/Redis_Mindmap.png)
+
 ## 1. NoSQL
 
 ### 1.1 NoSQL 介绍
@@ -676,7 +678,7 @@ private Jedis jedis;
     }
 ```
 
-![image-20200627180352953](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/NoSQL/01/image-20200627180352953.png)
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/NoSQL/01/image-20200627180352953.png)
 
 ### 5.4 操作 List 相关 API
 
@@ -706,7 +708,6 @@ private Jedis jedis;
       	//........
 
     }
-
 ```
 
 ![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/NoSQL/01/image-20200627180435997.png)
@@ -787,7 +788,7 @@ public void testHash(){
 
 Spring Boot Data(数据) Redis 中提供 `RedisTemplate和StringRedisTemplate`，其中 `StringRedisTemplate` 是 `RedisTemplate` 的子类，两个方法基本一致，不同之处主要体现在操作的数据类型不同，`RedisTemplate` 中的两个泛型都是 `Object`，意味着存储的 key 和 value 都可以是一个对象，而 `StringRedisTemplate` 的两个泛型都是 `String`，意味着 `StringRedisTemplate` 的 key 和 value 都只能是字符串。
 
-> **注意：使用 `RedisTemplate` 默认是将对象序列化到 Redis 中，所以放入的对象必须实现对象序列化接口。
+> **注意：使用 `RedisTemplate` 默认是将对象序列化到 Redis 中，所以放入的对象必须实现对象序列化接口**。
 
 ### 6.1 环境准备
 
@@ -1005,7 +1006,7 @@ spring.redis.sentinel.nodes=192.168.202.206:26379
 
 ## 9. Redis 集群
 
-### 9.1 Redis 集群介绍
+### 9.1 集群介绍
 
 Redis 在 3.0 后开始支持 `Cluster` 模式，目前 Redis 的集群支持节点的自动发现，支持 `slave-master` 选举和容错，支持在线分片(`sharding shard`)等特性。reshard
 
@@ -1189,7 +1190,3 @@ public class RedisSessionManager {
 3. 测试
 
 ----
-
-
-
-
