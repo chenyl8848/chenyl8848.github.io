@@ -1,6 +1,6 @@
 ---
 title: ZooKeeper
-icon: ZooKeeper
+icon: zookeeper
 star: 40
 isOriginal: true
 article: false

@@ -18,6 +18,8 @@ tag:
 >
 >[官方教程](https://www.rabbitmq.com/#getstarted)
 
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/MQ/01/RabbitMQ_Mindmap.png)
+
 ## 1. MQ 引言
 
 ### 1.1 什么是 MQ

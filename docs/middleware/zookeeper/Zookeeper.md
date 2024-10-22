@@ -12,6 +12,8 @@ tag:
 
 > [学习视频【编程不良人】](https://www.bilibili.com/video/BV1Uy4y1b7ED?spm_id_from=333.999.0.0)
 
+![](https://chen-coding.oss-cn-shenzhen.aliyuncs.com/middleware/Zookeeper/01/Zookeeper_Mindmap.png)
+
 ## 1. ZooKeeper 简介
 
 
@@ -331,10 +333,10 @@ public void testOnNodesChange() throws IOException {
 
 ## 8. ZooKeeper 的集群
 
-### 8.1 集群(cluster)
+### 8.1 集群(Cluster)
 
 ```markdown
-# 1.集群(cluster)
+# 1.集群(Cluster)
 - 集合同一种软件服务的多个节点同时提供服务
 
 # 2.集群解决问题
