@@ -11,6 +11,8 @@ tag:
 # Spring Security + OAuth2 权限管理实战
 <!-- more -->
 
+> 注意：本文基于 SpringBoot3 !
+
 ## 1. Spring Security 快速入门
 
 ### 1.1 Spring Security 介绍
@@ -124,33 +126,33 @@ Spring Security 之所以可以默认做这么多事情，它的底层原理是�
 
 **官方文档**：`https://docs.spring.io/spring-security/reference/servlet/architecture.html`
 
-#### 1.4.1 Filter（过滤器）
+- Filter（过滤器）
 
 下图展示了 Spring Security 处理一个 Http 请求时，过滤器和 Servlet 的工作流程：
 
 <!-- ![filterchain](assets/filterchain.png) -->
 
-客户端向应用程序发送请求，容器根据请求 URI 的路径创建一个 `FilterChain`，其中包含应处理 `HttpServletRequest` 的 `Filter` 实例和 `Servlet`.在 Spring MVC 应用程序中，`Servlet` 是 `DispatcherServlet` 的实例，也就是代码中的 `Controller`.
+客户端向应用程序发送请求，容器根据请求 URI 的路径创建一个 `FilterChain`，其中包含应处理 `HttpServletRequest` 的 `Filter` 实例和 `Servlet`. 在 Spring MVC 应用程序中，`Servlet` 是 `DispatcherServlet` 的实例，也就是代码中的 `Controller`.
 
-#### 1.4.2 DelegatingFilterProxy（委托过滤代理类）
+- DelegatingFilterProxy（委托过滤代理类）
 
 `DelegatingFilterProxy` 是 Spring Security 提供的一个 `Filter` 实现，可以在 `Servlet` 容器和 Spring 容器之间建立桥梁。通过使用 `DelegatingFilterProxy`，这样就可以将 Servlet 容器中的 `Filter` 实例放在 Spring 容器中管理。
 
 <!-- ![delegatingfilterproxy](assets/delegatingfilterproxy.png) -->
 
-#### 1.4.3 FilterChainProxy（过滤器链代理类）
+- FilterChainProxy（过滤器链代理类）
 
 复杂的业务中不可能只有一个过滤器。因此 `FilterChainProxy` 是 Spring Security 提供的一个特殊的 Filter，它通过 `SecurityFilterChain` 将过滤器的工作委托给多个 `Bean Filter` 实例。由于 `FilterChainProxy` 是一个 Bean，因此它通常包装在 `DelegatingFilterProxy` 中。
 
 <!-- ![filterchainproxy](assets/filterchainproxy.png) -->
 
-#### 1.4.4 SecurityFilterChain（过滤器链）
+- SecurityFilterChain（过滤器链）
 
 `SecurityFilterChain` 被 `FilterChainProxy` 使用，负责查找当前的请求需要执行的 `Security Filter` 列表。
 
 <!-- ![securityfilterchain](assets/securityfilterchain.png) -->
 
-#### 1.4.5 Multiple SecurityFilterChain
+- 1.4.5 Multiple SecurityFilterChain
 
 可以有多个 `SecurityFilterChain` 的配置，`FilterChainProxy` 决定使用哪个 `SecurityFilterChain`.
 - 如果请求的 URL 是 `/api/messages/`，它首先匹配 `SecurityFilterChain0` 的模式 `/api/\*\*`，因此只调用 `SecurityFilterChain 0`。
@@ -160,7 +162,7 @@ Spring Security 之所以可以默认做这么多事情，它的底层原理是�
 
 ### 1.5 程序的启动和运行
 
-#### 1.5.1 DefaultSecurityFilterChain
+- DefaultSecurityFilterChain
 
 SecurityFilterChain 接口的默认实现，初始化实例时默认加载了 16 个 `Filter`.
 
@@ -199,7 +201,7 @@ org.springframework.security.web.access.ExceptionTranslationFilter@68d6d775,
 org.springframework.security.web.access.intercept.AuthorizationFilter@4c6b4ed7]
 ```
 
-#### 1.5.2 SecurityProperties
+- SecurityProperties
 
 默认情况下 `Spring Security` 将初始的用户名和密码存在了 `SecurityProperties` 类中。这个类中有一个静态内部类 `User`，配置了默认的用户名（`name = "user"`）和密码（`password = uuid`）
 
@@ -283,11 +285,11 @@ public class WebSecurityConfig {
   - Spring Security 自动使用 `InMemoryUserDetailsManager` 的 `loadUserByUsername` 方法从**内存中**获取 `User` 对象
   - 在 `UsernamePasswordAuthenticationFilter` 过滤器中的 `attemptAuthentication` 方法中将用户输入的用户名密码和从内存中获取到的用户信息进行比较，进行用户认证
 
-### 2.2 基于数据库的数据源
+### 2.2 基于数据库的用户认证
 
-### 2.1、SQL
+#### 2.2.1 数据库环境搭建
 
-创建三个数据库表并插入测试数据
+1、创建数据库表并插入测试数据
 
 ```sql
 -- 创建数据库
@@ -295,49 +297,35 @@ CREATE DATABASE `security-demo`;
 USE `security-demo`;
 
 -- 创建用户表
-CREATE TABLE `user`(
+CREATE TABLE `sys_user`(
 	`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`username` VARCHAR(50) DEFAULT NULL ,
 	`password` VARCHAR(500) DEFAULT NULL,
 	`enabled` BOOLEAN NOT NULL
 );
 -- 唯一索引
-CREATE UNIQUE INDEX `user_username_uindex` ON `user`(`username`); 
+CREATE UNIQUE INDEX `sys_user_username_uindex` ON `sys_user`(`username`); 
 
 -- 插入用户数据(密码是 "abc" )
-INSERT INTO `user` (`username`, `password`, `enabled`) VALUES
+INSERT INTO `sys_user` (`username`, `password`, `enabled`) VALUES
 ('admin', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE),
 ('Helen', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE),
 ('Tom', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE);
 ```
 
-
-
-### 2.2、引入依赖
+2、引入依赖
 
 ```xml
-<dependency>
+ <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.30</version>
+    <version>8.0.31</version>
 </dependency>
 
 <dependency>
     <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus-boot-starter</artifactId>
-    <version>3.5.4.1</version>
-    <exclusions>
-        <exclusion>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-
-<dependency>
-    <groupId>org.mybatis</groupId>
-    <artifactId>mybatis-spring</artifactId>
-    <version>3.0.3</version>
+    <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+    <version>3.5.7</version>
 </dependency>
 
 <dependency>
@@ -346,220 +334,132 @@ INSERT INTO `user` (`username`, `password`, `enabled`) VALUES
 </dependency>
 ```
 
+3、配置数据源
 
+```yaml
+# MySQL 数据源
+spring:
+  datasource:
+#    todo 修改密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security-demo
+    username: root
+    password: root
 
-### 2.3、配置数据源
-
-```properties
-#MySQL数据源
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://localhost:3306/security-demo
-spring.datasource.username=root
-spring.datasource.password=123456
-#SQL日志
-mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+# 打印SQL日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ```
 
-
-
-### 2.4、实体类
+4、实体类
 
 ```java
-package com.atguigu.securitydemo.entity;
-
 @Data
-public class User {
+public class SysUser {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    /** 主键 */
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
+    /** 用户名 */
     private String username;
 
+    /** 密码 */
     private String password;
 
+    /** 是否启用 */
     private Boolean enabled;
-
 }
 ```
 
-
-
-### 2.5、Mapper
-
-接口
+5、Mapper
 
 ```java
-package com.atguigu.securitydemo.mapper;
-
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 }
 ```
 
-
-
-xml
-
-resources/mapper/UserMapper.xml
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.atguigu.securitydemo.mapper.UserMapper">
-
-</mapper>
-```
-
-
-
-### 2.6、Service
-
-接口
+6、Service
 
 ```java
-package com.atguigu.securitydemo.service;
-
-public interface UserService extends IService<User> {
+public interface ISysUserService extends IService<SysUser> {
 }
 ```
 
-实现
-
 ```java
-package com.atguigu.securitydemo.service.impl;
-
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class SysUserImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 }
 ```
-
-
-
-### 2.7、Controller
+7、Controller
 
 ```java
-package com.atguigu.securitydemo.controller;
-
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("sysuser")
+public class SysUserController {
 
-    @Resource
-    public UserService userService;
+    @Autowired
+    private ISysUserService sysUserService;
 
-    @GetMapping("/list")
-    public List<User> getList(){
-        return userService.list();
+    @GetMapping("")
+    public List<SysUser> getSysUserList() {
+        return sysUserService.list();
     }
 }
 ```
 
+**测试**：`http://localhost:8080/sysuser/list`
 
 
-**测试：**[localhost:8080/demo/user/list](http://localhost:8080/demo/user/list)
-
-
-
-## 3、基于数据库的用户认证
-
-### 3.1、基于数据库的用户认证流程
+#### 2.2.2 基于数据库的用户认证流程
 
 - 程序启动时：
-  - 创建`DBUserDetailsManager`类，实现接口 UserDetailsManager, UserDetailsPasswordService
-  - 在应用程序中初始化这个类的对象
+  - 创建 `UserDetailServiceImpl` 类，实现 `UserDetailsService` 接口的 `loadUserByUsername` 方法
+  - 将 `UserDetailServiceImpl` 类注入到 IOC 容器中
 - 校验用户时：
-  - SpringSecurity自动使用`DBUserDetailsManager`的`loadUserByUsername`方法从`数据库中`获取User对象
-  - 在`UsernamePasswordAuthenticationFilter`过滤器中的`attemptAuthentication`方法中将用户输入的用户名密码和从数据库中获取到的用户信息进行比较，进行用户认证
+  - Spring Security 自动使用 `UserDetailServiceImpl` 的 `loadUserByUsername` 方法从**数据库中**获取 `SysUser` 对象，并封装为 `UserDetails`
+  - 在 `UsernamePasswordAuthenticationFilter` 过滤器中的 `attemptAuthentication` 方法中将用户输入的用户名密码和从数据库中获取到的用户信息进行比较，进行用户认证
 
 
 
-### 3.2、定义DBUserDetailsManager
+#### 2.2.3 定义 `UserDetailServiceImpl`
 
 ```java
-package com.atguigu.securitydemo.config;
+@Service
+public class UserDetailServiceImpl implements UserDetailsService {
 
-public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
-    
-    @Resource
-    private UserMapper userMapper;
+    @Autowired
+    private ISysUserService sysUserService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        SysUser sysUser = sysUserService.getSysUserByUerName(username);
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        User user = userMapper.selectOne(queryWrapper);
-        if (user == null) {
+        if (Objects.isNull(sysUser)) {
             throw new UsernameNotFoundException(username);
-        } else {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getEnabled(),
-                    true, //用户账号是否过期
-                    true, //用户凭证是否过期
-                    true, //用户是否未被锁定
-                    authorities); //权限列表
         }
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        return new User(username,
+                sysUser.getPassword(),
+                sysUser.getEnabled(),
+                // 用户账号不过期
+                true,
+                // 用户凭证不过期
+                true,
+                // 用户不锁定
+                true,
+                // 用户权限
+                authorities);
     }
-
-    @Override
-    public UserDetails updatePassword(UserDetails user, String newPassword) {
-        return null;
-    }
-
-    @Override
-    public void createUser(UserDetails user) {
-
-    }
-
-    @Override
-    public void updateUser(UserDetails user) {
-
-    }
-
-    @Override
-    public void deleteUser(String username) {
-
-    }
-
-    @Override
-    public void changePassword(String oldPassword, String newPassword) {
-
-    }
-
-    @Override
-    public boolean userExists(String username) {
-        return false;
-    }
-}
-
-```
-
-
-
-### 3.3、初始化UserDetailsService
-
-修改WebSecurityConfig中的userDetailsService方法如下
-
-```java
-@Bean
-public UserDetailsService userDetailsService() {
-    DBUserDetailsManager manager = new DBUserDetailsManager();
-    return manager;
 }
 ```
 
-**或者直接在DBUserDetailsManager类上添加@Component注解**
+**测试**：使用数据库中配置的用户名和密码进行登录。
 
-
-
-**测试：**使用数据库中配置的用户名和密码进行登录
-
-
-
-## 4、SpringSecurity的默认配置
+## 3. SpringSecurity 的默认配置
 
 在WebSecurityConfig中添加如下配置
 
