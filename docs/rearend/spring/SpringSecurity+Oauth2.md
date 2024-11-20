@@ -306,11 +306,11 @@ CREATE TABLE `sys_user`(
 -- 唯一索引
 CREATE UNIQUE INDEX `sys_user_username_uindex` ON `sys_user`(`username`); 
 
--- 插入用户数据(密码是 "abc" )
+-- 插入用户数据(密码是 "123456" )
 INSERT INTO `sys_user` (`username`, `password`, `enabled`) VALUES
-('admin', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE),
-('Helen', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE),
-('Tom', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW', TRUE);
+('admin', '{bcrypt}$2a$10$E49Zm6HtzhSYvCcYkj5dve7Gc3Biu.iZ680bfiqx6Go6iodgL4VTa', TRUE),
+('Helen', '{bcrypt}$2a$10$E49Zm6HtzhSYvCcYkj5dve7Gc3Biu.iZ680bfiqx6Go6iodgL4VTa', TRUE),
+('Tom', '{bcrypt}$2a$10$E49Zm6HtzhSYvCcYkj5dve7Gc3Biu.iZ680bfiqx6Go6iodgL4VTa', TRUE);
 ```
 
 2、引入依赖
@@ -403,7 +403,7 @@ public class SysUserController {
     @Autowired
     private ISysUserService sysUserService;
 
-    @GetMapping("")
+    @GetMapping("/getSysUserList")
     public List<SysUser> getSysUserList() {
         return sysUserService.list();
     }
@@ -455,11 +455,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
 }
 ```
 
-**测试**：使用数据库中配置的用户名和密码进行登录。
+**测试**：使用数据库中配置的用户名 `admin` 和密码 `123456` 进行登录。
 
 ## 3. 密码加密算法
 
-在前面基于数据库的用户认证中，我们输入用户名、密码就能实现用户认证登录，这是如何实现的呢？我们先回顾下常用的密码加密方式。
+在前面基于数据库的用户认证中，我们输入用户名 `admin`、密码 `123456` 就能实现用户认证登录。
+
+但是数据库中 `admin` 的密码明明是 `{bcrypt}$2a$10$E49Zm6HtzhSYvCcYkj5dve7Gc3Biu.iZ680bfiqx6Go6iodgL4VTa`, 为什么登录密码反而是  `123456` 呢？
+
+我们先回顾下常用的密码加密方式。
 
 **参考文档**：`https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html`
 
@@ -553,10 +557,10 @@ PasswordEncoder 接口具体的实现类有：
 @Test
 void testPassword() {
 
-    // 工作因子，默认值是10，最小值是4，最大值是31，值越大运算速度越慢
+    // 工作因子，默认值是 10，最小值是 4，最大值是 31，值越大运算速度越慢
     PasswordEncoder encoder = new BCryptPasswordEncoder(4);
-    //明文："password"
-    //密文：result，即使明文密码相同，每次生成的密文也不一致
+    // 明文："123456"
+    // 密文：result，即使明文密码相同，每次生成的密文也不一致
     String result = encoder.encode("password");
     System.out.println(result);
 
@@ -567,74 +571,45 @@ void testPassword() {
 
 ### 3.4 DelegatingPasswordEncoder
 
-- 表中存储的密码形式：`{bcrypt}`$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW
-- 通过如下源码可以知道：可以通过`{bcrypt}`前缀动态获取和密码的形式类型一致的 PasswordEncoder 对象
+- 表中存储的密码形式：`{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW`
+- 通过如下源码可以知道：可以通过 `{bcrypt}` 前缀动态获取和密码的形式类型一致的 PasswordEncoder 对象
 - 目的：方便随时做密码策略的升级，兼容数据库中的老版本密码策略生成的密码
 
 <!-- ![image-20231209011827867](assets/image-20231209011827867.png) -->
 
 ## 4. 添加用户
 
-1、Controller
-
-UserController中添加方法
+1、`SysUserController` 中添加方法
 
 ```java
 @PostMapping("/add")
-public void add(@RequestBody User user){
-    userService.saveUserDetails(user);
+public void addSysUser(@RequestBody SysUser sysUser) {
+    sysUserService.addSysUser(sysUser);
 }
 ```
 
-2、Service
-
-UserService接口中添加方法
+2、`ISysUserService` 接口中添加方法
 
 ```java
-void saveUserDetails(User user);
+void addSysUser(SysUser sysUser);
 ```
 
-UserServiceImpl实现中添加方法
+3、`SysUserImpl` 实现中添加方法实现
 
 ```java
-@Resource
-private DBUserDetailsManager dbUserDetailsManager;
+private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
 @Override
-public void saveUserDetails(User user) {
+public void addSysUser(SysUser sysUser) {
+    sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 
-    UserDetails userDetails = org.springframework.security.core.userdetails.User
-            .withDefaultPasswordEncoder()
-            .username(user.getUsername()) //自定义用户名
-            .password(user.getPassword()) //自定义密码
-            .build();
-    dbUserDetailsManager.createUser(userDetails);
-
+    save(sysUser);
 }
 ```
 
-3、修改配置
-
-DBUserDetailsManager中添加方法
-
-```java
-@Override
-public void createUser(UserDetails userDetails) {
-
-    User user = new User();
-    user.setUsername(userDetails.getUsername());
-    user.setPassword(userDetails.getPassword());
-    user.setEnabled(true);
-    userMapper.insert(user);
-}
-```
-
-4、使用Swagger测试
-
-pom中添加配置用于测试
-
+4、使用 Swagger 测试
 ```xml
-<!--swagger测试-->
+<!-- 引入 Swagger 依赖 -->
 <dependency>
     <groupId>com.github.xiaoymin</groupId>
     <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
@@ -642,51 +617,93 @@ pom中添加配置用于测试
 </dependency>
 ```
 
-**Swagger测试地址：**http://localhost:8080/demo/doc.html
+**Swagger测试地址**：`http://localhost:8080/doc.html`
 
 <!-- ![image-20231206022701725](assets/image-20231206022701725.png) -->
 
-5、关闭csrf攻击防御
+5、关闭 CSRF 攻击防御
 
-默认情况下SpringSecurity开启了csrf攻击防御的功能，这要求请求参数中必须有一个隐藏的**_csrf**字段，如下：
+默认情况下 Spring Security 开启了 CSRF 攻击防御的功能，这要求请求参数中必须有一个隐藏的 `_csrf` 字段，如下：
 
 <!-- ![image-20231206023030864](assets/image-20231206023030864.png) -->
 
-在filterChain方法中添加如下代码，关闭csrf攻击防御
+需要在 Spring Security 的默认配置中关闭 CSRF 攻击防御。
 
-```java
-//关闭csrf攻击防御
-http.csrf((csrf) -> {
-    csrf.disable();
-});
-```
-
-## 5. SpringSecurity 的默认配置
-
-在WebSecurityConfig中添加如下配置
+在 `WebSecurityConfig` 中添加如下代码：
 
 ```java
 @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //authorizeRequests()：开启授权保护
-    //anyRequest()：对所有请求开启授权保护
-    //authenticated()：已认证请求会自动被授权
-    http
-        .authorizeRequests(authorize -> authorize.anyRequest().authenticated())
-        .formLogin(withDefaults())//表单授权方式
-        .httpBasic(withDefaults());//基本授权方式
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-    return http.build();
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+            .formLogin(withDefaults())
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
 }
 ```
 
-## 6. 自定义登录页面
+## 5. Spring Security 的默认配置
 
-### 6.1 创建登录Controller
+我们为了关闭 CSRF 攻击防御，在 `WebSecurityConfig` 中注入了 `SecurityFilterChain`. 在这里可以修改添加 Spring Security 的默认配置，比如**开启授权保护、修改表单授权模式、自定义登录页等等**。
+
+1、开启授权保护
 
 ```java
-package com.atguigu.securitydemo.controller;
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+            .formLogin(withDefaults())
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
+```
+
+开启后，所有请求都需要经过登录后才能访问。
+
+2、使用浏览器自带登录表单授权
+
+```java
+@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        return httpSecurity
+                // 对所有请求开启请求保护
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                // 使用默认登录页
+//                .formLogin(withDefaults())
+                // 基本授权方式
+                .httpBasic(withDefaults())
+                // 关闭跨站伪造攻击
+                .csrf(csrf -> csrf.disable())
+                .build();
+    }
+```
+
+
+## 6. 自定义登录页面
+
+在开发中，为了实现更好的交互，往往都是自己开发登录页面。那么，在 Spring Security 要怎么配置自定义登录页面呢？
+
+1、引入模板引擎 `thymeleaf` 依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+2、创建 `LoginController`
+
+```java
 @Controller
 public class LoginController {
 
@@ -694,12 +711,11 @@ public class LoginController {
     public String login() {
         return "login";
     }
+
 }
 ```
 
-### 6.2 创建登录页面
-
-resources/templates/login.html
+3、在 `resources/templates/` 目录下创建登录页面 `login.html`
 
 ```html
 <!DOCTYPE html>
@@ -731,19 +747,88 @@ login: 和登录页面保持一致即可，SpringSecurity自动进行登录认�
 </html>
 ```
 
-### 6.3 配置SecurityFilterChain
-
-SecurityConfiguration：
+4、配置 `WebSecurityConfig` 中的 `SecurityFilterChain`
 
 ```java
-.formLogin( form -> {
-    form
-        .loginPage("/login").permitAll() //登录页面无需授权即可访问
-        .usernameParameter("username") //自定义表单用户名参数，默认是username
-        .passwordParameter("password") //自定义表单密码参数，默认是password
-        .failureUrl("/login?error") //登录失败的返回地址
-        ;
-}); //使用表单授权方式
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
+```
+
+> 注意：需要配置登录页无需授权即可访问，否则会由于**重定向的次数过多导致页面崩溃**。
+
+5、修改用户名、密码表单字段
+
+在前面的 HTML 中，用户名、密码的表单 `name` 为 `username`、`password`, 是否可以修改为其他名称呢？
+
+答案是可以的。
+
+比如在 HTML 中将用户名、密码的表单 `name` 修改为 `myusername`、`pwd`.
+```html
+<form th:action="@{/login}" method="post">
+    <div>
+        <!--name必须为"username"-->
+        <input type="text" name="myusername" placeholder="用户名"/>
+    </div>
+    <div>
+        <!--name必须为"password"-->
+        <input type="password" name="pwd" placeholder="密码"/>
+    </div>
+    <input type="submit" value="登录" />
+</form>
+```
+
+此时，会发现登录不了，提示**错误的用户名和密码.**。
+
+这是因为在 Spring Security 中默认的字段为 `username`、`password`, 在 `UsernamePasswordAuthenticationFilter` 源码中可以看到：
+```java
+private String usernameParameter = "username";
+private String passwordParameter = "password";
+```
+
+因此，需要在 Spring Security 的默认配置中进行同步修改：
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+                        // 配置自定义的表单用户名参数 默认：username
+                        .usernameParameter("myusername")
+                        // 配置自定义的表单密码参数 默认：password
+                        .passwordParameter("pwd")
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
 ```
 
 ## 7. 前后端分离
