@@ -422,8 +422,6 @@ public class SysUserController {
   - Spring Security 自动使用 `UserDetailServiceImpl` 的 `loadUserByUsername` 方法从**数据库中**获取 `SysUser` 对象，并封装为 `UserDetails`
   - 在 `UsernamePasswordAuthenticationFilter` 过滤器中的 `attemptAuthentication` 方法中将用户输入的用户名密码和从数据库中获取到的用户信息进行比较，进行用户认证
 
-
-
 #### 2.2.3 定义 `UserDetailServiceImpl`
 
 ```java
@@ -459,30 +457,125 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 **测试**：使用数据库中配置的用户名和密码进行登录。
 
-## 3. SpringSecurity 的默认配置
+## 3. 密码加密算法
 
-在WebSecurityConfig中添加如下配置
+在前面基于数据库的用户认证中，我们输入用户名、密码就能实现用户认证登录，这是如何实现的呢？我们先回顾下常用的密码加密方式。
+
+**参考文档**：`https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html`
+
+### 3.1 密码加密方式
+
+- 明文密码
+
+最初，密码以明文形式存储在数据库中，但是恶意用户可能会通过 SQL 注入等手段获取到明文密码，或者程序员将数据库数据泄露的情况也可能发生。
+
+- 哈希算法
+
+使用**哈希算法**对密码进行**单向转换**，常见的哈希算法如 `MD5`、`SHA-256`、`SHA-512` 等。
+
+**哈希算法是单向的，只能加密，不能解密**。
+
+因此，**数据库中存储的是单向转换后的密码**，在进行用户身份验证时需要将用户输入的密码进行单向转换，然后与数据库的密码进行比较。
+
+如果发生数据泄露，只有密码的单向哈希会被暴露。由于哈希是单向的，并且在给定哈希的情况下只能通过**暴力破解的方式猜测密码**。
+
+- 彩虹表
+
+彩虹表就是一个庞大的、针对各种可能的字母组合预先生成的哈希值集合，有了它可以快速破解各类密码。
+
+越是复杂的密码，需要的彩虹表就越大，主流的彩虹表都是100G以上，目前主要的算法有LM、NTLM、MD5、SHA1、MYSQLSHA1、HALFLMCHALL、NTLMCHALL、ORACLE-SYSTEM、MD5-HALF.
+
+- 加盐密码
+
+为了减轻彩虹表的效果，开发人员开始使用**加盐密码**。
+
+不再只使用密码作为哈希函数的输入，而是为每个用户的密码生成**随机字节（称为盐）**。
+
+**盐和用户的密码将一起经过哈希函数运算，生成一个唯一的哈希**。
+
+盐将以明文形式与用户的密码一起存储，然后，当用户尝试进行身份验证时，盐和用户输入的密码一起经过哈希函数运算，再与存储的密码进行比较。
+
+唯一的盐意味着彩虹表不再有效，因为对于每个盐和密码的组合，哈希都是不同的。
+
+- 自适应单向函数
+
+随着硬件的不断发展，加盐密码也不再安全。原因是，计算机可以每秒执行数十亿次哈希计算，这意味着可以轻松地破解每个密码。
+
+现在，开发人员开始使用自适应单向函数来存储密码。
+
+使用自适应单向函数验证密码时，**故意占用资源（故意使用大量的CPU、内存或其他资源）**。自适应单向函数允许配置一个**工作因子**，随着硬件的改进而增加。
+
+> 建议将**工作因子**调整到系统中验证密码需要约一秒钟的时间，这种权衡是为了**让攻击者难以破解密码**。
+
+自适应单向函数包括 `BCrypt`、`PBKDF2`、`Scrypt` 和 `Argon2`.
+
+### 3.2 PasswordEncoder
+
+Spring Security 中一个基于自适应单项函数实现的密码解析器接口，用以进行密码存储和校验。
+
+PasswordEncoder 接口具体的实现类有：
+
+- BCryptPasswordEncoder
+
+使用广泛支持的 BCrypt 算法来对密码进行哈希。
+
+为了增加对密码破解的抵抗力，BCrypt 故意设计得较慢。和其他自适应单向函数一样，应该调整其参数，使其在您的系统上验证一个密码大约需要 1 秒的时间。
+
+**BCryptPasswordEncoder 自带 Salt 加盐机制，即使相同的明文每次生成的加密字符串都不相同。默认实现使用强度 10, 建议您在自己的系统上调整和测试强度参数，以便验证密码时大约需要 1 秒的时间**。
+
+- Argon2PasswordEncoder
+
+使用 Argon2 算法对密码进行哈希处理。
+
+为了防止在自定义硬件上进行密码破解，Argon2 是一种故意缓慢的算法，需要大量内存。
+
+当前的 Argon2PasswordEncoder 实现需要使用 BouncyCastle 库。
+
+- Pbkdf2PasswordEncoder
+
+使用 PBKDF2 算法对密码进行哈希处理。
+
+为了防止密码破解，PBKDF2 是一种故意缓慢的算法。
+
+当需要 FIPS 认证时，这种算法是一个很好的选择。
+
+<!-- ![image-20230421184645177](assets/image-20230421184645177.png) -->
+
+- SCryptPasswordEncoder
+
+使用 SCrypt 算法对密码进行哈希处理。
+
+### 3.3 密码加密实现
+
+在测试类中编写一个测试方法。
 
 ```java
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //authorizeRequests()：开启授权保护
-    //anyRequest()：对所有请求开启授权保护
-    //authenticated()：已认证请求会自动被授权
-    http
-        .authorizeRequests(authorize -> authorize.anyRequest().authenticated())
-        .formLogin(withDefaults())//表单授权方式
-        .httpBasic(withDefaults());//基本授权方式
+@Test
+void testPassword() {
 
-    return http.build();
+    // 工作因子，默认值是10，最小值是4，最大值是31，值越大运算速度越慢
+    PasswordEncoder encoder = new BCryptPasswordEncoder(4);
+    //明文："password"
+    //密文：result，即使明文密码相同，每次生成的密文也不一致
+    String result = encoder.encode("password");
+    System.out.println(result);
+
+    //密码校验
+    Assert.isTrue(encoder.matches("password", result), "密码不一致");
 }
 ```
 
+### 3.4 DelegatingPasswordEncoder
 
+- 表中存储的密码形式：`{bcrypt}`$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW
+- 通过如下源码可以知道：可以通过`{bcrypt}`前缀动态获取和密码的形式类型一致的 PasswordEncoder 对象
+- 目的：方便随时做密码策略的升级，兼容数据库中的老版本密码策略生成的密码
 
-## 5、添加用户功能
+<!-- ![image-20231209011827867](assets/image-20231209011827867.png) -->
 
-### 5.1、Controller
+## 4. 添加用户
+
+1、Controller
 
 UserController中添加方法
 
@@ -493,9 +586,7 @@ public void add(@RequestBody User user){
 }
 ```
 
-
-
-### 5.2、Service
+2、Service
 
 UserService接口中添加方法
 
@@ -522,9 +613,7 @@ public void saveUserDetails(User user) {
 }
 ```
 
-
-
-### 5.3、修改配置
+3、修改配置
 
 DBUserDetailsManager中添加方法
 
@@ -540,9 +629,7 @@ public void createUser(UserDetails userDetails) {
 }
 ```
 
-
-
-### 5.4、使用Swagger测试
+4、使用Swagger测试
 
 pom中添加配置用于测试
 
@@ -555,15 +642,11 @@ pom中添加配置用于测试
 </dependency>
 ```
 
-
-
 **Swagger测试地址：**http://localhost:8080/demo/doc.html
 
 <!-- ![image-20231206022701725](assets/image-20231206022701725.png) -->
 
-
-
-### 5.5、关闭csrf攻击防御
+5、关闭csrf攻击防御
 
 默认情况下SpringSecurity开启了csrf攻击防御的功能，这要求请求参数中必须有一个隐藏的**_csrf**字段，如下：
 
@@ -578,121 +661,28 @@ http.csrf((csrf) -> {
 });
 ```
 
+## 5. SpringSecurity 的默认配置
 
-
-## 6、密码加密算法
-
-**参考文档：**[Password Storage :: Spring Security](https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html)
-
-
-
-### 6.1、密码加密方式
-
-**明文密码：**
-
-最初，密码以明文形式存储在数据库中。但是恶意用户可能会通过SQL注入等手段获取到明文密码，或者程序员将数据库数据泄露的情况也可能发生。
-
-
-
-**Hash算法：**
-
-Spring Security的`PasswordEncoder`接口用于对密码进行`单向转换`，从而将密码安全地存储。对密码单向转换需要用到`哈希算法`，例如MD5、SHA-256、SHA-512等，哈希算法是单向的，`只能加密，不能解密`。
-
-因此，`数据库中存储的是单向转换后的密码`，Spring Security在进行用户身份验证时需要将用户输入的密码进行单向转换，然后与数据库的密码进行比较。
-
-因此，如果发生数据泄露，只有密码的单向哈希会被暴露。由于哈希是单向的，并且在给定哈希的情况下只能通过`暴力破解的方式猜测密码`。
-
-
-
-**彩虹表：**
-
-恶意用户创建称为`彩虹表`的查找表。
-
-```
-彩虹表就是一个庞大的、针对各种可能的字母组合预先生成的哈希值集合，有了它可以快速破解各类密码。越是复杂的密码，需要的彩虹表就越大，主流的彩虹表都是100G以上，目前主要的算法有LM, NTLM, MD5, SHA1, MYSQLSHA1, HALFLMCHALL, NTLMCHALL, ORACLE-SYSTEM, MD5-HALF。
-```
-
-
-
-**加盐密码：**
-
-为了减轻彩虹表的效果，开发人员开始使用加盐密码。不再只使用密码作为哈希函数的输入，而是为每个用户的密码生成随机字节（称为盐）。盐和用户的密码将一起经过哈希函数运算，生成一个唯一的哈希。盐将以明文形式与用户的密码一起存储。然后，当用户尝试进行身份验证时，盐和用户输入的密码一起经过哈希函数运算，再与存储的密码进行比较。唯一的盐意味着彩虹表不再有效，因为对于每个盐和密码的组合，哈希都是不同的。
-
-
-
-**自适应单向函数：**
-
-随着硬件的不断发展，加盐哈希也不再安全。原因是，计算机可以每秒执行数十亿次哈希计算。这意味着我们可以轻松地破解每个密码。
-
-现在，开发人员开始使用自适应单向函数来存储密码。使用自适应单向函数验证密码时，`故意占用资源（故意使用大量的CPU、内存或其他资源）`。自适应单向函数允许配置一个`“工作因子”`，随着硬件的改进而增加。我们建议将“工作因子”调整到系统中验证密码需要约一秒钟的时间。这种权衡是为了`让攻击者难以破解密码`。
-
-自适应单向函数包括`bcrypt、PBKDF2、scrypt和argon2`。
-
-
-
-### 6.2、PasswordEncoder
-
-**BCryptPasswordEncoder**
-
-使用广泛支持的bcrypt算法来对密码进行哈希。为了增加对密码破解的抵抗力，bcrypt故意设计得较慢。和其他自适应单向函数一样，应该调整其参数，使其在您的系统上验证一个密码大约需要1秒的时间。BCryptPasswordEncoder的默认实现使用强度10。建议您在自己的系统上调整和测试强度参数，以便验证密码时大约需要1秒的时间。
-
-
-
-**Argon2PasswordEncoder**
-
-使用Argon2算法对密码进行哈希处理。Argon2是密码哈希比赛的获胜者。为了防止在自定义硬件上进行密码破解，Argon2是一种故意缓慢的算法，需要大量内存。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。当前的Argon2PasswordEncoder实现需要使用BouncyCastle库。
-
-
-
-**Pbkdf2PasswordEncoder**
-
-使用PBKDF2算法对密码进行哈希处理。为了防止密码破解，PBKDF2是一种故意缓慢的算法。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。当需要FIPS认证时，这种算法是一个很好的选择。
-
-<!-- ![image-20230421184645177](assets/image-20230421184645177.png) -->
-
-
-
-**SCryptPasswordEncoder** 
-
-使用scrypt算法对密码进行哈希处理。为了防止在自定义硬件上进行密码破解，scrypt是一种故意缓慢的算法，需要大量内存。与其他自适应单向函数一样，它应该在您的系统上调整为大约1秒来验证一个密码。
-
-
-
-### 6.3、密码加密测试
-
-在测试类中编写一个测试方法
+在WebSecurityConfig中添加如下配置
 
 ```java
-@Test
-void testPassword() {
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    //authorizeRequests()：开启授权保护
+    //anyRequest()：对所有请求开启授权保护
+    //authenticated()：已认证请求会自动被授权
+    http
+        .authorizeRequests(authorize -> authorize.anyRequest().authenticated())
+        .formLogin(withDefaults())//表单授权方式
+        .httpBasic(withDefaults());//基本授权方式
 
-    // 工作因子，默认值是10，最小值是4，最大值是31，值越大运算速度越慢
-    PasswordEncoder encoder = new BCryptPasswordEncoder(4);
-    //明文："password"
-    //密文：result，即使明文密码相同，每次生成的密文也不一致
-    String result = encoder.encode("password");
-    System.out.println(result);
-
-    //密码校验
-    Assert.isTrue(encoder.matches("password", result), "密码不一致");
+    return http.build();
 }
 ```
 
+## 6. 自定义登录页面
 
-
-### 6.4、DelegatingPasswordEncoder
-
-- 表中存储的密码形式：`{bcrypt}`$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW
-- 通过如下源码可以知道：可以通过`{bcrypt}`前缀动态获取和密码的形式类型一致的PasswordEncoder对象
-- 目的：方便随时做密码策略的升级，兼容数据库中的老版本密码策略生成的密码
-
-<!-- ![image-20231209011827867](assets/image-20231209011827867.png) -->
-
-
-
-## 7、自定义登录页面
-
-### 7.1、创建登录Controller
+### 6.1 创建登录Controller
 
 ```java
 package com.atguigu.securitydemo.controller;
@@ -707,9 +697,7 @@ public class LoginController {
 }
 ```
 
-
-
-### 7.2、创建登录页面
+### 6.2 创建登录页面
 
 resources/templates/login.html
 
@@ -743,9 +731,7 @@ login: 和登录页面保持一致即可，SpringSecurity自动进行登录认�
 </html>
 ```
 
-
-
-### 7.3、配置SecurityFilterChain
+### 6.3 配置SecurityFilterChain
 
 SecurityConfiguration：
 
@@ -760,18 +746,16 @@ SecurityConfiguration：
 }); //使用表单授权方式
 ```
 
+## 7. 前后端分离
 
-
-# 第三章 前后端分离
-
-## 1、用户认证流程
+### 7.1 用户认证流程
 
 - 登录成功后调用：AuthenticationSuccessHandler
 - 登录失败后调用：AuthenticationFailureHandler
 
 <!-- ![usernamepasswordauthenticationfilter](assets/usernamepasswordauthenticationfilter-16822329079281.png) -->
 
-## 2、引入fastjson
+2、引入 fastjson
 
 ```xml
 <dependency>
@@ -781,11 +765,9 @@ SecurityConfiguration：
 </dependency>
 ```
 
+### 7.3 认证成功响应处理
 
-
-## 3、认证成功的响应
-
-### 3.1、成功结果处理
+1、成功结果处理
 
 ```java
 package com.atguigu.securitydemo.config;
@@ -813,17 +795,15 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 }
 ```
 
-### 3.2、SecurityFilterChain配置
+2、SecurityFilterChain 配置
 
 ```java
 form.successHandler(new MyAuthenticationSuccessHandler()) //认证成功时的处理
 ```
 
+### 7.4 认证失败响应处理
 
-
-## 4、认证失败响应
-
-### 4.1、失败结果处理
+1、失败结果处理
 
 ```java
 package com.atguigu.securitydemo.config;
@@ -851,17 +831,15 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 }
 ```
 
-### 4.2SecurityFilterChain配置
+2、SecurityFilterChain配置
 
 ```java
 form.failureHandler(new MyAuthenticationFailureHandler()) //认证失败时的处理
 ```
 
+### 7.5 注销响应处理
 
-
-## 5、注销响应
-
-### 5.1、注销结果处理
+1、注销结果处理
 
 ```java
 package com.atguigu.securitydemo.config;
@@ -886,9 +864,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
 }
 ```
 
-
-
-### 5.2、SecurityFilterChain配置
+2、SecurityFilterChain配置
 
 ```java
 http.logout(logout -> {
@@ -896,11 +872,9 @@ http.logout(logout -> {
 });
 ```
 
+### 7.6 请求未认证的接口
 
-
-## 6、请求未认证的接口
-
-### 6.1、实现AuthenticationEntryPoint接口
+1、实现AuthenticationEntryPoint接口
 
 [Servlet Authentication Architecture :: Spring Security](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html)
 
@@ -933,9 +907,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 }
 ```
 
-
-
-### 6.2、SecurityFilterChain配置
+2、SecurityFilterChain配置
 
 ```java
 //错误处理
@@ -944,9 +916,7 @@ http.exceptionHandling(exception  -> {
 });
 ```
 
-
-
-## 7、跨域
+### 7.7 跨域处理
 
 跨域全称是跨域资源共享(Cross-Origin Resources Sharing,CORS)，它是浏览器的保护机制，只允许网页请求统一域名下的服务，同一域名指=>协议、域名、端口号都要保持一致，如果有一项不同，那么就是跨域请求。在前后端分离的项目中，需要解决跨域的问题。
 
@@ -958,13 +928,11 @@ http.exceptionHandling(exception  -> {
 http.cors(withDefaults());
 ```
 
+## 8. 身份认证
 
+### 8.1 用户认证信息
 
-# 第四章 身份认证
-
-## 1、用户认证信息
-
-### 1.1、基本概念
+#### 8.1.1 基本概念
 
 <!-- ![securitycontextholder](assets/securitycontextholder.png) -->
 
@@ -983,7 +951,7 @@ http.cors(withDefaults());
 
 
 
-### 1.2、在Controller中获取用户信息
+#### 8.1.2 在Controller中获取用户信息
 
 IndexController：
 
@@ -1022,11 +990,11 @@ public class IndexController {
 
 
 
-## 2、会话并发处理
+### 8.2 会话并发处理
 
 后登录的账号会使先登录的账号失效
 
-### 2.1、实现处理器接口
+1、实现处理器接口
 
 实现接口SessionInformationExpiredStrategy
 
@@ -1053,9 +1021,7 @@ public class MySessionInformationExpiredStrategy implements SessionInformationEx
 }
 ```
 
-
-
-### 2.2、SecurityFilterChain配置
+2、SecurityFilterChain配置
 
 ```java
 //会话管理
@@ -1066,9 +1032,7 @@ http.sessionManagement(session -> {
 });
 ```
 
-
-
-# 第五章 授权
+## 9. 授权
 
 授权管理的实现在SpringSecurity中非常灵活，可以帮助应用程序实现以下两种常见的授权需求：
 
@@ -1076,18 +1040,16 @@ http.sessionManagement(session -> {
 
 - 用户-角色-权限-资源：例如 张三是角色是管理员、李四的角色是普通用户，管理员能做所有操作，普通用户只能查看信息
 
-  
+### 9.1 基于request的授权
 
-## 1、基于request的授权
-
-### 1.1、用户-权限-资源
+#### 9.1.1 用户-权限-资源
 
 **需求：**
 
 - 具有USER_LIST权限的用户可以访问/user/list接口
 - 具有USER_ADD权限的用户可以访问/user/add接口
 
-#### 配置权限
+1、配置权限
 
 SecurityFilterChain
 
@@ -1106,7 +1068,7 @@ http.authorizeRequests(
         );
 ```
 
-#### 授予权限
+2、授予权限
 
 DBUserDetailsManager中的loadUserByUsername方法：
 
@@ -1129,7 +1091,7 @@ authorities.add(new GrantedAuthority() {
 });*/
 ```
 
-#### 请求未授权的接口
+3、请求未授权的接口
 
 SecurityFilterChain
 
@@ -1154,17 +1116,13 @@ http.exceptionHandling(exception  -> {
 });
 ```
 
+**更多的例子**：https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
 
+#### 9.1.2 用户-角色-资源
 
-**更多的例子：**[Authorize HttpServletRequests :: Spring Security](https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html)
+**需求**：角色为 ADMIN 的用户才可以访问 `/user/**` 路径下的资源
 
-
-
-### 1.2、用户-角色-资源
-
-**需求：**角色为ADMIN的用户才可以访问/user/**路径下的资源
-
-#### 配置角色
+1、配置角色
 
 SecurityFilterChain
 
@@ -1181,7 +1139,7 @@ http.authorizeRequests(
 );
 ```
 
-#### 授予角色
+2、授予角色
 
 DBUserDetailsManager中的loadUserByUsername方法：
 
@@ -1194,8 +1152,7 @@ return org.springframework.security.core.userdetails.User
 ```
 
 
-
-### 1.3、用户-角色-权限-资源
+### 9.1.3 用户-角色-权限-资源
 
 RBAC（Role-Based Access Control，基于角色的访问控制）是一种常用的数据库设计方案，它将用户的权限分配和管理与角色相关联。以下是一个基本的RBAC数据库设计方案的示例：
 
@@ -1249,11 +1206,9 @@ RBAC（Role-Based Access Control，基于角色的访问控制）是一种常用
 
 当用户尝试访问系统资源时，系统可以根据用户的角色和权限决定是否允许访问。这样的设计方案使得权限管理更加简单和可维护，因为只需调整角色和权限的分配即可，而不需要针对每个用户进行单独的设置。
 
+### 9.2 基于方法的授权
 
-
-## 2、基于方法的授权
-
-### 2.1、开启方法授权
+1、开启方法授权
 
 在配置文件中添加如下注解
 
@@ -1261,9 +1216,7 @@ RBAC（Role-Based Access Control，基于角色的访问控制）是一种常用
 @EnableMethodSecurity
 ```
 
-
-
-### 2.2、给用户授予角色和权限
+2、给用户授予角色和权限
 
 DBUserDetailsManager中的loadUserByUsername方法：
 
@@ -1276,9 +1229,7 @@ return org.springframework.security.core.userdetails.User
         .build();
 ```
 
-
-
-### 2.2、常用授权注解
+3、常用授权注解
 
 ```java
 //用户必须有 ADMIN 角色 并且 用户名是 admin 才能访问此方法
@@ -1296,17 +1247,13 @@ public void add(@RequestBody User user){
 }
 ```
 
+**更多的例子**：https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html
 
+## 10. OAuth2
 
-**更多的例子：**[Method Security :: Spring Security](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html)
+### 10.1 OAuth2 简介
 
-
-
-# 第六章 OAuth2
-
-## 1、OAuth2简介
-
-### 1.1、OAuth2是什么
+#### 10.1.1 OAuth2 什么
 
 “Auth” 表示 “授权” Authorization
 
@@ -1314,13 +1261,9 @@ public void add(@RequestBody User user){
 
 连在一起就表示 **“开放授权”**，OAuth2是一种开放授权协议。
 
+**OAuth2最简向导**：https://darutk.medium.com/the-simplest-guide-to-oauth-2-0-8c71bd9a15bb
 
-
-**OAuth2最简向导：**[The Simplest Guide To OAuth 2.0](https://darutk.medium.com/the-simplest-guide-to-oauth-2-0-8c71bd9a15bb)
-
-
-
-### 1.2、OAuth2的角色
+#### 10.1.2 OAuth2 的角色
 
 OAuth 2协议包含以下角色：
 
@@ -1331,47 +1274,39 @@ OAuth 2协议包含以下角色：
 
 <!-- ![image-20231222124053994](assets/image-20231222124053994.png) -->
 
+#### 10.1.3 OAuth2的使用场景
 
+- 开放系统间授权
 
-### 1.3、OAuth2的使用场景
-
-#### 开放系统间授权
-
-##### 社交登录
+- 社交登录
 
 在传统的身份验证中，用户需要提供用户名和密码，还有很多网站登录时，允许使用第三方网站的身份，这称为"第三方登录"。所谓第三方登录，实质就是 OAuth 授权。用户想要登录 A 网站，A 网站让用户提供第三方网站的数据，证明自己的身份。获取第三方网站的身份数据，就需要 OAuth 授权。
 
 <!-- ![image-20231222131233025](assets/image-20231222131233025.png) -->
 
-##### 开放API
+- 开放API
 
 例如云冲印服务的实现
 
 <!-- ![image-20231222131118611](assets/image-20231222131118611.png) -->
 
-#### 现代微服务安全
+- 现代微服务安全
 
-##### 单块应用安全
+- 单块应用安全
 
 <!-- ![image-20231222152734546](assets/image-20231222152734546.png) -->
 
-
-
-##### 微服务安全
+- 微服务安全
 
 <!-- ![image-20231222152557861](assets/image-20231222152557861.png) -->
 
-
-
-#### 企业内部应用认证授权
+- 企业内部应用认证授权
 
 - SSO：Single Sign On 单点登录
 
 - IAM：Identity and Access Management 身份识别与访问管理
 
-
-
-### 1.4、OAuth2的四种授权模式
+#### 10.1.4 OAuth2 的四种授权模式
 
 RFC6749：
 
@@ -1380,7 +1315,6 @@ RFC6749：
 阮一峰：
 
 [OAuth 2.0 的四种方式 - 阮一峰的网络日志 (ruanyifeng.com)](https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html)
-
 
 
 四种模式：
@@ -1423,10 +1357,6 @@ https://a.com/callback#token=ACCESS_TOKEN
 将访问令牌包含在URL锚点中的好处：锚点在HTTP请求中不会发送到服务器，减少了泄漏令牌的风险。
 ```
 
-
-
-
-
 #### 第三种方式：密码式
 
 **密码式（Resource Owner Password Credentials）：如果你高度信任某个应用，RFC 6749 也允许用户把用户名和密码，直接告诉该应用。该应用就使用你的密码，申请令牌。**
@@ -1447,17 +1377,15 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 <!-- ![image-20231222203259785](assets/image-20231222203259785.png) -->
 
-
-
-### 1.5、授权类型的选择
+#### 10.1.5 授权类型的选择
 
 <!-- ![image-20231223020052999](assets/image-20231223020052999.png) -->
 
 
 
-## 2、Spring中的OAuth2
+### 10.2 Spring中的OAuth2
 
-### 2.1、相关角色
+#### 10.2.1 相关角色
 
 **回顾：**OAuth 2中的角色
 
@@ -1466,9 +1394,7 @@ https://a.com/callback#token=ACCESS_TOKEN
 3. 资源服务器（Resource Server）
 4. 授权服务器（Authorization Server）
 
-
-
-### 2.2、Spring中的实现
+#### 10.2.2 Spring中的实现
 
 [OAuth2 :: Spring Security](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html)
 
@@ -1481,9 +1407,7 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 - 授权服务器（Spring Authorization Server）：它是在Spring Security之上的一个单独的项目。
 
-
-
-### 2.3、相关依赖
+#### 10.2.3 相关依赖
 
 ```xml
 <!-- 资源服务器 -->
@@ -1505,27 +1429,21 @@ https://a.com/callback#token=ACCESS_TOKEN
 </dependency>
 ```
 
-
-
-### 2.4、授权登录的实现思路
+#### 10.2.4 授权登录的实现思路
 
 使用OAuth2 Login
 
 <!-- ![image-20231223164128030](assets/image-20231223164128030.png) -->
 
+### 10.3 GiuHub 社交登录案例
 
-
-## 3、GiuHub社交登录案例
-
-### 3.1、创建应用
+#### 10.3.1 创建应用
 
 **注册客户应用：**
 
 登录GitHub，在开发者设置中找到OAuth Apps，创建一个application，为客户应用创建访问GitHub的凭据：
 
 <!-- ![image-20230510154255157](assets/image-20230510154255157.png) -->
-
-
 
 填写应用信息：`默认的重定向URI模板为{baseUrl}/login/oauth2/code/{registrationId}`。registrationId是ClientRegistration的唯一标识符。
 
@@ -1535,21 +1453,15 @@ https://a.com/callback#token=ACCESS_TOKEN
 
 <!-- ![image-20230510163101376](assets/image-20230510163101376.png) -->
 
-
-
-### 3.2、创建测试项目
+#### 10.3.2 创建测试项目
 
 创建一个springboot项目oauth2-login-demo，创建时引入如下依赖
 
 <!-- ![image-20230510165314829](assets/image-20230510165314829.png) -->
 
-
-
 示例代码参考：[spring-security-samples/servlet/spring-boot/java/oauth2/login at 6.2.x · spring-projects/spring-security-samples (github.com)](https://github.com/spring-projects/spring-security-samples/tree/6.2.x/servlet/spring-boot/java/oauth2/login)
 
-
-
-### 3.3、配置OAuth客户端属性
+#### 10.3.3 配置 OAuth 客户端属性
 
 application.yml：
 
@@ -1567,7 +1479,7 @@ spring:
 
 
 
-### 3.4、创建Controller
+#### 10.3.4 创建Controller
 
 ```java
 package com.atguigu.oauthdemo.controller;
@@ -1588,9 +1500,7 @@ public class IndexController {
 }
 ```
 
-
-
-### 3.5、创建html页面
+#### 10.3.5 创建 html 页面
 
 resources/templates/index.html
 
@@ -1631,9 +1541,7 @@ resources/templates/index.html
 </html>
 ```
 
-
-
-### 3.6、启动应用程序
+#### 10.3.6 启动应用程序
 
 - 启动程序并访问localhost:8080。浏览器将被重定向到默认的自动生成的登录页面，该页面显示了一个用于GitHub登录的链接。
 - 点击GitHub链接，浏览器将被重定向到GitHub进行身份验证。
@@ -1642,9 +1550,9 @@ resources/templates/index.html
 
 
 
-## 4、案例分析
+### 10.4 案例分析
 
-### 4.1、登录流程
+#### 10.4.1 登录流程
 
 1. **A 网站让用户跳转到 GitHub，并携带参数ClientID 以及 Redirection URI。**
 2. GitHub 要求用户登录，然后询问用户"A 网站要求获取用户信息的权限，你是否同意？"
@@ -1657,7 +1565,7 @@ resources/templates/index.html
 
 <!-- ![image-20231223203225688](assets/image-20231223203225688.png) -->
 
-### 4.2、CommonOAuth2Provider
+#### 10.4.2 CommonOAuth2Provider
 
 CommonOAuth2Provider是一个预定义的通用OAuth2Provider，为一些知名资源服务API提供商（如Google、GitHub、Facebook）预定义了一组默认的属性。
 
