@@ -601,6 +601,8 @@ private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegat
 
 @Override
 public void addSysUser(SysUser sysUser) {
+    
+    // 使用 PasswordEncoder 加密用户输入的密码
     sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
 
     save(sysUser);
@@ -835,164 +837,234 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
 
 ### 7.1 用户认证流程
 
+<!-- ![usernamepasswordauthenticationfilter](assets/usernamepasswordauthenticationfilter-16822329079281.png) -->
+
 - 登录成功后调用：AuthenticationSuccessHandler
 - 登录失败后调用：AuthenticationFailureHandler
 
-<!-- ![usernamepasswordauthenticationfilter](assets/usernamepasswordauthenticationfilter-16822329079281.png) -->
+### 7.2 认证成功响应处理
 
-2、引入 fastjson
+1、引入 fastjson2
 
 ```xml
 <dependency>
     <groupId>com.alibaba.fastjson2</groupId>
     <artifactId>fastjson2</artifactId>
-    <version>2.0.37</version>
+    <version>2.0.40</version>
 </dependency>
 ```
 
-### 7.3 认证成功响应处理
-
-1、成功结果处理
+2、创建 `CustomAuthenticationSuccessHandler` 登录成功处理类并实现 `AuthenticationSuccessHandler` 接口
 
 ```java
-package com.atguigu.securitydemo.config;
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
 
-        //获取用户身份信息
+        // 获取用户身份信息
         Object principal = authentication.getPrincipal();
+        // 获取用户凭证信息
+        Object credentials = authentication.getCredentials();
+        // 获取用户权限信息
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", 0);
-        result.put("message", "登录成功");
-        result.put("data", principal);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("code", 200);
+        resultMap.put("message", "登录成功");
+        resultMap.put("data", principal);
 
-        //转换成json字符串
-        String json = JSON.toJSONString(result);
+        String result = JSON.toJSONString(resultMap);
 
-        //返回响应
+        // 输出响应结果
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().println(json);
+        response.getWriter().println(result);
+
     }
 }
 ```
 
-2、SecurityFilterChain 配置
+3、在 Spring Security 的默认配置中配置**认证成功时的处理类**
 
 ```java
-form.successHandler(new MyAuthenticationSuccessHandler()) //认证成功时的处理
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+//                            // 配置自定义的表单用户名参数 默认：username
+//                            .usernameParameter("myusername")
+//                            // 配置自定义的表单密码参数 默认：password
+//                            .passwordParameter("pwd")
+                        // 配置认证成功自定义处理类
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
 ```
 
-### 7.4 认证失败响应处理
+### 7.3 认证失败响应处理
 
-1、失败结果处理
+1、创建 `CustomAuthenticationFailureHandler` 登录失败处理类并实现 `AuthenticationFailureHandler` 接口
 
 ```java
-package com.atguigu.securitydemo.config;
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
 
-public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("code", -1);
+        resultMap.put("message", "登录失败");
+        String result = JSON.toJSONString(resultMap);
+
+        // 输出响应结果
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().println(result);
+
+    }
+}
+```
+
+2、在 Spring Security 的默认配置中配置**认证失败时的处理类**
+
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+//                            // 配置自定义的表单用户名参数 默认：username
+//                            .usernameParameter("myusername")
+//                            // 配置自定义的表单密码参数 默认：password
+//                            .passwordParameter("pwd")
+                        // 配置认证成功自定义处理类
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        // 配置认证失败自定义处理类
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
+```
+
+### 7.4 注销响应处理
+
+1、创建 `CustomLogoutSuccessHandler` 登录失败处理类并实现 `LogoutSuccessHandler` 接口
+
+```java
+public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest request,
+                                HttpServletResponse response,
+                                Authentication authentication) throws IOException, ServletException {
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("code", 200);
+        resultMap.put("message", "注销成功");
 
-        //获取错误信息
-        String localizedMessage = exception.getLocalizedMessage();
+        String result = JSON.toJSONString(resultMap);
 
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", -1);
-        result.put("message", localizedMessage);
-
-        //转换成json字符串
-        String json = JSON.toJSONString(result);
-
-        //返回响应
+        // 输出响应结果
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().println(json);
+        response.getWriter().println(result);
+
     }
 }
 ```
 
-2、SecurityFilterChain配置
+2、在 Spring Security 的默认配置中配置**注销成功时的处理类**
 
 ```java
-form.failureHandler(new MyAuthenticationFailureHandler()) //认证失败时的处理
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+//                            // 配置自定义的表单用户名参数 默认：username
+//                            .usernameParameter("myusername")
+//                            // 配置自定义的表单密码参数 默认：password
+//                            .passwordParameter("pwd")
+                        // 配置认证成功自定义处理类
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        // 配置认证失败自定义处理类
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 配置注销成功自定义处理类
+            .logout(logout -> {
+                logout.logoutSuccessHandler(new CustomLogoutSuccessHandler());
+            })
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
 ```
 
-### 7.5 注销响应处理
+### 7.5 请求未认证接口处理
 
-1、注销结果处理
+当访问一个需要认证之后才能访问的接口时，Spring Security 会使用 `AuthenticationEntryPoint` 将用户请求跳转到登录页面，要求用户提供登录凭证。
+
+在前后端分离的模式下，希望**返回 JSON 结果**，可以通过定义类并实现 `AuthenticationEntryPoint` 接口来实现功能。
+
+1、创建 `CustomAuthenticationEntryPoint` 未认证接口的处理类并实现 `AuthenticationEntryPoint` 接口
 
 ```java
-package com.atguigu.securitydemo.config;
-
-public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
 
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", 0);
-        result.put("message", "注销成功");
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("code", 403);
+        resultMap.put("message", "请先登录");
+        String result = JSON.toJSONString(resultMap);
 
-        //转换成json字符串
-        String json = JSON.toJSONString(result);
-
-        //返回响应
+        // 输出响应结果
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().println(json);
+        response.getWriter().println(result);
     }
 }
 ```
 
-2、SecurityFilterChain配置
-
-```java
-http.logout(logout -> {
-    logout.logoutSuccessHandler(new MyLogoutSuccessHandler()); //注销成功时的处理
-});
-```
-
-### 7.6 请求未认证的接口
-
-1、实现AuthenticationEntryPoint接口
-
-[Servlet Authentication Architecture :: Spring Security](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html)
-
-当访问一个需要认证之后才能访问的接口的时候，Spring Security会使用`AuthenticationEntryPoint`将用户请求跳转到登录页面，要求用户提供登录凭证。
-
-这里我们也希望系统`返回json结果`，因此我们定义类`实现AuthenticationEntryPoint接口`
-
-```java
-package com.atguigu.securitydemo.config;
-
-public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-
-        //获取错误信息
-        //String localizedMessage = authException.getLocalizedMessage();
-
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", -1);
-        result.put("message", "需要登录");
-
-        //转换成json字符串
-        String json = JSON.toJSONString(result);
-
-        //返回响应
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().println(json);
-    }
-}
-```
-
-2、SecurityFilterChain配置
+2、在 Spring Security 的默认配置中配置**请求未认证接口的处理类**
 
 ```java
 //错误处理
@@ -1001,16 +1073,56 @@ http.exceptionHandling(exception  -> {
 });
 ```
 
-### 7.7 跨域处理
+### 7.6 跨域处理
 
-跨域全称是跨域资源共享(Cross-Origin Resources Sharing,CORS)，它是浏览器的保护机制，只允许网页请求统一域名下的服务，同一域名指=>协议、域名、端口号都要保持一致，如果有一项不同，那么就是跨域请求。在前后端分离的项目中，需要解决跨域的问题。
+跨域(CORS)全称是跨域资源共享(Cross-Origin Resources Sharing)，它是浏览器的保护机制，只允许网页请求同一域名下的服务。
 
+> 同一域名指协议、域名、端口号都要保持一致，如果有一项不同，那么就是跨域请求。
 
-在SpringSecurity中解决跨域很简单，在配置文件中添加如下配置即可
+在前后端分离的项目中，需要解决跨域的问题。
+
+在 Spring Security 中解决跨域很简单，在默认配置中添加如下配置即可：
 
 ```java
 //跨域
-http.cors(withDefaults());
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+    return httpSecurity
+            // 对所有请求开启请求保护
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            // 使用默认登录页
+//                .formLogin(withDefaults())
+            // 基本授权方式
+//                .httpBasic(withDefaults())
+            // 配置自定义登录页
+            .formLogin(form -> {
+                form.loginPage("/login")
+//                            // 配置自定义的表单用户名参数 默认：username
+//                            .usernameParameter("myusername")
+//                            // 配置自定义的表单密码参数 默认：password
+//                            .passwordParameter("pwd")
+                        // 配置认证成功自定义处理类
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        // 配置认证失败自定义处理类
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                        // 配置登录页无需授权即可访问
+                        .permitAll();
+            })
+            // 配置注销成功自定义处理类
+            .logout(logout -> {
+                logout.logoutSuccessHandler(new CustomLogoutSuccessHandler());
+            })
+            // 配置请求未认证接口的处理类
+            .exceptionHandling(exception -> {
+                exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+            })
+            // 跨域处理
+            .cors(withDefaults())
+            // 关闭跨站伪造攻击
+            .csrf(csrf -> csrf.disable())
+            .build();
+}
 ```
 
 ## 8. 身份认证
@@ -1021,100 +1133,127 @@ http.cors(withDefaults());
 
 <!-- ![securitycontextholder](assets/securitycontextholder.png) -->
 
-在Spring Security框架中，SecurityContextHolder、SecurityContext、Authentication、Principal和Credential是一些与身份验证和授权相关的重要概念。它们之间的关系如下：
+在 Spring Security 框架中，`SecurityContextHolder`、`SecurityContext`、`Authentication`、`Principal` 和 `Credential` 是一些与身份验证和授权相关的重要概念。
 
+它们之间的关系如下：
 
+1. `SecurityContextHolder`：Spring Security 存储已认证用户详细信息的地方
+2. `SecurityContext`：从 SecurityContextHolder 获取内容，包含当前已认证用户的 Authentication 信息
+3. `Authentication`：Authentication 表示用户的身份认证信息，它包含了用户的 `Principal`、`Credential` 和 `Authority` 信息
+4. `Principal`：表示用户的身份标识，它通常是一个表示用户的实体对象。可以通过 `Authentication` 对象的 `getPrincipal()` 方法获取
+5. `Credentials`：表示用户的凭证信息，例如密码、证书或其他认证凭据。可以通过 `Authentication` 对象的 `getCredentials()` 方法获取
+6. `GrantedAuthority`：表示用户被授予的权限
 
-1. SecurityContextHolder：SecurityContextHolder 是 Spring Security 存储已认证用户详细信息的地方。
-2. SecurityContext：SecurityContext 是从 SecurityContextHolder 获取的内容，包含当前已认证用户的 Authentication 信息。
-3. Authentication：Authentication 表示用户的身份认证信息。它包含了用户的Principal、Credential和Authority信息。
-4. Principal：表示用户的身份标识。它通常是一个表示用户的实体对象，例如用户名。Principal可以通过Authentication对象的getPrincipal()方法获取。
-5. Credentials：表示用户的凭证信息，例如密码、证书或其他认证凭据。Credential可以通过Authentication对象的getCredentials()方法获取。
-6. GrantedAuthority：表示用户被授予的权限
+总结起来：
+- `SecurityContextHolder` 用于管理当前线程的安全上下文，存储已认证用户的详细信息，其中包含了 `SecurityContext` 对象
+- `SecurityContext` 对象包含了 `Authentication` 对象，`Authentication` 表示用户的身份验证信息
+- `Authentication` 对象包括 `Principal`（用户的身份标识）、`Credential`（用户的凭证信息）和 `GrantedAuthority`（用户的权限信息）
 
-总结起来，SecurityContextHolder用于管理当前线程的安全上下文，存储已认证用户的详细信息，其中包含了SecurityContext对象，该对象包含了Authentication对象，后者表示用户的身份验证信息，包括Principal（用户的身份标识）和Credential（用户的凭证信息）。
-
-
-
-#### 8.1.2 在Controller中获取用户信息
-
-IndexController：
+#### 8.1.2 在 Controller 中获取用户信息
 
 ```java
-package com.atguigu.securitydemo.controller;
-
 @RestController
 public class IndexController {
 
     @GetMapping("/")
-    public Map index(){
+    public Map index() {
 
-        System.out.println("index controller");
+        // 存储认证对象的上下文
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        // 认证对象
+        Authentication authentication = securityContext.getAuthentication();
+        // 用户名
+        String name = authentication.getName();
+        // 用户信息 org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[]]
+        Object principal = authentication.getPrincipal();
+        // 用户凭证（脱敏处理 null）
+        Object credentials = authentication.getCredentials();
+        // 用户权限
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        SecurityContext context = SecurityContextHolder.getContext();//存储认证对象的上下文
-        Authentication authentication = context.getAuthentication();//认证对象
-        String username = authentication.getName();//用户名
-        Object principal =authentication.getPrincipal();//身份
-        Object credentials = authentication.getCredentials();//凭证(脱敏)
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();//权限
+        // 创建结果对象
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("code", 0);
+        resultMap.put("data", name);
 
-        System.out.println(username);
-        System.out.println(principal);
-        System.out.println(credentials);
-        System.out.println(authorities);
-
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", 0);
-        result.put("data", username);
-
-        return result;
+        return resultMap;
     }
 }
 ```
-
-
 
 ### 8.2 会话并发处理
 
-后登录的账号会使先登录的账号失效
+在 Spring Security 框架中可以实现会话并发处理，后登录的账号会使先登录的账号失效。
 
-1、实现处理器接口
-
-实现接口SessionInformationExpiredStrategy
+1、创建 `CustomSessionInformationExpiredStrategy` 类并实现接口 `SessionInformationExpiredStrategy`
 
 ```java
-package com.atguigu.securitydemo.config;
+public class CustomSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
 
-public class MySessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("code", -1);
+        resultMap.put("message", "该账号已从其他设备登录");
 
-        //创建结果对象
-        HashMap result = new HashMap();
-        result.put("code", -1);
-        result.put("message", "该账号已从其他设备登录");
-
-        //转换成json字符串
-        String json = JSON.toJSONString(result);
+        String result = JSON.toJSONString(resultMap);
 
         HttpServletResponse response = event.getResponse();
-        //返回响应
+
+        // 输出响应结果
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().println(json);
+        response.getWriter().println(result);
     }
 }
 ```
 
-2、SecurityFilterChain配置
+2、在 Spring Security 的默认配置中配置**会话并发的处理类**
 
 ```java
-//会话管理
-http.sessionManagement(session -> {
-    session
-        .maximumSessions(1)
-        .expiredSessionStrategy(new MySessionInformationExpiredStrategy());
-});
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        return httpSecurity
+                // 对所有请求开启请求保护
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                // 使用默认登录页
+//                .formLogin(withDefaults())
+                // 基本授权方式
+//                .httpBasic(withDefaults())
+                // 配置自定义登录页
+                .formLogin(form -> {
+                    form.loginPage("/login")
+//                            // 配置自定义的表单用户名参数 默认：username
+//                            .usernameParameter("myusername")
+//                            // 配置自定义的表单密码参数 默认：password
+//                            .passwordParameter("pwd")
+                            // 配置认证成功自定义处理类
+                            .successHandler(new CustomAuthenticationSuccessHandler())
+                            // 配置认证失败自定义处理类
+                            .failureHandler(new CustomAuthenticationFailureHandler())
+                            // 配置登录页无需授权即可访问
+                            .permitAll();
+                })
+                // 配置注销成功自定义处理类
+                .logout(logout -> {
+                    logout.logoutSuccessHandler(new CustomLogoutSuccessHandler());
+                })
+                // 配置请求未认证接口的处理类
+                .exceptionHandling(exception -> {
+                    exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                })
+                // 跨域处理
+                .cors(withDefaults())
+                // 会话并发处理
+                .sessionManagement(session -> {
+                    // 设置用户的最大会话数为 1，即只允许一个用户（同个用户）在线，不允许同一个用户多端多设备同时在线
+                    session.maximumSessions(1)
+                            .expiredSessionStrategy(new CustomSessionInformationExpiredStrategy());
+                })
+                // 关闭跨站伪造攻击
+                .csrf(csrf -> csrf.disable())
+                .build();
+    }
 ```
 
 ## 9. 授权
