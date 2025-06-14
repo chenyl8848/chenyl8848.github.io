@@ -1,0 +1,1 @@
+import{_ as t,r as o,c as r,a,b as n,w as c,o as s,d as _}from"./app.4fd8a25a.js";const l={},i=_("TypeScript \u5FEB\u901F\u4E0A\u2F3F");function d(m,p){const e=o("RouterLink");return s(),r("ul",null,[a("li",null,[n(e,{to:"/web/framework/js/TypeScript.html"},{default:c(()=>[i]),_:1})])])}var f=t(l,[["render",d],["__file","index.html.vue"]]);export{f as default};
