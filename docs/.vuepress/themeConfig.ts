@@ -12,7 +12,7 @@ export default defineThemeConfig({
 
   iconPrefix: "iconfont icon-",
 
-  logo: "/logo.png",
+  logo: "/logo.webp",
 
   // 文档仓库地址
   repo: "chenyl8848/chenyl8848.github.io",
@@ -26,8 +26,6 @@ export default defineThemeConfig({
 
   // sidebar
   sidebar: sidebar,
-
-  
 
   footer: "没有最好，只有更好！",
 

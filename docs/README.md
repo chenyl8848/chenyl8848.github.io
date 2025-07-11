@@ -3,8 +3,8 @@ home: true
 layout: Blog
 icon: home
 title: 首页
-heroImage: /logo.png
-bgImage: /bak1.jpg
+heroImage: /logo.webp
+bgImage: /bak4.webp
 heroText: Java陈序员
 heroFullScreen: false
 tagline: Java后端程序员，分享日常学习、工作、生活，致敬每个爱学习的你。
