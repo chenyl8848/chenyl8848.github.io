@@ -55,14 +55,19 @@ projects:
   #   link: https://chencoding.top:8089/#/
   
   - icon: link
-    name: 优秀的开源项目
+    name: 🎯开源项目归纳
     # desc: Github、Gitee 优秀的开源项目合集
     link: https://chencoding.top:8090/#/
 
   - icon: link
-    name: 开源项目文章合集
+    name: 🌈开源项目文章
     desc: 
     link: https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkzOTM3NjAzOQ==&action=getalbum&album_id=2783119709868212224&scene=126&sessionid=-659761542&uin=&key=&devicetype=Windows+11+x64&version=6309092b&lang=zh_CN&ascene=0&session_us=gh_b840974cfe99
+
+  - icon: link
+    name: 📸证件照生成器
+    desc: 
+    link: https://chencoding.top:8082/
 
   # - icon: project
   #   name: bugstack 虫洞栈
