@@ -3,7 +3,8 @@ import { defineSidebarConfig, HopeThemeSidebarConfig } from "vuepress-theme-hope
 import { algorithm, dataStructure, java, microServices, springBoot, spring, designPattern } from "./rearend";
 import { database, mq, noSQL, zookeeper, elasticsearch, prometheus } from "./middleware";
 import { docker, linux, kubernetes } from "./server";
-import { vue, wiki, mp, nodejs, js } from "./web";
+import { assistant, framework } from "./ai";
+import { vue, mp, nodejs, js } from "./web";
 
 
 // export default defineSidebarConfig([
@@ -160,8 +161,9 @@ export const sidebar: HopeThemeSidebarConfig = {
     "/server/linux/": linux,
     "/server/docker/": docker,
     "/server/kubernetes/": kubernetes,
+    "/ai/assistant/": assistant,
+    "/ai/framework/": framework,
     "/web/framework/vue": vue,
-    "/web/framework/wiki": wiki,
     "/web/framework/mp": mp,
     "/web/framework/nodejs": nodejs,
     "/web/framework/js": js,

@@ -41,6 +41,15 @@ export default defineNavbarConfig([
     ]
   },
   {
+    text: "AI",
+    icon: "wuguan",
+    prefix: "/ai/",
+    children: [
+      "assistant/",
+      "framework/"
+    ]
+  },
+  {
     text: "前端",
     icon: "wangye",
     prefix: "/web/",
@@ -54,21 +63,19 @@ export default defineNavbarConfig([
           "nodejs/",
           "vue/",
           "react/",
-          "docsify/",
-          "vuepress/",
-          "wiki/",
           "mp/",
+          "blog/",
         ],
       },
-      {
-        text: "页面",
-        icon: "edit",
-        prefix: "ui/",
-        children: [
-          "element/",
-          "iview/"
-        ],
-      },
+      // {
+      //   text: "页面",
+      //   icon: "edit",
+      //   prefix: "ui/",
+      //   children: [
+      //     "element/",
+      //     "iview/"
+      //   ],
+      // },
     ]
   },
   {
