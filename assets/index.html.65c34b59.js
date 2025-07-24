@@ -1,0 +1,1 @@
+import{_ as t,r as o,c as n,a,b as r,w as s,o as c,d as l}from"./app.06d697e7.js";const _={},d=l("Redis \u4E07\u5B57\u5165\u95E8\u6559\u7A0B");function i(m,u){const e=o("RouterLink");return c(),n("ul",null,[a("li",null,[r(e,{to:"/middleware/noSQL/Redis.html"},{default:s(()=>[d]),_:1})])])}var x=t(_,[["render",i],["__file","index.html.vue"]]);export{x as default};

@@ -1,0 +1,1 @@
+import{_ as t,r as o,c as a,a as r,b as s,w as n,o as c,d as _}from"./app.06d697e7.js";const l={},i=_("Cursor \u5165\u95E8\u6559\u7A0B\uFF01");function u(d,m){const e=o("RouterLink");return c(),a("ul",null,[r("li",null,[s(e,{to:"/ai/assistant/Cursor.html"},{default:n(()=>[i]),_:1})])])}var x=t(l,[["render",u],["__file","index.html.vue"]]);export{x as default};

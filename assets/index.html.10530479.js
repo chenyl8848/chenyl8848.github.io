@@ -1,0 +1,1 @@
+import{_ as t,r as o,c as n,a as r,b as a,w as s,o as c,d as _}from"./app.06d697e7.js";const l={},d=_("\u4E91\u539F\u751F");function i(u,m){const e=o("RouterLink");return c(),n("ul",null,[r("li",null,[a(e,{to:"/server/kubernetes/Cloud_Native.html"},{default:s(()=>[d]),_:1})])])}var x=t(l,[["render",i],["__file","index.html.vue"]]);export{x as default};

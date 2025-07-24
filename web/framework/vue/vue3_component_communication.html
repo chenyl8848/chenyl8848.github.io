@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-beta.38" />
+    <meta name="theme" content="VuePress Theme Hope" />
+    <meta property="og:url" content="https://chenyl8848.github.io/web/framework/vue/vue3_component_communication.html"><meta property="og:site_name" content="Java陈序员"><meta property="og:title" content="Vue3 组件通信方式"><meta property="og:type" content="article"><meta property="og:updated_time" content="2023-06-06T02:55:29.000Z"><meta property="og:locale" content="zh-CN"><meta property="article:tag" content="Vue.js"><meta property="article:published_time" content="2023-06-05T00:00:00.000Z"><meta property="article:modified_time" content="2023-06-06T02:55:29.000Z"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_3316994_227lwxrw41z.css"><title>Vue3 组件通信方式 | Java陈序员</title><meta name="description" content="Java陈序员的个人博客网站">
+    <style>
+      :root {
+        --bg-color: #fff;
+      }
+
+      html[data-theme="dark"] {
+        --bg-color: #1d2025;
+      }
+
+      html,
+      body {
+        background-color: var(--bg-color);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem("vuepress-theme-hope-scheme");
+      const systemDarkMode =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      if (userMode === "dark" || (userMode !== "light" && systemDarkMode)) {
+        document.querySelector("html").setAttribute("data-theme", "dark");
+      }
+    </script>
+    <link rel="stylesheet" href="/assets/style.7c8a6ce0.css">
+    <link rel="modulepreload" href="/assets/app.06d697e7.js"><link rel="modulepreload" href="/assets/vue3_component_communication.html.75669dd3.js"><link rel="modulepreload" href="/assets/vue3_component_communication.html.25cd7734.js">
+  </head>
+  <body>
+    <div id="app"><!--[--><!--[--><!--[--><span tabindex="-1"></span><a href="#main-content" class="skip-link sr-only">Skip to content</a><!--]--><div class="theme-container has-toc sidebar-open"><!--[--><header class="navbar"><button class="toggle-sidebar-button" title="Toggle Sidebar"><span class="icon"></span></button><a href="/" class="home-link"><img class="logo" src="/logo.webp" alt="Java陈序员"><!----><span class="site-name hide-in-pad">Java陈序员</span><!--[--><!----><!--]--></a><nav class="nav-links" style=""><div class="nav-item hide-in-mobile"><a href="/" class="nav-link" arialabel="首页"><i class="icon iconfont icon-home"></i>首页<!----></a></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="后端"><span class="title"><i class="icon iconfont icon-rearend"></i>后端</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><a href="/rearend/java/" class="nav-link" arialabel="Java"><i class="icon iconfont icon-java"></i>Java<!----></a></li><li class="dropdown-item"><a href="/rearend/spring/" class="nav-link" arialabel="Spring"><i class="icon iconfont icon-spring"></i>Spring<!----></a></li><li class="dropdown-item"><a href="/rearend/springBoot/" class="nav-link" arialabel="Spring Boot"><i class="icon iconfont icon-springboot"></i>Spring Boot<!----></a></li><li class="dropdown-item"><a href="/rearend/microServices/" class="nav-link" arialabel="微服务"><i class="icon iconfont icon-microServices"></i>微服务<!----></a></li><li class="dropdown-item"><a href="/rearend/dataStructure/" class="nav-link" arialabel="数据结构"><i class="icon iconfont icon-dataStructure"></i>数据结构<!----></a></li><li class="dropdown-item"><a href="/rearend/algorithm/" class="nav-link" arialabel="算法"><i class="icon iconfont icon-algorithm"></i>算法<!----></a></li><li class="dropdown-item"><a href="/rearend/designPattern/" class="nav-link" arialabel="设计模式"><i class="icon iconfont icon-designPattern"></i>设计模式<!----></a></li></ul></button></div></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="中间件"><span class="title"><i class="icon iconfont icon-middleware"></i>中间件</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><a href="/middleware/database/" class="nav-link" arialabel="数据库"><i class="icon iconfont icon-database"></i>数据库<!----></a></li><li class="dropdown-item"><a href="/middleware/noSQL/" class="nav-link" arialabel="NoSQL"><i class="icon iconfont icon-noSQL"></i>NoSQL<!----></a></li><li class="dropdown-item"><a href="/middleware/mq/" class="nav-link" arialabel="MQ"><i class="icon iconfont icon-MQ"></i>MQ<!----></a></li><li class="dropdown-item"><a href="/middleware/zookeeper/" class="nav-link" arialabel="ZooKeeper"><i class="icon iconfont icon-zookeeper"></i>ZooKeeper<!----></a></li><li class="dropdown-item"><a href="/middleware/elasticsearch/" class="nav-link" arialabel="ElasticSearch"><i class="icon iconfont icon-elasticsearch"></i>ElasticSearch<!----></a></li><li class="dropdown-item"><a href="/middleware/prometheus/" class="nav-link" arialabel="Prometheus"><i class="icon iconfont icon-prometheus"></i>Prometheus<!----></a></li></ul></button></div></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="服务器"><span class="title"><i class="icon iconfont icon-server"></i>服务器</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><a href="/server/linux/" class="nav-link" arialabel="Linux"><i class="icon iconfont icon-linux"></i>Linux<!----></a></li><li class="dropdown-item"><a href="/server/docker/" class="nav-link" arialabel="Docker"><i class="icon iconfont icon-docker"></i>Docker<!----></a></li><li class="dropdown-item"><a href="/server/kubernetes/" class="nav-link" arialabel="Kubernetes"><i class="icon iconfont icon-kubernetes"></i>Kubernetes<!----></a></li></ul></button></div></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="AI"><span class="title"><i class="icon iconfont icon-wuguan"></i>AI</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><a href="/ai/assistant/" class="nav-link" arialabel="AI 助手"><i class="icon iconfont icon-Cursor"></i>AI 助手<!----></a></li><li class="dropdown-item"><a href="/ai/framework/" class="nav-link" arialabel="AI 框架"><i class="icon iconfont icon-Aisucai"></i>AI 框架<!----></a></li></ul></button></div></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="前端"><span class="title"><i class="icon iconfont icon-wangye"></i>前端</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><h4 class="dropdown-subtitle"><span>框架</span></h4><ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/web/framework/js/" class="nav-link" arialabel="JavaScript"><i class="icon iconfont icon-java_script"></i>JavaScript<!----></a></li><li class="dropdown-subitem"><a href="/web/framework/nodejs/" class="nav-link" arialabel="Node.js"><i class="icon iconfont icon-node-js"></i>Node.js<!----></a></li><li class="dropdown-subitem"><a href="/web/framework/vue/" class="nav-link active" arialabel="Vue.js"><i class="icon iconfont icon-vue"></i>Vue.js<!----></a></li><li class="dropdown-subitem"><a href="/web/framework/react/" class="nav-link" arialabel="React"><i class="icon iconfont icon-react"></i>React<!----></a></li><li class="dropdown-subitem"><a href="/web/framework/mp/" class="nav-link" arialabel="小程序"><i class="icon iconfont icon-xiaochengxu"></i>小程序<!----></a></li><li class="dropdown-subitem"><a href="/web/framework/blog/" class="nav-link" arialabel="Blog"><i class="icon iconfont icon-folder-vuepress"></i>Blog<!----></a></li></ul></li></ul></button></div></div><div class="nav-item hide-in-mobile"><div class="dropdown-wrapper"><button class="dropdown-title" type="button" arialabel="索引"><span class="title"><i class="icon iconfont icon-index"></i>索引</span><span class="arrow"></span><ul class="nav-dropdown"><li class="dropdown-item"><a href="/article/" class="nav-link" arialabel="文章"><i class="icon iconfont icon-articles"></i>文章<!----></a></li><li class="dropdown-item"><a href="/category/java/" class="nav-link" arialabel="分类"><i class="icon iconfont icon-category"></i>分类<!----></a></li><li class="dropdown-item"><a href="/tag/" class="nav-link" arialabel="标签"><i class="icon iconfont icon-tag"></i>标签<!----></a></li><li class="dropdown-item"><a href="/timeline/" class="nav-link" arialabel="时间轴"><i class="icon iconfont icon-timeLine"></i>时间轴<!----></a></li></ul></button></div></div><div class="nav-item hide-in-mobile"><a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkzOTM3NjAzOQ==&amp;action=getalbum&amp;album_id=2783119709868212224&amp;scene=126&amp;sessionid=-659761542&amp;uin=&amp;key=&amp;devicetype=Windows+11+x64&amp;version=6309092b&amp;lang=zh_CN&amp;ascene=0&amp;session_us=gh_b840974cfe99" rel="noopener noreferrer" target="_blank" arialabel="开源项目" class="nav-link"><i class="icon iconfont icon-note"></i>开源项目<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span><!----></a></div></nav><div class="nav-actions-wrapper"><!--[--><!----><!--]--><div class="nav-item"><!----></div><div class="nav-item"><a class="repo-link" href="https://github.com/chenyl8848/chenyl8848.github.io" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" class="icon github-icon" viewbox="0 0 1024 1024" arialabelledby="github" style="width:1.25rem;height:1.25rem;vertical-align:middle;"><title id="github" lang="en">github icon</title><g fill="currentColor"><path d="M511.957 21.333C241.024 21.333 21.333 240.981 21.333 512c0 216.832 140.544 400.725 335.574 465.664 24.49 4.395 32.256-10.07 32.256-23.083 0-11.69.256-44.245 0-85.205-136.448 29.61-164.736-64.64-164.736-64.64-22.315-56.704-54.4-71.765-54.4-71.765-44.587-30.464 3.285-29.824 3.285-29.824 49.195 3.413 75.179 50.517 75.179 50.517 43.776 75.008 114.816 53.333 142.762 40.79 4.523-31.66 17.152-53.377 31.19-65.537-108.971-12.458-223.488-54.485-223.488-242.602 0-53.547 19.114-97.323 50.517-131.67-5.035-12.33-21.93-62.293 4.779-129.834 0 0 41.258-13.184 134.912 50.346a469.803 469.803 0 0 1 122.88-16.554c41.642.213 83.626 5.632 122.88 16.554 93.653-63.488 134.784-50.346 134.784-50.346 26.752 67.541 9.898 117.504 4.864 129.834 31.402 34.347 50.474 78.123 50.474 131.67 0 188.586-114.73 230.016-224.042 242.09 17.578 15.232 33.578 44.672 33.578 90.454v135.85c0 13.142 7.936 27.606 32.854 22.87C862.25 912.597 1002.667 728.747 1002.667 512c0-271.019-219.648-490.667-490.71-490.667z"></path></g></svg></a></div><div class="nav-item hide-in-mobile"><button class="outlook-button" tabindex="-1" ariahidden="true"><svg xmlns="http://www.w3.org/2000/svg" class="icon outlook-icon" viewbox="0 0 1024 1024" arialabelledby="outlook"><title id="outlook" lang="en">outlook icon</title><g fill="currentColor"><path d="M224 800c0 9.6 3.2 44.8 6.4 54.4 6.4 48-48 76.8-48 76.8s80 41.6 147.2 0 134.4-134.4 38.4-195.2c-22.4-12.8-41.6-19.2-57.6-19.2C259.2 716.8 227.2 761.6 224 800zM560 675.2l-32 51.2c-51.2 51.2-83.2 32-83.2 32 25.6 67.2 0 112-12.8 128 25.6 6.4 51.2 9.6 80 9.6 54.4 0 102.4-9.6 150.4-32l0 0c3.2 0 3.2-3.2 3.2-3.2 22.4-16 12.8-35.2 6.4-44.8-9.6-12.8-12.8-25.6-12.8-41.6 0-54.4 60.8-99.2 137.6-99.2 6.4 0 12.8 0 22.4 0 12.8 0 38.4 9.6 48-25.6 0-3.2 0-3.2 3.2-6.4 0-3.2 3.2-6.4 3.2-6.4 6.4-16 6.4-16 6.4-19.2 9.6-35.2 16-73.6 16-115.2 0-105.6-41.6-198.4-108.8-268.8C704 396.8 560 675.2 560 675.2zM224 419.2c0-28.8 22.4-51.2 51.2-51.2 28.8 0 51.2 22.4 51.2 51.2 0 28.8-22.4 51.2-51.2 51.2C246.4 470.4 224 448 224 419.2zM320 284.8c0-22.4 19.2-41.6 41.6-41.6 22.4 0 41.6 19.2 41.6 41.6 0 22.4-19.2 41.6-41.6 41.6C339.2 326.4 320 307.2 320 284.8zM457.6 208c0-12.8 12.8-25.6 25.6-25.6 12.8 0 25.6 12.8 25.6 25.6 0 12.8-12.8 25.6-25.6 25.6C470.4 233.6 457.6 220.8 457.6 208zM128 505.6C128 592 153.6 672 201.6 736c28.8-60.8 112-60.8 124.8-60.8-16-51.2 16-99.2 16-99.2l316.8-422.4c-48-19.2-99.2-32-150.4-32C297.6 118.4 128 291.2 128 505.6zM764.8 86.4c-22.4 19.2-390.4 518.4-390.4 518.4-22.4 28.8-12.8 76.8 22.4 99.2l9.6 6.4c35.2 22.4 80 12.8 99.2-25.6 0 0 6.4-12.8 9.6-19.2 54.4-105.6 275.2-524.8 288-553.6 6.4-19.2-3.2-32-19.2-32C777.6 76.8 771.2 80 764.8 86.4z"></path></g></svg><div class="outlook-dropdown"><!----></div></button></div><!----><button class="toggle-navbar-button" aria-label="Toggle Navbar" aria-expanded="false" aria-controls="nav-screen"><span class="button-container"><span class="button-top"></span><span class="button-middle"></span><span class="button-bottom"></span></span></button><!--[--><!----><!--]--></div></header><!----><!--]--><!----><div class="toggle-sidebar-wrapper"><span class="arrow left"></span></div><aside class="sidebar"><!--[--><!----><!--]--><ul class="sidebar-links"><li><!--[--><a href="/web/framework/vue/" class="nav-link sidebar-link sidebar-page" arialabel="Vue.js"><i class="icon iconfont icon-vue"></i>Vue.js<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_core.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue 核心技术"><!---->Vue 核心技术<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_component.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue 组件化编程"><!---->Vue 组件化编程<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_cli.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue 脚手架编程"><!---->Vue 脚手架编程<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_ajax.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue 中的 Ajax"><!---->Vue 中的 Ajax<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_vuex.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue Vuex"><!---->Vue Vuex<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue_router.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue Router"><!---->Vue Router<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue3_start.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue3 快速开始"><!---->Vue3 快速开始<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a href="/web/framework/vue/vue3_composition.html" class="nav-link sidebar-link sidebar-page" arialabel="Vue3 Composition Api"><!---->Vue3 Composition Api<!----></a><ul class="sidebar-sub-headers"></ul><!--]--></li><li><!--[--><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html" class="router-link-active router-link-exact-active nav-link active sidebar-link sidebar-page active" arialabel="Vue3 组件通信方式"><!---->Vue3 组件通信方式<!----></a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_0-前言" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="0. 前言"><!---->0. 前言<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_1-props" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="1. props"><!---->1. props<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-自定义事件" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="2. 自定义事件"><!---->2. 自定义事件<!----></a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-1-原生-dom-事件" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="2.1 原生 DOM 事件"><!---->2.1 原生 DOM 事件<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-2-自定义事件" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="2.2 自定义事件"><!---->2.2 自定义事件<!----></a><ul class="sidebar-sub-headers"></ul></li></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-全局事件总线" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="3. 全局事件总线"><!---->3. 全局事件总线<!----></a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-1-mitt-安装" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="3.1 mitt 安装"><!---->3.1 mitt 安装<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-2-mitt-定义" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="3.2 mitt 定义"><!---->3.2 mitt 定义<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-3-mitt-使用" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="3.3 mitt 使用"><!---->3.3 mitt 使用<!----></a><ul class="sidebar-sub-headers"></ul></li></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_4-v-model" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="4. v-model"><!---->4. v-model<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_5-useattrs" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="5. useAttrs"><!---->5. useAttrs<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_6-ref-与-parent" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="6. ref 与 $parent"><!---->6. ref 与 $parent<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_7-provide-与-inject" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="7. provide 与 inject"><!---->7. provide 与 inject<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-pinia" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="8. pinia"><!---->8. pinia<!----></a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-1-pinia-安装" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="8.1 pinia 安装"><!---->8.1 pinia 安装<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-2-pinia-注册" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="8.2 pinia 注册"><!---->8.2 pinia 注册<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-3-pinia-使用" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="8.3 pinia 使用"><!---->8.3 pinia 使用<!----></a><ul class="sidebar-sub-headers"></ul></li></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-slot" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="9. slot"><!---->9. slot<!----></a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-1-默认插槽" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="9.1 默认插槽"><!---->9.1 默认插槽<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-2-具名插槽" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="9.2 具名插槽"><!---->9.2 具名插槽<!----></a><ul class="sidebar-sub-headers"></ul></li><li class="sidebar-sub-header"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-3-作用域插槽" class="router-link-active router-link-exact-active nav-link sidebar-link heading" arialabel="9.3 作用域插槽"><!---->9.3 作用域插槽<!----></a><ul class="sidebar-sub-headers"></ul></li></ul></li></ul><!--]--></li></ul><!--[--><!----><!--]--></aside><!--[--><main class="page" id="main-content"><!----><nav class="breadcrumb disable"></nav><div class="page-title"><h1><!---->Vue3 组件通信方式</h1><div class="article-info"><span class="author-info" arialabel="作者🖊" data-balloon-pos="down" isoriginal="false" pageview="false" color="true"><svg xmlns="http://www.w3.org/2000/svg" class="icon author-icon" viewbox="0 0 1024 1024" arialabelledby="author"><title id="author" lang="en">author icon</title><g fill="currentColor"><path d="M649.6 633.6c86.4-48 147.2-144 147.2-249.6 0-160-128-288-288-288s-288 128-288 288c0 108.8 57.6 201.6 147.2 249.6-121.6 48-214.4 153.6-240 288-3.2 9.6 0 19.2 6.4 25.6 3.2 9.6 12.8 12.8 22.4 12.8h704c9.6 0 19.2-3.2 25.6-12.8 6.4-6.4 9.6-16 6.4-25.6-25.6-134.4-121.6-240-243.2-288z"></path></g></svg><span><a class="author-item" href="https://chenyl8848.github.io" target="_blank" rel="noopener noreferrer">Java陈序员</a></span><span property="author" content="Java陈序员"></span></span><!----><span class="date-info" arialabel="写作日期📅" data-balloon-pos="down" isoriginal="false" pageview="false" color="true"><svg xmlns="http://www.w3.org/2000/svg" class="icon calendar-icon" viewbox="0 0 1024 1024" arialabelledby="calendar"><title id="calendar" lang="en">calendar icon</title><g fill="currentColor"><path d="M716.4 110.137c0-18.753-14.72-33.473-33.472-33.473-18.753 0-33.473 14.72-33.473 33.473v33.473h66.993v-33.473zm-334.87 0c0-18.753-14.72-33.473-33.473-33.473s-33.52 14.72-33.52 33.473v33.473h66.993v-33.473zm468.81 33.52H716.4v100.465c0 18.753-14.72 33.473-33.472 33.473a33.145 33.145 0 01-33.473-33.473V143.657H381.53v100.465c0 18.753-14.72 33.473-33.473 33.473a33.145 33.145 0 01-33.473-33.473V143.657H180.6A134.314 134.314 0 0046.66 277.595v535.756A134.314 134.314 0 00180.6 947.289h669.74a134.36 134.36 0 00133.94-133.938V277.595a134.314 134.314 0 00-133.94-133.938zm33.473 267.877H147.126a33.145 33.145 0 01-33.473-33.473c0-18.752 14.72-33.473 33.473-33.473h736.687c18.752 0 33.472 14.72 33.472 33.473a33.145 33.145 0 01-33.472 33.473z"></path></g></svg><span>2023年6月5日</span><meta property="datePublished" content="2023-06-05T00:00:00.000Z"></span><span class="category-info" arialabel="分类🌈" data-balloon-pos="down" isoriginal="false" pageview="false"><svg xmlns="http://www.w3.org/2000/svg" class="icon category-icon" viewbox="0 0 1024 1024" arialabelledby="category"><title id="category" lang="en">category icon</title><g fill="currentColor"><path d="M148.41 106.992h282.176c22.263 0 40.31 18.048 40.31 40.31V429.48c0 22.263-18.047 40.31-40.31 40.31H148.41c-22.263 0-40.311-18.047-40.311-40.31V147.302c0-22.263 18.048-40.31 40.311-40.31zM147.556 553.478H429.73c22.263 0 40.311 18.048 40.311 40.31v282.176c0 22.263-18.048 40.312-40.31 40.312H147.555c-22.263 0-40.311-18.049-40.311-40.312V593.79c0-22.263 18.048-40.311 40.31-40.311zM593.927 106.992h282.176c22.263 0 40.31 18.048 40.31 40.31V429.48c0 22.263-18.047 40.31-40.31 40.31H593.927c-22.263 0-40.311-18.047-40.311-40.31V147.302c0-22.263 18.048-40.31 40.31-40.31zM730.22 920.502H623.926c-40.925 0-74.22-33.388-74.22-74.425V623.992c0-41.038 33.387-74.424 74.425-74.424h222.085c41.038 0 74.424 33.226 74.424 74.067v114.233c0 10.244-8.304 18.548-18.547 18.548s-18.548-8.304-18.548-18.548V623.635c0-20.388-16.746-36.974-37.33-36.974H624.13c-20.585 0-37.331 16.747-37.331 37.33v222.086c0 20.585 16.654 37.331 37.126 37.331H730.22c10.243 0 18.547 8.304 18.547 18.547 0 10.244-8.304 18.547-18.547 18.547z"></path></g></svg><ul class="categories-wrapper"><li class="category category6 clickable" role="navigation">前端</li><meta property="articleSection" content="前端"></ul></span><span arialabel="标签🏷" data-balloon-pos="down" isoriginal="false" pageview="false"><svg xmlns="http://www.w3.org/2000/svg" class="icon tag-icon" viewbox="0 0 1024 1024" arialabelledby="tag"><title id="tag" lang="en">tag icon</title><g fill="currentColor"><path d="M939.902 458.563L910.17 144.567c-1.507-16.272-14.465-29.13-30.737-30.737L565.438 84.098h-.402c-3.215 0-5.726 1.005-7.634 2.913l-470.39 470.39a10.004 10.004 0 000 14.164l365.423 365.424c1.909 1.908 4.42 2.913 7.132 2.913s5.223-1.005 7.132-2.913l470.39-470.39c2.01-2.11 3.014-5.023 2.813-8.036zm-240.067-72.121c-35.458 0-64.286-28.828-64.286-64.286s28.828-64.285 64.286-64.285 64.286 28.828 64.286 64.285-28.829 64.286-64.286 64.286z"></path></g></svg><ul class="tags-wrapper"><li class="tag tag1 clickable" role="navigation">Vue.js</li></ul><meta property="keywords" content="Vue.js"></span><span class="reading-time-info" arialabel="阅读时间⌛" data-balloon-pos="down" isoriginal="false" pageview="false" color="true"><svg xmlns="http://www.w3.org/2000/svg" class="icon timer-icon" viewbox="0 0 1024 1024" arialabelledby="timer"><title id="timer" lang="en">timer icon</title><g fill="currentColor"><path d="M799.387 122.15c4.402-2.978 7.38-7.897 7.38-13.463v-1.165c0-8.933-7.38-16.312-16.312-16.312H256.33c-8.933 0-16.311 7.38-16.311 16.312v1.165c0 5.825 2.977 10.874 7.637 13.592 4.143 194.44 97.22 354.963 220.201 392.763-122.204 37.542-214.893 196.511-220.2 389.397-4.661 5.049-7.638 11.651-7.638 19.03v5.825h566.49v-5.825c0-7.379-2.849-13.981-7.509-18.9-5.049-193.016-97.867-351.985-220.2-389.527 123.24-37.67 216.446-198.453 220.588-392.892zM531.16 450.445v352.632c117.674 1.553 211.787 40.778 211.787 88.676H304.097c0-48.286 95.149-87.382 213.728-88.676V450.445c-93.077-3.107-167.901-81.297-167.901-177.093 0-8.803 6.99-15.793 15.793-15.793 8.803 0 15.794 6.99 15.794 15.793 0 80.261 63.69 145.635 142.01 145.635s142.011-65.374 142.011-145.635c0-8.803 6.99-15.793 15.794-15.793s15.793 6.99 15.793 15.793c0 95.019-73.789 172.82-165.96 177.093z"></path></g></svg><span>大约 15 分钟</span><meta property="timeRequired" content="PT15M"></span></div><hr></div><div class="toc-place-holder"><aside id="toc-list"><div class="toc-header">此页内容</div><div class="toc-wrapper"><ul class="toc-list"><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_0-前言" class="router-link-active router-link-exact-active toc-link level2">0. 前言</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_1-props" class="router-link-active router-link-exact-active toc-link level2">1. props</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-自定义事件" class="router-link-active router-link-exact-active toc-link level2">2. 自定义事件</a></li><ul class="toc-list"><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-1-原生-dom-事件" class="router-link-active router-link-exact-active toc-link level3">2.1 原生 DOM 事件</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_2-2-自定义事件" class="router-link-active router-link-exact-active toc-link level3">2.2 自定义事件</a></li><!----><!--]--></ul><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-全局事件总线" class="router-link-active router-link-exact-active toc-link level2">3. 全局事件总线</a></li><ul class="toc-list"><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-1-mitt-安装" class="router-link-active router-link-exact-active toc-link level3">3.1 mitt 安装</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-2-mitt-定义" class="router-link-active router-link-exact-active toc-link level3">3.2 mitt 定义</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_3-3-mitt-使用" class="router-link-active router-link-exact-active toc-link level3">3.3 mitt 使用</a></li><!----><!--]--></ul><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_4-v-model" class="router-link-active router-link-exact-active toc-link level2">4. v-model</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_5-useattrs" class="router-link-active router-link-exact-active toc-link level2">5. useAttrs</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_6-ref-与-parent" class="router-link-active router-link-exact-active toc-link level2">6. ref 与 $parent</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_7-provide-与-inject" class="router-link-active router-link-exact-active toc-link level2">7. provide 与 inject</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-pinia" class="router-link-active router-link-exact-active toc-link level2">8. pinia</a></li><ul class="toc-list"><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-1-pinia-安装" class="router-link-active router-link-exact-active toc-link level3">8.1 pinia 安装</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-2-pinia-注册" class="router-link-active router-link-exact-active toc-link level3">8.2 pinia 注册</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_8-3-pinia-使用" class="router-link-active router-link-exact-active toc-link level3">8.3 pinia 使用</a></li><!----><!--]--></ul><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-slot" class="router-link-active router-link-exact-active toc-link level2">9. slot</a></li><ul class="toc-list"><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-1-默认插槽" class="router-link-active router-link-exact-active toc-link level3">9.1 默认插槽</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-2-具名插槽" class="router-link-active router-link-exact-active toc-link level3">9.2 具名插槽</a></li><!----><!--]--><!--[--><li class="toc-item"><a aria-current="page" href="/web/framework/vue/vue3_component_communication.html#_9-3-作用域插槽" class="router-link-active router-link-exact-active toc-link level3">9.3 作用域插槽</a></li><!----><!--]--></ul><!--]--></ul></div></aside></div><!----><div class="theme-hope-content"><!--[--><h1 id="vue3-组件通信方式" tabindex="-1"><a class="header-anchor" href="#vue3-组件通信方式" aria-hidden="true">#</a> <code>Vue3</code> 组件通信方式</h1><h2 id="_0-前言" tabindex="-1"><a class="header-anchor" href="#_0-前言" aria-hidden="true">#</a> 0. 前言</h2><p>不管是 <code>Vue2</code> 还是 <code>Vue3</code>,组件通信方式很重要，不管是项目还是面试都是经常用到的知识点。</p><p>回顾一下 <code>Vue2</code> 中组件的通信方式：</p><ul><li><p><code>props</code>:可以实现父子组件、子父组件、甚至兄弟组件通信</p></li><li><p>自定义事件:可以实现子父组件通信</p></li><li><p>全局事件总线 <code>$bus</code>:可以实现任意组件通信</p></li><li><p><code>pubsub</code>:发布订阅模式实现任意组件通信</p></li><li><p><code>vuex</code>:集中式状态管理容器，实现任意组件通信</p></li><li><p><code>ref</code>:父组件获取子组件实例 <code>VC</code>,获取子组件的响应式数据以及方法</p></li><li><p><code>slot</code>:插槽(默认插槽、具名插槽、作用域插槽)实现父子组件通信</p></li></ul><p>示例代码地址：https://github.com/chenyl8848/vue-technology-stack-study</p><h2 id="_1-props" tabindex="-1"><a class="header-anchor" href="#_1-props" aria-hidden="true">#</a> 1. <code>props</code></h2><blockquote><p><code>props</code> 可以实现父子组件通信,在 <code>Vue3</code> 中可以通过 <code>defineProps</code> 获取父组件传递的数据，且在组件内部不需要引入 <code>defineProps</code> 方法可以直接使用。</p></blockquote><p>父组件给子组件传递数据</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;props:我是父组件&lt;/h1&gt;
+    &lt;Children :money = &quot;money&quot; :info = &quot;info&quot;&gt;&lt;/Children&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import { ref } from &quot;vue&quot;;
+// 引入子组件
+import Children from &quot;./Children.vue&quot;;
+// 使用 props 实现父子组件通信
+let money = ref(1000);
+let info = ref(&#39;发零花钱了&#39;)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background-color: pink;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p>子组件获取父组件传递数据：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;h2&gt;props:我是子组件&lt;/h2&gt;
+    &lt;p&gt;接收父组件传值:{{ props.money }}&lt;/p&gt;
+    &lt;p&gt;接收父组件传值:{{ props.info }}&lt;/p&gt;
+    &lt;!-- 无法修改 --&gt;
+    &lt;!-- Set operation on key &quot;money&quot; failed: target is readonly. --&gt;
+    &lt;!-- &lt;button @click=&quot;updateProps&quot;&gt;修改 props 的值&lt;/button&gt; --&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+// 需要使用到 defineProps 方法去接受父组件传递过来的数据
+// defineProps是 Vue3 提供方法,不需要引入直接使用
+//数组|对象写法都可以
+// let props = defineProps([&quot;money&quot;, &quot;info&quot;]);
+let props = defineProps({
+  money: {
+    // 接收数据的类型
+    type: Number,
+    default: 0,
+  },
+  info: {
+    type: String,
+    required: true,
+  },
+});
+
+// props 是只读的，不能修改
+// let updateProps = () =&gt; {
+//   props.money = 3000;
+// };
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br></div></div><blockquote><p>注意：子组件获取到 <code>props</code> 数据就可以在模板中使用，但是切记 <code>props</code> 是只读的（只能读取，不能修改）。</p></blockquote><h2 id="_2-自定义事件" tabindex="-1"><a class="header-anchor" href="#_2-自定义事件" aria-hidden="true">#</a> 2. 自定义事件</h2><p>在 <code>Vue</code> 框架中事件分为两种：一种是原生的 <code>DOM</code> 事件，另外一种自定义事件。</p><p>原生 <code>DOM</code> 事件可以让用户与网页进行交互，比如 <code>click</code>、<code>dbclick</code>、<code>change</code>、<code>mouseenter</code>、<code>mouseleave</code>...</p><p>自定义事件可以实现子组件给父组件传递数据。</p><h3 id="_2-1-原生-dom-事件" tabindex="-1"><a class="header-anchor" href="#_2-1-原生-dom-事件" aria-hidden="true">#</a> 2.1 原生 <code>DOM</code> 事件</h3><p>代码如下:</p><div class="language-Html ext-Html line-numbers-mode"><pre class="language-Html"><code>&lt;pre @click=&quot;handler1&quot;&gt;大江东去，浪淘尽&lt;/pre&gt;
+&lt;pre @click=&quot;handler2(1,2,3,$event)&quot;&gt;千古风流人物&lt;/pre&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>let handler1 = (event) =&gt; {
+    console.log(event)
+}
+
+let handler2 = (x, y, z, $event) =&gt; {
+    console.log(x, y, z, $event)
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>给 <code>pre</code> 标签绑定原生 <code>DOM</code> 事件点击事件，默认会给事件回调注入 <code>event</code> 事件对象。当点击事件注入多个参数时，注入的事件对象务叫 <code>$event</code>.</p><p>在 <code>Vue3</code> 框架 <code>click</code>、<code>dbclick</code>、<code>change</code>(这类原生 <code>DOM</code> 事件),不管是在标签、自定义标签上(组件标签)都是原生 <code>DOM</code> 事件。</p><p><code>Vue2</code> 中却不是这样的,在 <code>Vue2</code> 中组件标签需要通过 <code>native</code> 修饰符才能变为原生 <code>DOM</code> 事件。</p><h3 id="_2-2-自定义事件" tabindex="-1"><a class="header-anchor" href="#_2-2-自定义事件" aria-hidden="true">#</a> 2.2 自定义事件</h3><p>自定义事件可以实现子组件给父组件传递数据。</p><p>在父组件内部给子组件绑定一个自定义事件：</p><div class="language-Html ext-Html line-numbers-mode"><pre class="language-Html"><code>&lt;Children2 @xxx=&quot;handler4&quot; @click=&quot;handler5&quot;&gt;&lt;/Children2&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><p>在 <code>Children2</code> 子组件内部触发这个自定义事件。</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+    &lt;div&gt;
+        &lt;h2&gt;自定义事件:我是子组件2&lt;/h2&gt;
+        &lt;button @click=&quot;handler&quot;&gt;向父组件传值,自定义事件xxx&lt;/button&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;button @click=&quot;$emit(&#39;click&#39;, &#39;321&#39;, &#39;world hello&#39;)&quot;&gt;向父组件传值,自定义事件click&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+// 可以使用 defineEmits 返回函数触发自定义事件
+// defineEmits 方法不需要引入直接使用
+
+let $emit = defineEmits([&#39;xxx&#39;, &#39;click&#39;]) 
+
+let handler = () =&gt; {
+    $emit(&#39;xxx&#39;, 123, &#39;hello world&#39;)
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p><code>defineEmits</code> 是 <code>Vue3</code> 提供的方法，不需要引入直接使用。<code>defineEmits</code> 方法执行，传递一个数组，数组元素即为将来组件需要触发的自定义事件类型，此方执行会返回一个 <code>$emit</code> 方法用于触发自定义事件。</p><p>当点击按钮的时候，事件回调内部调用 <code>$emit</code> 方法去触发自定义事件，第一个参数为触发事件类型，第二个、第三个、第N个参数即为传递给父组件的数据。</p><p>在父组件中接收子组件传递过来的参数：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>let handler4 = (params1, params2) =&gt; {
+    console.log(params1, params2)
+}
+
+let handler5 = (params1, params2) =&gt; {
+    console.log(params1, params2)
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h2 id="_3-全局事件总线" tabindex="-1"><a class="header-anchor" href="#_3-全局事件总线" aria-hidden="true">#</a> 3. 全局事件总线</h2><p>全局事件总线可以实现任意组件通信，在 <code>Vue2</code> 中可以根据 <code>VM</code> 与 <code>VC</code> 关系推出全局事件总线。</p><p>但是在 <code>Vue3</code> 中没有 <code>Vue</code> 构造函数，也就没有 <code>Vue.prototype</code> 以及组合式 <code>API</code> 写法没有 <code>this</code>，如果想在 <code>Vue3</code> 中使用全局事件总线功能，可以使用插件 <code>mitt</code> 实现。</p><p><code>mitt</code> 官网地址：https://www.npmjs.com/package/mitt</p><h3 id="_3-1-mitt-安装" tabindex="-1"><a class="header-anchor" href="#_3-1-mitt-安装" aria-hidden="true">#</a> 3.1 <code>mitt</code> 安装</h3><div class="language-Bash ext-Bash line-numbers-mode"><pre class="language-Bash"><code>pnpm i mitt
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h3 id="_3-2-mitt-定义" tabindex="-1"><a class="header-anchor" href="#_3-2-mitt-定义" aria-hidden="true">#</a> 3.2 <code>mitt</code> 定义</h3><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>// 引入 mitt mitt 是一个方法，方法执行会返回 bus 对象
+import mitt from &#39;mitt&#39;;
+
+const $bus = mitt();
+
+export default $bus;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="_3-3-mitt-使用" tabindex="-1"><a class="header-anchor" href="#_3-3-mitt-使用" aria-hidden="true">#</a> 3.3 <code>mitt</code> 使用</h3><p><code>mitt</code> 实现全局事件总线，实现兄弟组件之间进行通信：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children2&quot;&gt;
+    &lt;h2&gt;我是子组件2&lt;/h2&gt;
+    &lt;button @click=&quot;handler&quot;&gt;给兄弟组件传递值&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import $bus from &#39;../../bus&#39;
+
+const handler = () =&gt; {
+    $bus.emit(&#39;car&#39;, {car: &#39;兰博基尼&#39;})
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children2 {
+  width: 300px;
+  height: 150px;
+  background-color: yellowgreen;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import $bus from &quot;../../bus&quot;;
+
+// console.log($bus)
+
+// 使用组合式 API 函数
+import { onMounted } from &quot;vue&quot;;
+
+// 组件挂载完毕的时候，当前组件绑定一个事件，接收将来兄弟组件传递的数据
+onMounted(() =&gt; {
+  // 第一个参数即为事件类型 第二个参数即为事件回调
+  $bus.on(&quot;car&quot;, (params) =&gt; {
+    console.log(&quot;接收兄弟组件传值&quot;, params);
+  });
+});
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children1 {
+  width: 300px;
+  height: 150px;
+  background-color: yellow;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><h2 id="_4-v-model" tabindex="-1"><a class="header-anchor" href="#_4-v-model" aria-hidden="true">#</a> 4. v-model</h2><p><code>v-model</code> 指令可是收集表单数据(数据双向绑定)，除此之外它也可以实现父子组件数据同步。</p><p><code>v-model</code> 实际时基于 <code>props[modelValue]</code> 与自定义事件 <code>[update:modelValue]</code> 实现的。</p><p>父组件：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:v-model&lt;/h1&gt;
+    &lt;input v-model=&quot;info&quot; type=&quot;text&quot; /&gt;
+
+    &lt;!-- 使用 props 向子组件传递数据 --&gt;
+    &lt;!-- &lt;Children1 :modelValue=&quot;info&quot; @update:modelValue=&quot;handler&quot;&gt;&lt;/Children1&gt; --&gt;
+
+    &lt;!-- 使用 v-model 向子组件传递数据 --&gt;
+    &lt;!-- 
+       在组件上使用 v-model
+        第一:相当有给子组件传递 props[modelValue]
+        第二:相当于给子组件绑定自定义事件update:modelValue
+     --&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Children1 v-model=&quot;info&quot;&gt;&lt;/Children1&gt;
+
+      &lt;Children2
+        v-model:pageNo=&quot;pageNo&quot;
+        v-model:pageSize=&quot;pageSize&quot;
+      &gt;&lt;/Children2&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import { ref } from &quot;vue&quot;;
+import Children1 from &quot;./Children1.vue&quot;;
+import Children2 from &quot;./Children2.vue&quot;;
+
+let info = ref(&quot;&quot;);
+const handler = (params) =&gt; {
+  info.value = params;
+};
+
+let pageNo = ref(0);
+let pageSize = ref(10);
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br></div></div><p>子组件 <code>Children1</code>：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+    &lt;h2&gt;父组件info信息:{{ props.modelValue }}&lt;/h2&gt;
+    &lt;button @click=&quot;handler&quot;&gt;同步更新父组件info信息&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+// 使用defineProps 接收父组件传值
+let props = defineProps([&quot;modelValue&quot;]);
+console.log(props);
+
+let $emits = defineEmits([&#39;update:modelValue&#39;])
+
+const handler = () =&gt; {
+  $emits(&#39;update:modelValue&#39;, &#39;hello world&#39;)
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children1 {
+  width: 300px;
+  height: 250px;
+  background-color: yellow;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br></div></div><p>子组件 <code>Children2</code>：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children2&quot;&gt;
+    &lt;h2&gt;我是子组件2&lt;/h2&gt;
+    &lt;h3&gt;同时绑定多个v-model&lt;/h3&gt;
+    &lt;button @click=&quot;handler&quot;&gt;pageNo: {{ pageNo }}&lt;/button&gt;
+    &lt;br /&gt;
+    &lt;br /&gt;
+    &lt;button @click=&quot;$emit(&#39;update:pageSize&#39;, pageSize + 10)&quot;&gt;pageSize: {{ pageSize }}&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+let props = defineProps([&#39;pageNo&#39;, &#39;pageSize&#39;])
+let $emit = defineEmits([&#39;update:pageNo&#39;, &#39;update:pageSize&#39;])
+
+const handler = () =&gt; {
+  $emit(&#39;update:pageNo&#39;, props.pageNo + 1)
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children2 {
+  width: 300px;
+  height: 250px;
+  background-color: yellowgreen;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><p><code>&lt;Children1 v-model=&quot;info&quot;&gt;&lt;/Children1&gt;</code> 相当于给组件 <code>Children1</code> 传递一个 <code>props(modelValue)</code> 与绑定一个自定义事件 <code>update:modelValue</code> 实现父子组件数据同步。</p><p>在 <code>Vue3</code> 中一个组件可以通过使用多个 <code>v-model</code>,让父子组件多个数据同步,下方代码相当于给组件 <code>Children2</code> 传递两个 <code>props</code> 分别是 <code>pageNo</code> 与 <code>pageSize</code>，以及绑定两个自定义事件 <code>update:pageNo</code> 与 <code>update:pageSize</code> 实现父子数据同步。</p><div class="language-Html ext-Html line-numbers-mode"><pre class="language-Html"><code>&lt;Children2 v-model:pageNo=&quot;pageNo&quot; v-model:pageSize=&quot;pageSize&quot;&gt;&lt;/Children2&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h2 id="_5-useattrs" tabindex="-1"><a class="header-anchor" href="#_5-useattrs" aria-hidden="true">#</a> 5. useAttrs</h2><p>在 <code>Vue3</code> 中可以利用 <code>useAttrs</code> 方法获取组件的属性与事件(包含:原生 <code>DOM</code> 事件或者自定义事件)，该函数功能类似于 <code>Vue2</code> 框架中 <code>attrs</code> 属性与 <code>$listeners</code> 方法。</p><p>比如：在父组件内部使用一个子组件 <code>HintButton</code></p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:attrs&lt;/h1&gt;
+    &lt;el-button type=&quot;primary&quot; size=&quot;large&quot; :icon=&quot;Edit&quot;&gt;&lt;/el-button&gt;
+    &lt;!-- 自定义组件 --&gt;
+    &lt;!-- 实现将光标放在按钮上，会有文字提示 --&gt;
+    &lt;HintButton type=&quot;primary&quot; size=&quot;large&quot; :icon=&quot;Edit&quot; @click=&quot;handler&quot; @xxx=&quot;handler&quot; :title=&quot;title&quot;&gt;&lt;/HintButton&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import { Edit } from &quot;@element-plus/icons-vue&quot;;
+import { ref } from &quot;vue&quot;;
+import HintButton from &quot;./HintButton.vue&quot;;
+
+const handler = () =&gt; {
+  alert(12306)
+}
+
+let title = ref(&#39;编辑&#39;)
+
+&lt;/script&gt;
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><p>子组件内部可以通过 <code>useAttrs</code> 方法获取组件属性与事件。它类似于 <code>props</code>,可以接受父组件传递过来的属性与属性值。需要注意如果 <code>defineProps</code> 接受了某一个属性，<code>useAttrs</code> 方法返回的对象身上就没有相应属性与属性值。</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div :title=&quot;title&quot;&gt;
+    &lt;el-button :=&quot;$attrs&quot;&gt;&lt;/el-button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+//引入useAttrs方法:获取组件标签身上属性与事件
+import { useAttrs } from &quot;vue&quot;;
+//此方法执行会返回一个对象
+let $attrs = useAttrs();
+
+// 万一用 props 接受 title
+let props = defineProps([&#39;title&#39;])
+// props 与 useAttrs 方法都可以获取父组件传递过来的属性与属性值
+//但是 props 接收了 useAttrs 方法就获取不到了
+console.log($attrs)
+
+&lt;/script&gt;
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><h2 id="_6-ref-与-parent" tabindex="-1"><a class="header-anchor" href="#_6-ref-与-parent" aria-hidden="true">#</a> 6. <code>ref</code> 与 <code>$parent</code></h2><p><code>ref</code> 可以获取元素的 <code>DOM</code> 或者获取子组件实例的 <code>VC</code>。既然可以在父组件内部通过 <code>ref</code> 获取子组件实例 <code>VC</code>，那么子组件内部的方法与响应式数据父组件也是可以使用的。</p><p>比如:在父组件挂载完毕获取组件实例</p><p>父组件内部代码:</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:ref parent&lt;/h1&gt;
+    &lt;h2&gt;父组件拥有财产:{{ money }}&lt;/h2&gt;
+    &lt;button @click=&quot;handler&quot;&gt;向子组件1拿100元&lt;/button&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;Children1 ref=&quot;children1&quot;&gt;&lt;/Children1&gt;
+        &lt;Children2 ref=&quot;children2&quot;&gt;&lt;/Children2&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+//ref:可以获取真实的DOM节点,可以获取到子组件实例VC
+//$parent:可以在子组件内部获取到父组件的实例
+import Children1 from &#39;./Children1.vue&#39;
+import Children2 from &#39;./Children2.vue&#39;
+
+import {ref} from &#39;vue&#39;
+
+let money = ref(10000)
+
+// 获取子组件的实例
+let children1 = ref()
+let children2 = ref()
+console.log(children1, children2)
+
+//父组件内部按钮点击回调
+const handler = () =&gt; {
+    money.value += 100
+    children1.value.money -= 100
+}
+
+defineExpose({
+    money
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br></div></div><p>但是需要注意，如果想让父组件获取子组件的数据或者方法需要通过 <code>defineExpose</code> 对外暴露，因为 <code>Vue3</code> 中组件内部的数据对外“关闭的”，外部不能访问。</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+    &lt;h3&gt;子组件1拥有财产:{{ money }}&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import { ref } from &quot;vue&quot;;
+
+let money = ref(9999);
+
+defineExpose({
+    money
+})
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children1 {
+  width: 300px;
+  height: 250px;
+  background-color: yellow;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><p><code>$parent</code> 可以获取某一个组件的父组件实例 <code>VC</code>，因此可以使用父组件内部的数据与方法。必须子组件内部拥有一个按钮点击时候获取父组件实例，当然父组件的数据与方法需要通过 <code>defineExpose</code> 方法对外暴露。</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children2&quot;&gt;
+    &lt;h2&gt;我是子组件2&lt;/h2&gt;
+    &lt;h3&gt;子组件2拥有财产:{{ money }}&lt;/h3&gt;
+    &lt;button @click=&quot;handler($parent)&quot;&gt;向父组件拿300元&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import {ref} from &#39;vue&#39;
+
+let money = ref(1000)
+
+const handler = ($parent) =&gt; {
+  money.value += 300
+  console.log($parent)
+  $parent.money -= 300
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children2 {
+  width: 300px;
+  height: 250px;
+  background-color: yellowgreen;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><h2 id="_7-provide-与-inject" tabindex="-1"><a class="header-anchor" href="#_7-provide-与-inject" aria-hidden="true">#</a> 7. <code>provide</code> 与 <code>inject</code></h2><p><code>Vue3</code> 提供两个方法 <code>provide</code>[提供] 与 <code>inject</code>[注入]，可以实现隔辈组件传递参数。</p><p><code>provide</code> 方法用于提供数据，此方法执需要传递两个参数,分别提供数据的 <code>key</code> 与提供数据 <code>value</code>.</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:provdide-inject&lt;/h1&gt;
+    &lt;h1&gt;父组件拥有汽车:{{ car }}&lt;/h1&gt;
+    &lt;Children&gt;&lt;/Children&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import Children from &quot;./Children.vue&quot;;
+
+//vue3 提供 provide(提供)与 inject(注入),可以实现隔辈组件传递数据
+import { provide, ref } from &quot;vue&quot;;
+let car = ref(&quot;保时捷911&quot;);
+
+//祖先组件给后代组件提供数据
+//两个参数:第一个参数就是提供的数据key
+//第二个参数:祖先组件提供数据
+provide(&quot;CAR&quot;, car);
+
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br></div></div><p>子组件代码：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children&quot;&gt;
+    &lt;h2&gt;我是子组件&lt;/h2&gt;
+    &lt;Grandson&gt;&lt;/Grandson&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import Grandson from &#39;./Grandson.vue&#39;;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children {
+  width: 500px;
+  height: 250px;
+  background: pink;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><p>孙子组件可以通过 <code>inject</code> 方法获取数据,通过 <code>key</code> 获取存储的数值</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;grandson&quot;&gt;
+    &lt;h3&gt;我是孙子组件&lt;/h3&gt;
+    &lt;p&gt;祖先传下来的汽车:{{ car }}&lt;/p&gt;
+    &lt;button @click=&quot;handler&quot;&gt;更换汽车&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import { inject } from &quot;vue&quot;;
+
+//注入祖先组件提供数据
+//需要参数:即为祖先提供数据的 key
+let car = inject(&#39;CAR&#39;)
+
+// 使用 provide-inject 通信可以修改数据
+const handler = () =&gt; {
+  car.value = &#39;自行车&#39;
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.grandson {
+  width: 200px;
+  height: 200px;
+  background: hotpink;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><h2 id="_8-pinia" tabindex="-1"><a class="header-anchor" href="#_8-pinia" aria-hidden="true">#</a> 8. <code>pinia</code></h2><p><code>pinia</code> 官网：https://pinia.web3doc.top/</p><p><code>pinia</code> 也是集中式管理状态容器，类似于 <code>Vuex</code>.但是核心概念没有 <code>mutation</code>、<code>modules</code>.</p><h3 id="_8-1-pinia-安装" tabindex="-1"><a class="header-anchor" href="#_8-1-pinia-安装" aria-hidden="true">#</a> 8.1 <code>pinia</code> 安装</h3><div class="language-Bash ext-Bash line-numbers-mode"><pre class="language-Bash"><code>pnpm i pinia
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br></div></div><h3 id="_8-2-pinia-注册" tabindex="-1"><a class="header-anchor" href="#_8-2-pinia-注册" aria-hidden="true">#</a> 8.2 <code>pinia</code> 注册</h3><p>创建 <code>store</code>：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>import { createPinia } from &#39;pinia&#39;;
+
+let store = createPinia()
+
+export default store;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>在 <code>main.ts</code> 中注册使用：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>import { createApp } from &#39;vue&#39;
+
+import store from &#39;./store&#39;
+
+import App from &#39;./App.vue&#39;
+
+const app = createApp(App)
+
+app.use(store)
+
+app.mount(&#39;#app&#39;)
+
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h3 id="_8-3-pinia-使用" tabindex="-1"><a class="header-anchor" href="#_8-3-pinia-使用" aria-hidden="true">#</a> 8.3 <code>pinia</code> 使用</h3><p>选项式API使用：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>import { defineStore } from &#39;pinia&#39;
+
+//第一个参数:小仓库名字  第二个参数:小仓库配置对象
+//defineStore 方法执行会返回一个函数,函数作用就是让组件可以获取到仓库数据
+let useInfoStore = defineStore(&quot;info&quot;, {
+    // 注意写法与 vue2 中 的 vuex 写法不同
+
+    // state 存储数据
+    state: () =&gt; {
+        return {
+            count: 999,
+            arr: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+    },
+    // 对数据进行操作
+    actions: {
+        //注意:函数没有context上下文对象
+        //没有commit、没有mutations去修改数据
+        updateCount(param1: number, param2: number) {
+            this.count = param1 + param2
+        }
+    },
+    // 获取数据
+    getters: {
+        total() {
+            let result:number = this.arr.reduce((prev, next) =&gt; {
+                return prev + next
+            }, 0)
+            return result
+        }
+    }
+})
+
+export default useInfoStore;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br></div></div><p>在组件中使用：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+    &lt;h3&gt;count:{{ infoStore.count }}&lt;/h3&gt;
+    &lt;button @click=&quot;handler&quot;&gt;修改infoStore中的数据&lt;/button&gt;
+    &lt;h3&gt;total:{{ infoStore.total }}&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import useInfoStore from &quot;../../store/module/info&quot;;
+
+// 获取小仓库对象
+let infoStore = useInfoStore()
+
+const handler = () =&gt; {
+  //仓库调用自身的方法去修改仓库的数据
+  infoStore.updateCount(99, 100)
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children1 {
+  width: 300px;
+  height: 250px;
+  background-color: yellow;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><p>组合式 <code>API</code> 使用：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>import { defineStore } from &#39;pinia&#39;
+import { computed, ref } from &#39;vue&#39;
+
+let useTodoStore = defineStore(&#39;todo&#39;, () =&gt; {
+    let todoList = ref([
+        { id: 1, title: &#39;吃饭&#39;, done: true },
+        { id: 2, title: &#39;睡觉&#39;, done: false },
+        { id: 3, title: &#39;打游戏&#39;, done: true }
+    ])
+
+    let arr = ref([1, 2, 3, 4, 5])
+
+    const total:any = computed(() =&gt; {
+        return arr.value.reduce((prev, next) =&gt; {
+            return prev + next
+        }, 0)
+    })
+
+    const updateTodo = (params: any) =&gt; {
+        todoList.value.unshift(params)
+    }
+
+    // 务必要返回一个对象:属性与方法可以提供给组件使用
+    return {
+        todoList,
+        total,
+        updateTodo
+    }
+})
+
+export default useTodoStore;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br></div></div><p>在组件中使用：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children2&quot;&gt;
+    &lt;h2&gt;我是子组件2&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li v-for=&quot;(item, index) in todoStore.todoList&quot; :key=&quot;item.id&quot;&gt;{{ item.title }}&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;button @click=&quot;handler&quot;&gt;修改todo&lt;/button&gt;
+    &lt;h3&gt;totalCount:{{ todoStore.total }}&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import useTodoStore from &#39;../../store/module/todo&#39;
+
+let todoStore = useTodoStore()
+
+const handler = () =&gt; {
+  let params = { id: 4, title: &#39;学习&#39;, done: true }
+  todoStore.updateTodo(params)
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children2 {
+  width: 300px;
+  height: 250px;
+  background-color: yellowgreen;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><h2 id="_9-slot" tabindex="-1"><a class="header-anchor" href="#_9-slot" aria-hidden="true">#</a> 9. <code>slot</code></h2><p>插槽：默认插槽、具名插槽、作用域插槽可以实现父子组件通信。</p><h3 id="_9-1-默认插槽" tabindex="-1"><a class="header-anchor" href="#_9-1-默认插槽" aria-hidden="true">#</a> 9.1 默认插槽</h3><p>在子组件内部的模板中书写 <code>slot</code> 全局组件标签</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+    &lt;!-- 默认插槽--&gt;
+    &lt;slot&gt;&lt;/slot&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>在父组件内部提供结构，<code>Children1</code> 即为子组件，在父组件内部使用的时候，在双标签内部书写结构传递给子组件。</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:slot&lt;/h1&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Children1&gt;
+        &lt;span&gt;默认插槽&lt;/span&gt;
+      &lt;/Children1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import Children1 from &quot;./Children1.vue&quot;;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><blockquote><p>注意开发项目的时候默认插槽一般只有一个。</p></blockquote><h3 id="_9-2-具名插槽" tabindex="-1"><a class="header-anchor" href="#_9-2-具名插槽" aria-hidden="true">#</a> 9.2 具名插槽</h3><blockquote><p>顾名思义，此插槽带有名字，在组件内部可以有多个指定名字的插槽。</p></blockquote><p>下面是一个子组件内部，模板中有两个插槽：</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children1&quot;&gt;
+    &lt;h2&gt;我是子组件1&lt;/h2&gt;
+    &lt;!-- 默认插槽--&gt;
+    &lt;slot&gt;&lt;/slot&gt;
+    &lt;slot name=&quot;a&quot;&gt;&lt;/slot&gt;
+    &lt;slot name=&quot;b&quot;&gt;&lt;/slot&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children1 {
+  width: 300px;
+  height: 250px;
+  background-color: yellow;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><p>父组件内部向指定的具名插槽传递结构，<code>v-slot</code> 可以替换为 <code>#</code></p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:slot&lt;/h1&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Children1&gt;
+        &lt;span&gt;默认插槽&lt;/span&gt;
+      &lt;/Children1&gt;
+      &lt;Children1&gt;
+        &lt;template v-slot:a&gt;
+          &lt;span&gt;具名插槽a&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/Children1&gt;
+      &lt;Children1&gt;
+        &lt;template #b&gt;
+          &lt;span&gt;具名插槽b&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/Children1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import Children1 from &quot;./Children1.vue&quot;;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br></div></div><h3 id="_9-3-作用域插槽" tabindex="-1"><a class="header-anchor" href="#_9-3-作用域插槽" aria-hidden="true">#</a> 9.3 作用域插槽</h3><blockquote><p>作用域插槽：子组件数据由父组件提供，但是子组件内部决定不了自身结构与外观(样式)</p></blockquote><p>子组件 <code>Children2</code> 代码如下:</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;children2&quot;&gt;
+    &lt;h2&gt;我是子组件2:作用域插槽&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li v-for=&quot;(item, index) in todos&quot; :key=&quot;item.id&quot;&gt;
+        &lt;!--作用域插槽:可以讲数据回传给父组件--&gt;
+        &lt;slot :$row=&quot;item&quot; :$index=&quot;index&quot;&gt;&lt;/slot&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+//通过props接受父组件传递数据
+defineProps([&quot;todos&quot;]);
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.children2 {
+  width: 300px;
+  height: 250px;
+  background-color: yellowgreen;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p>父组件内部代码如下:</p><div class="language-JavaScript ext-JavaScript line-numbers-mode"><pre class="language-JavaScript"><code>&lt;template&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h1&gt;我是父组件:slot&lt;/h1&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Children1&gt;
+        &lt;span&gt;默认插槽&lt;/span&gt;
+      &lt;/Children1&gt;
+      &lt;Children1&gt;
+        &lt;template v-slot:a&gt;
+          &lt;span&gt;具名插槽a&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/Children1&gt;
+      &lt;Children1&gt;
+        &lt;template #b&gt;
+          &lt;span&gt;具名插槽b&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/Children1&gt;
+      &lt;Children2 :todos=&quot;todos&quot;&gt;
+        &lt;template v-slot=&quot;{ $row, $index }&quot;&gt;
+          &lt;p :style=&quot;{ color: $row.done ? &#39;green&#39; : &#39;red&#39; }&quot;&gt;
+            {{ $row.title }}
+          &lt;/p&gt;
+        &lt;/template&gt;
+      &lt;/Children2&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+
+&lt;script lang=&#39;ts&#39; setup&gt;
+import Children1 from &quot;./Children1.vue&quot;;
+import Children2 from &quot;./Children2.vue&quot;;
+
+//插槽:默认插槽、具名插槽、作用域插槽
+//作用域插槽:就是可以传递数据的插槽,子组件可以将数据回传给父组件,父组件可以决定这些回传的数据是以何种结构或者外观在子组件内部去展示！！！
+
+import { ref } from &quot;vue&quot;;
+//todos数据
+let todos = ref([
+  { id: 1, title: &quot;吃饭&quot;, done: true },
+  { id: 2, title: &quot;睡觉&quot;, done: false },
+  { id: 3, title: &quot;打游戏&quot;, done: true },
+  { id: 4, title: &quot;学习&quot;, done: false },
+]);
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.box {
+  width: 1000px;
+  height: 500px;
+  background: skyblue;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+&lt;/style&gt;
+</code></pre><div class="line-numbers" aria-hidden="true"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br></div></div><!--]--></div><!----><footer class="page-meta"><div class="meta-item edit-link"><a href="https://github.com/chenyl8848/chenyl8848.github.io/edit/master/docs/web/framework/vue/vue3_component_communication.md" rel="noopener noreferrer" target="_blank" arialabel="编辑此页" class="nav-link label"><!--[--><svg xmlns="http://www.w3.org/2000/svg" class="icon edit-icon" viewbox="0 0 1024 1024" arialabelledby="edit"><title id="edit" lang="en">edit icon</title><g fill="currentColor"><path d="M430.818 653.65a60.46 60.46 0 0 1-50.96-93.281l71.69-114.012 7.773-10.365L816.038 80.138A60.46 60.46 0 0 1 859.225 62a60.46 60.46 0 0 1 43.186 18.138l43.186 43.186a60.46 60.46 0 0 1 0 86.373L588.879 565.55l-8.637 8.637-117.466 68.234a60.46 60.46 0 0 1-31.958 11.229z"></path><path d="M728.802 962H252.891A190.883 190.883 0 0 1 62.008 771.98V296.934a190.883 190.883 0 0 1 190.883-192.61h267.754a60.46 60.46 0 0 1 0 120.92H252.891a69.962 69.962 0 0 0-69.098 69.099V771.98a69.962 69.962 0 0 0 69.098 69.098h475.911A69.962 69.962 0 0 0 797.9 771.98V503.363a60.46 60.46 0 1 1 120.922 0V771.98A190.883 190.883 0 0 1 728.802 962z"></path></g></svg><!--]-->编辑此页<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span><!----></a></div><div class="meta-item update-time"><span class="label">上次编辑于: </span><span class="info">2023/6/6 02:55:29</span></div><div class="meta-item contributors"><span class="label">贡献者: </span><!--[--><!--[--><span class="contributor" title="email: 1063415880@qq.com">cyl</span><!--]--><!--]--></div></footer><nav class="page-nav"><a href="/web/framework/vue/vue3_composition.html" class="nav-link prev" arialabel="Vue3 Composition Api"><div class="hint"><span class="arrow left"></span>上一页</div><div class="link"><!---->Vue3 Composition Api</div></a><!----></nav><div class="giscus-wrapper input-top" style="display:block;"><giscus-widget repo="chenyl8848/chenyl8848.github.io" repoId="R_kgDOHJ-qSQ" category="Announcements" categoryId="DIC_kwDOHJ-qSc4COg8Z" lang="zh-CN" theme="light" mapping="pathname" inputPosition="top" reactionsEnabled="1" emitMetadata="0"></giscus-widget></div><!----></main><!--]--><footer class="footer-wrapper"><div class="footer">没有最好，只有更好！</div><div class="copyright">Copyright © 2025 Java陈序员</div></footer></div><!--]--><!----><!--]--></div>
+    <script type="module" src="/assets/app.06d697e7.js" defer></script>
+  </body>
+</html>

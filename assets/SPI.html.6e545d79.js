@@ -1,0 +1,1 @@
+import{_ as e,c as a,o as t,a as s,d as o}from"./app.06d697e7.js";const c={},_={id:"java-spi-\u673A\u5236",tabindex:"-1"},r=s("a",{class:"header-anchor",href:"#java-spi-\u673A\u5236","aria-hidden":"true"},"#",-1),n=o(" Java SPI \u673A\u5236"),d=[r,n];function i(h,f){return t(),a("h1",_,d)}var m=e(c,[["render",i],["__file","SPI.html.vue"]]);export{m as default};

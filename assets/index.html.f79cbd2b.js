@@ -1,0 +1,1 @@
+import{_ as t,r as n,c as o,a as r,b as a,w as s,o as c,d as l}from"./app.06d697e7.js";const _={},i=l("Linux \u4E07\u5B57\u5165\u95E8\u6559\u7A0B");function u(d,x){const e=n("RouterLink");return c(),o("ul",null,[r("li",null,[a(e,{to:"/server/linux/Linux.html"},{default:s(()=>[i]),_:1})])])}var f=t(_,[["render",u],["__file","index.html.vue"]]);export{f as default};

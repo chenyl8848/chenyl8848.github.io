@@ -1,0 +1,1 @@
+import{_ as o,r as t,c as n,a,b as r,w as s,o as c,d as _}from"./app.06d697e7.js";const l={},d=_("Node.js \u57FA\u7840\u6559\u7A0B");function i(m,u){const e=t("RouterLink");return c(),n("ul",null,[a("li",null,[r(e,{to:"/web/framework/nodejs/nodejs.html"},{default:s(()=>[d]),_:1})])])}var x=o(l,[["render",i],["__file","index.html.vue"]]);export{x as default};

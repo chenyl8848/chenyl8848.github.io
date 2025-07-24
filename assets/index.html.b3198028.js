@@ -1,0 +1,1 @@
+import{_ as t,r as o,c as n,a as r,b as a,w as c,o as s,d as _}from"./app.06d697e7.js";const l={},i=_("Spring AI \u5165\u95E8\u6559\u7A0B");function d(m,u){const e=o("RouterLink");return s(),n("ul",null,[r("li",null,[a(e,{to:"/ai/framework/SpringAI.html"},{default:c(()=>[i]),_:1})])])}var p=t(l,[["render",d],["__file","index.html.vue"]]);export{p as default};
